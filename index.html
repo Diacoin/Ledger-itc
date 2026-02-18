@@ -23,11 +23,31 @@
   *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
   body{background:var(--bg);padding:20px;color:var(--text);transition:background .3s,color .3s;}
 
+  /* LOGIN SCREEN */
+  .login-wrapper{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+  .login-box{background:var(--surface);border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 8px 32px var(--shadow2);}
+  .login-logo{text-align:center;margin-bottom:32px;}
+  .login-title{font-size:24px;font-weight:900;letter-spacing:.5px;margin-bottom:8px;}
+  .login-subtitle{font-size:11px;color:var(--text3);letter-spacing:1.5px;font-style:italic;}
+  .login-form{display:flex;flex-direction:column;gap:16px;}
+  .login-input{padding:12px 16px;border:1px solid var(--input-border);border-radius:8px;font-size:14px;background:var(--input-bg);color:var(--text);transition:border .2s;}
+  .login-input:focus{outline:none;border-color:#1a73e8;}
+  .login-btn{padding:14px;background:#1a73e8;color:white;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:bold;transition:background .2s;}
+  .login-btn:hover{background:#1558b0;}
+  .login-btn:disabled{background:#ccc;cursor:not-allowed;}
+  .login-error{background:#fce8e6;color:#ea4335;padding:12px;border-radius:8px;font-size:13px;text-align:center;}
+  .login-loading{text-align:center;color:var(--text3);font-size:13px;margin-top:16px;}
+  #app{display:none;}
+  #app.loaded{display:block;}
+
   .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
   .logo-wrap{display:flex;align-items:center;gap:8px;}
   .header-right{display:flex;gap:8px;align-items:center;}
   body.dark #logoSvg ellipse{stroke:#4a90d9;}
   body.dark #logoSvg circle:first-of-type{fill:#4a90d9;}
+  .user-info{background:var(--surface);border:1px solid var(--input-border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;}
+  .btn-logout{background:#ea4335;color:white;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12px;font-weight:bold;}
+  .btn-logout:hover{background:#c5221f;}
 
   .btn-settings{background:var(--surface);border:1px solid var(--input-border);color:var(--text2);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;transition:all .2s;}
   .btn-settings:hover{background:var(--hover);}
@@ -56,7 +76,6 @@
   h2{text-align:center;color:#1a73e8;margin-bottom:20px;font-size:20px;}
   h3{font-size:14px;color:var(--text2);margin-bottom:10px;}
 
-  /* SUMMARY */
   .summary{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
   .card{flex:1;min-width:130px;padding:12px 16px;border-radius:10px;color:white;text-align:center;}
   .card.in{background:#34a853;} .card.out{background:#ea4335;}
@@ -65,25 +84,11 @@
   .card span{font-size:17px;font-weight:bold;}
   .filter-note{font-size:10px;color:#ffe082;font-style:italic;}
 
-  /* TIPO FILTER BAR */
-  .tipo-bar{background:var(--surface);border-radius:10px;padding:10px 16px;margin-bottom:12px;box-shadow:0 2px 8px var(--shadow);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .tipo-bar label{font-size:13px;font-weight:bold;color:var(--text2);white-space:nowrap;}
-  .tipo-bar select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);min-width:150px;}
-  .tipo-bar select.active-sel{border-color:#8e44ad;color:#8e44ad;font-weight:bold;}
-  .btn-tipo-calc{padding:7px 16px;background:#8e44ad;color:white;border:none;border-radius:7px;cursor:pointer;font-size:13px;font-weight:bold;white-space:nowrap;}
-  .btn-tipo-calc:hover{background:#7d3c98;}
-  .btn-tipo-reset{padding:7px 12px;background:var(--hover);color:var(--text3);border:1px solid var(--input-border);border-radius:7px;cursor:pointer;font-size:13px;}
-  .tipo-badge{background:#f3e5f5;color:#8e44ad;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;display:none;}
-  .tipo-badge.show{display:inline-block;}
-  body.dark .tipo-badge{background:#3a1a4a;color:#ce93d8;}
-
-  /* ENTITY BANNER */
   .entity-banner{background:#1a73e8;color:white;border-radius:10px;padding:10px 16px;margin-bottom:10px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
   .entity-banner.active{display:flex;}
   .entity-banner span{font-size:13px;font-weight:bold;}
   .entity-banner button{background:rgba(255,255,255,.25);border:none;color:white;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;}
 
-  /* FILTRI COLLASSABILI */
   .filter-toggle-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:10px;padding:10px 16px;margin-bottom:8px;box-shadow:0 2px 8px var(--shadow);cursor:pointer;user-select:none;transition:border-radius .2s;}
   .filter-toggle-bar.open{border-radius:10px 10px 0 0;}
   .filter-toggle-bar:hover{background:var(--hover);}
@@ -104,7 +109,6 @@
   .mst.af-c1{border-color:#9c27b0;color:#9c27b0;font-weight:bold;}
   .mst.af-c2{border-color:#e67e22;color:#e67e22;font-weight:bold;}
   .mst.af-c3{border-color:#16a085;color:#16a085;font-weight:bold;}
-  .mst.af-ent{border-color:#1a73e8;color:#1a73e8;font-weight:bold;}
   .dropdown-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px var(--shadow2);z-index:100;min-width:180px;max-height:220px;overflow-y:auto;padding:6px 0;}
   .dropdown-panel.open{display:block;}
   .dropdown-item{display:flex;align-items:center;gap:8px;padding:6px 13px;cursor:pointer;font-size:12px;color:var(--text);}
@@ -119,11 +123,11 @@
   .btn-sm.red{background:#fce8e6;color:#ea4335;}
   .btn-sm.grey{background:var(--hover);color:var(--text3);}
   .entity-filter-wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1;}
-  .entity-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;flex:1;min-width:140px;background:var(--input-bg);color:var(--text);}
+  .entity-select,.tipo-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;flex:1;min-width:140px;background:var(--input-bg);color:var(--text);}
   .entity-select.active-sel{border-color:#1a73e8;color:#1a73e8;font-weight:bold;}
+  .tipo-select.active-sel{border-color:#8e44ad;color:#8e44ad;font-weight:bold;}
   .filter-reset-row{display:flex;justify-content:flex-end;margin-top:4px;}
 
-  /* INSERT BOX */
   .insert-box{background:var(--insert-bg);border:2px solid var(--insert-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 10px var(--shadow);}
   .insert-box-title{font-size:13px;font-weight:bold;color:var(--insert-border);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
@@ -136,7 +140,6 @@
   .btn-add:hover{background:#1558b0;}
   .arrow-label{font-size:18px;color:#1a73e8;font-weight:bold;padding:0 2px;}
 
-  /* TABLE */
   table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);}
   thead{background:#1a73e8;color:white;}
   th{padding:9px 8px;text-align:left;font-size:11px;white-space:nowrap;}
@@ -170,7 +173,6 @@
   .btn-action{padding:8px 16px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-action.purple{background:#8e44ad;} .btn-action.purple:hover{background:#7d3c98;}
 
-  /* ARCHIVIO NOMI */
   .archivio-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .nomi-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
   .nomi-table th{text-align:left;padding:7px 10px;font-size:12px;color:var(--text3);border-bottom:2px solid var(--border);font-weight:bold;}
@@ -187,15 +189,12 @@
   .btn-nome-cancel{background:var(--hover);color:var(--text3);border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 8px;}
   .tag-add{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center;}
   .tag-add input{flex:1;padding:8px 12px;border:1px solid var(--input-border);border-radius:6px;font-size:14px;min-width:120px;background:var(--input-bg);color:var(--text);}
-  .tag-add select{padding:8px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);min-width:130px;}
   .btn-at{padding:8px 16px;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;}
   .btn-at.nome{background:#1a73e8;} .btn-at.nome:hover{background:#1558b0;}
   .empty-tag{color:var(--text4);font-size:13px;font-style:italic;}
 
-  /* ARCHIVIO CATEGORIE */
   .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;min-height:36px;}
   .tag-item{display:flex;align-items:center;gap:6px;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:bold;}
-  .tag-item.nome{background:var(--tag-bg);color:#1a73e8;}
   .tag-item.c1{background:#f3e5f5;color:#9c27b0;} .tag-item.c2{background:#fff3e0;color:#e67e22;} .tag-item.c3{background:#e0f5f1;color:#16a085;}
   body.dark .tag-item.c1{background:#3a1a4a;color:#ce93d8;}
   body.dark .tag-item.c2{background:#3a2a10;color:#ffb74d;}
@@ -209,732 +208,821 @@
   .sub-title.c1{color:#9c27b0;} .sub-title.c2{color:#e67e22;}
   .sel-parent{padding:7px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;min-width:160px;background:var(--input-bg);color:var(--text);}
 
-  /* BACKUP */
   .backup-box{background:var(--surface);border-radius:10px;padding:20px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .backup-box h3{font-size:15px;margin-bottom:6px;color:var(--text);}
   .backup-box p{font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5;}
   .backup-actions{display:flex;gap:12px;flex-wrap:wrap;}
   .btn-backup{padding:10px 22px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
-  .btn-backup.save{background:#1a73e8;} .btn-backup.restore{background:#e67e22;} .btn-backup.danger{background:#ea4335;}
+  .btn-backup.save{background:#1a73e8;} .btn-backup.restore{background:#e67e22;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
   .backup-status.err{background:#fce8e6;color:#ea4335;display:block;}
-  .backup-preview{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--text2);max-height:120px;overflow-y:auto;}
-  #restoreFile{display:none;}
-  #csvBox{display:none;}
 
   @media print{
     body{background:white!important;padding:10px;}
-    .app-header{display:flex!important;}
-    nav,.filter-toggle-bar,.filter-panel,.insert-box,.row-actions,.entity-banner,.btn-settings,.settings-overlay,.tipo-bar{display:none!important;}
+    .app-header,.user-info,.btn-logout{display:flex!important;}
+    nav,.filter-toggle-bar,.filter-panel,.insert-box,.row-actions,.entity-banner,.btn-settings,.settings-overlay{display:none!important;}
     .page{display:block!important;}
     #page-nomi,#page-categorie,#page-backup{display:none!important;}
     .card{border:1px solid #ddd;color:#333!important;background:white!important;}
-    .card label,.card span{color:#333!important;}
     table{box-shadow:none;}
-    th{background:#1a73e8!important;color:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .print-header{display:block!important;}
-    td{color:#333!important;}
-    .badge-from{background:#fce8e6!important;color:#c0392b!important;}
-    .badge-to{background:#e6f4ea!important;color:#1e8449!important;}
+    th{background:#1a73e8!important;color:white!important;}
   }
-  .print-header{display:none;text-align:center;font-size:12px;color:#777;margin-bottom:10px;}
 </style>
 </head>
 <body>
 
-<!-- SETTINGS OVERLAY -->
-<div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
-  <div class="settings-panel">
-    <h3>⚙️ Impostazioni</h3>
-    <div class="settings-row">
-      <label>🌙 Tema scuro</label>
-      <div class="toggle-wrap">
-        <span class="toggle-label" id="themeLabel">Chiaro</span>
-        <label class="toggle">
-          <input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-    </div>
-    <button class="btn-close-settings" onclick="closeSettings()">Chiudi</button>
-  </div>
-</div>
-
-<!-- HEADER -->
-<div class="app-header">
-  <div class="logo-wrap">
-    <svg id="logoSvg" width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="26" cy="30" rx="22" ry="10" fill="none" stroke="#1a3a8f" stroke-width="2.2" stroke-dasharray="100 8" transform="rotate(-18 26 30)"/>
-      <circle cx="13" cy="7" r="4.5" fill="#1a5fbf"/>
-      <circle cx="24" cy="3.5" r="3" fill="#2980d9"/>
-      <circle cx="34" cy="5" r="2" fill="#5ba4e8"/>
-      <circle cx="41" cy="9" r="1.4" fill="#7ec0f5"/>
-      <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#headGrad)"/>
-      <path d="M26 14 C29 14 33 17 34 22 C30 21 27 19 26 14 Z" fill="#1a3a8f" opacity="0.5"/>
-      <path d="M20 38 C19 36 18 32 18 28 C18 23 20 18 24 16" fill="none" stroke="#4a90d9" stroke-width="1.5" opacity="0.6"/>
-      <defs>
-        <linearGradient id="headGrad" x1="15" y1="14" x2="37" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#2060c0"/>
-          <stop offset="100%" stop-color="#0a2a7a"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    <div style="line-height:1.15;">
-      <div style="font-size:17px;font-weight:900;letter-spacing:.5px;">
+<!-- LOGIN SCREEN -->
+<div class="login-wrapper" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="60" height="60" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="26" cy="30" rx="22" ry="10" fill="none" stroke="#1a3a8f" stroke-width="2.2" stroke-dasharray="100 8" transform="rotate(-18 26 30)"/>
+        <circle cx="13" cy="7" r="4.5" fill="#1a5fbf"/>
+        <circle cx="24" cy="3.5" r="3" fill="#2980d9"/>
+        <circle cx="34" cy="5" r="2" fill="#5ba4e8"/>
+        <circle cx="41" cy="9" r="1.4" fill="#7ec0f5"/>
+        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#headGrad2)"/>
+        <defs>
+          <linearGradient id="headGrad2" x1="15" y1="14" x2="37" y2="40">
+            <stop offset="0%" stop-color="#2060c0"/>
+            <stop offset="100%" stop-color="#0a2a7a"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="login-title">
         <span style="color:#1a5fbf;">ILTUO</span><span style="color:#e67e22;">CAVEAU</span>
       </div>
-      <div style="font-size:9px;color:#7a9abf;letter-spacing:1.5px;font-style:italic;">Conoscenza, Azione, Libertà</div>
+      <div class="login-subtitle">Conoscenza, Azione, Libertà</div>
     </div>
-  </div>
-  <div class="header-right">
-    <button class="btn-action purple" onclick="stampaPDF()" style="border-radius:8px;font-size:13px;">🖨️ Stampa / PDF</button>
-    <button class="btn-settings" onclick="openSettings()">⚙️ Impostazioni</button>
+    <div id="loginError" class="login-error" style="display:none"></div>
+    <form class="login-form" onsubmit="handleLogin(event)">
+      <input type="email" class="login-input" id="loginEmail" placeholder="Email" required autocomplete="email">
+      <input type="password" class="login-input" id="loginPassword" placeholder="Password" required autocomplete="current-password">
+      <button type="submit" class="login-btn" id="loginBtn">🔒 Accedi</button>
+    </form>
+    <div class="login-loading" id="loginLoading" style="display:none">Caricamento dati...</div>
   </div>
 </div>
 
-<nav>
-  <button class="nav-btn active" onclick="goTo('registro')">📋 Registro</button>
-  <button class="nav-btn" onclick="goTo('nomi')">👤 Nomi</button>
-  <button class="nav-btn" onclick="goTo('categorie')">🏷️ Categorie</button>
-  <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
-</nav>
-
-<!-- ===== REGISTRO ===== -->
-<div class="page active" id="page-registro">
-  <h2>💸 Registro Movimenti</h2>
-  <div class="print-header" id="printHeader"></div>
-
-  <div class="entity-banner" id="entityBanner">
-    <span id="entityBannerLabel"></span>
-    <button onclick="clearEntityFilter()">✕ Rimuovi filtro</button>
-  </div>
-
-  <div class="summary">
-    <div class="card in"><label>Totale Entrate <span id="fn1" class="filter-note"></span></label><span id="totIn">€ 0,00</span></div>
-    <div class="card out"><label>Totale Uscite <span id="fn2" class="filter-note"></span></label><span id="totOut">€ 0,00</span></div>
-    <div class="card saldo-pos" id="saldoCard"><label>Saldo <span id="fn3" class="filter-note"></span></label><span id="saldo">€ 0,00</span></div>
-    <div class="card neutral"><label>Movimenti</label><span id="totCount">0</span></div>
-  </div>
-
-  <!-- BARRA FILTRO PER TIPO -->
-  <div class="tipo-bar">
-    <label>🏷️ Calcola saldo per Tipo:</label>
-    <select id="tipoFilterSel" onchange="onTipoSelChange()">
-      <option value="">— Tutti i nomi (calcolo normale) —</option>
-    </select>
-    <span class="tipo-badge" id="tipoBadge"></span>
-    <button class="btn-tipo-reset" onclick="clearTipoFilter()" id="btnTipoReset" style="display:none">✕ Reset Tipo</button>
-    <span style="font-size:11px;color:var(--text3);margin-left:4px;" id="tipoInfo"></span>
-  </div>
-
-  <!-- FILTRI COLLASSABILI -->
-  <div class="filter-toggle-bar" id="filterToggleBar" onclick="toggleFilterPanel()">
-    <div class="filter-toggle-left">
-      🔍 Filtri
-      <span class="filter-active-badge" id="filterBadge">0 attivi</span>
-    </div>
-    <div class="filter-toggle-right">
-      <span class="filter-chevron" id="filterChevron">▼</span>
+<!-- MAIN APP -->
+<div id="app">
+  <div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
+    <div class="settings-panel">
+      <h3>⚙️ Impostazioni</h3>
+      <div class="settings-row">
+        <label>🌙 Tema scuro</label>
+        <div class="toggle-wrap">
+          <span class="toggle-label" id="themeLabel">Chiaro</span>
+          <label class="toggle">
+            <input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <button class="btn-close-settings" onclick="closeSettings()">Chiudi</button>
     </div>
   </div>
-  <div class="filter-panel" id="filterPanel">
-    <div class="filter-row">
-      <span class="filter-label">👤 Entità:</span>
-      <div class="entity-filter-wrap">
-        <select class="entity-select" id="entitySel" onchange="onEntitySelChange()"><option value="">— Tutti i movimenti —</option></select>
-        <button class="btn-sm grey" onclick="clearEntityFilter()">✕</button>
+
+  <div class="app-header">
+    <div class="logo-wrap">
+      <svg id="logoSvg" width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="26" cy="30" rx="22" ry="10" fill="none" stroke="#1a3a8f" stroke-width="2.2" stroke-dasharray="100 8" transform="rotate(-18 26 30)"/>
+        <circle cx="13" cy="7" r="4.5" fill="#1a5fbf"/>
+        <circle cx="24" cy="3.5" r="3" fill="#2980d9"/>
+        <circle cx="34" cy="5" r="2" fill="#5ba4e8"/>
+        <circle cx="41" cy="9" r="1.4" fill="#7ec0f5"/>
+        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#headGrad)"/>
+        <defs>
+          <linearGradient id="headGrad" x1="15" y1="14" x2="37" y2="40">
+            <stop offset="0%" stop-color="#2060c0"/>
+            <stop offset="100%" stop-color="#0a2a7a"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div style="line-height:1.15;">
+        <div style="font-size:17px;font-weight:900;letter-spacing:.5px;">
+          <span style="color:#1a5fbf;">ILTUO</span><span style="color:#e67e22;">CAVEAU</span>
+        </div>
+        <div style="font-size:9px;color:#7a9abf;letter-spacing:1.5px;font-style:italic;">Conoscenza, Azione, Libertà</div>
       </div>
     </div>
-    <div class="filter-row">
-      <span class="filter-label">📅 Periodo:</span>
-      <div class="date-range">
-        <input type="date" id="dateFrom" onchange="updateFilterBadge();render()">
-        <span>→</span>
-        <input type="date" id="dateTo" onchange="updateFilterBadge();render()">
-        <button class="btn-sm red" onclick="clearDate()">✕</button>
+    <div class="header-right">
+      <div class="user-info">
+        👤 <span id="userEmail"></span>
+      </div>
+      <button class="btn-action purple" onclick="stampaPDF()">🖨️ PDF</button>
+      <button class="btn-settings" onclick="openSettings()">⚙️</button>
+      <button class="btn-logout" onclick="handleLogout()">Esci</button>
+    </div>
+  </div>
+
+  <nav>
+    <button class="nav-btn active" onclick="goTo('registro')">📋 Registro</button>
+    <button class="nav-btn" onclick="goTo('nomi')">👤 Nomi</button>
+    <button class="nav-btn" onclick="goTo('categorie')">🏷️ Categorie</button>
+    <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
+  </nav>
+
+  <div class="page active" id="page-registro">
+    <h2>💸 Registro Movimenti</h2>
+    <div class="entity-banner" id="entityBanner">
+      <span id="entityBannerLabel"></span>
+      <button onclick="clearEntityFilter()">✕ Rimuovi filtro</button>
+    </div>
+    <div class="summary">
+      <div class="card in"><label>Totale Entrate <span id="fn1" class="filter-note"></span></label><span id="totIn">€ 0,00</span></div>
+      <div class="card out"><label>Totale Uscite <span id="fn2" class="filter-note"></span></label><span id="totOut">€ 0,00</span></div>
+      <div class="card saldo-pos" id="saldoCard"><label>Saldo <span id="fn3" class="filter-note"></span></label><span id="saldo">€ 0,00</span></div>
+      <div class="card neutral"><label>Movimenti</label><span id="totCount">0</span></div>
+    </div>
+    <div class="filter-toggle-bar" id="filterToggleBar" onclick="toggleFilterPanel()">
+      <div class="filter-toggle-left">🔍 Filtri <span class="filter-active-badge" id="filterBadge">0 attivi</span></div>
+      <div class="filter-toggle-right"><span class="filter-chevron" id="filterChevron">▼</span></div>
+    </div>
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-row">
+        <span class="filter-label">👤 Entità:</span>
+        <div class="entity-filter-wrap">
+          <select class="entity-select" id="entitySel" onchange="onEntitySelChange()"><option value="">— Tutti i movimenti —</option></select>
+          <button class="btn-sm grey" onclick="clearEntityFilter()">✕</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">🏷️ Tipo:</span>
+        <div class="entity-filter-wrap">
+          <select class="tipo-select" id="tipoSel" onchange="onTipoSelChange()"><option value="">— Tutti i tipi —</option></select>
+          <button class="btn-sm grey" onclick="clearTipoFilter()">✕</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">📅 Periodo:</span>
+        <div class="date-range">
+          <input type="date" id="dateFrom" onchange="updateFilterBadge();render()">
+          <span>→</span>
+          <input type="date" id="dateTo" onchange="updateFilterBadge();render()">
+          <button class="btn-sm red" onclick="clearDate()">✕</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">🏷️ Cat:</span>
+        <div class="multi-select-wrap"><div class="mst" id="trC1" onclick="toggleDD('ddC1',event)">Tutte cat.1</div><div class="dropdown-panel" id="ddC1"></div></div>
+        <div class="multi-select-wrap"><div class="mst" id="trC2" onclick="toggleDD('ddC2',event)">Tutte cat.2</div><div class="dropdown-panel" id="ddC2"></div></div>
+        <div class="multi-select-wrap"><div class="mst" id="trC3" onclick="toggleDD('ddC3',event)">Tutte cat.3</div><div class="dropdown-panel" id="ddC3"></div></div>
+      </div>
+      <div class="filter-reset-row">
+        <button class="btn-sm grey" onclick="clearFilters()">✕ Reset filtri</button>
       </div>
     </div>
-    <div class="filter-row">
-      <span class="filter-label">🏷️ Cat:</span>
-      <div class="multi-select-wrap"><div class="mst" id="trC1" onclick="toggleDD('ddC1',event)">Tutte le cat.1</div><div class="dropdown-panel" id="ddC1"></div></div>
-      <div class="multi-select-wrap"><div class="mst" id="trC2" onclick="toggleDD('ddC2',event)">Tutte le cat.2</div><div class="dropdown-panel" id="ddC2"></div></div>
-      <div class="multi-select-wrap"><div class="mst" id="trC3" onclick="toggleDD('ddC3',event)">Tutte le cat.3</div><div class="dropdown-panel" id="ddC3"></div></div>
+    <div class="insert-box">
+      <div class="insert-box-title">➕ Nuovo Movimento</div>
+      <div class="controls">
+        <input type="date" id="data"/>
+        <select id="selFrom"><option value="">— From —</option></select>
+        <span class="arrow-label">→</span>
+        <select id="selTo"><option value="">— To —</option></select>
+        <input type="text" id="descrizione" placeholder="Descrizione..."/>
+        <select id="selC1" onchange="onC1Change()"><option value="">— Cat.1 —</option></select>
+        <select id="selC2" onchange="onC2Change()" disabled><option value="">— Cat.2 —</option></select>
+        <select id="selC3" disabled><option value="">— Cat.3 —</option></select>
+        <input type="number" id="importo" placeholder="Importo €" min="0" step="0.01"/>
+        <button class="btn-add" onclick="aggiungi()">+ Aggiungi</button>
+      </div>
     </div>
-    <div class="filter-reset-row">
-      <button class="btn-sm grey" onclick="clearFilters()">✕ Reset tutti i filtri</button>
-    </div>
-  </div>
-
-  <!-- INSERT BOX -->
-  <div class="insert-box">
-    <div class="insert-box-title">➕ Nuovo Movimento</div>
-    <div class="controls">
-      <input type="date" id="data"/>
-      <select id="selFrom"><option value="">— From —</option></select>
-      <span class="arrow-label">→</span>
-      <select id="selTo"><option value="">— To —</option></select>
-      <input type="text" id="descrizione" placeholder="Descrizione..."/>
-      <select id="selC1" onchange="onC1Change()"><option value="">— Cat.1 —</option></select>
-      <select id="selC2" onchange="onC2Change()" disabled><option value="">— Cat.2 —</option></select>
-      <select id="selC3" disabled><option value="">— Cat.3 —</option></select>
-      <input type="number" id="importo" placeholder="Importo €" min="0" step="0.01"/>
-      <button class="btn-add" onclick="aggiungi()">+ Aggiungi</button>
-    </div>
-  </div>
-
-  <table>
-    <thead><tr>
-      <th class="sortable" onclick="setSort('data')">Data <span id="sh-data">⇅</span></th>
-      <th class="sortable" onclick="setSort('from')">From <span id="sh-from">⇅</span></th>
-      <th class="sortable" onclick="setSort('to')">To <span id="sh-to">⇅</span></th>
-      <th class="sortable" onclick="setSort('desc')">Descrizione <span id="sh-desc">⇅</span></th>
-      <th class="sortable" onclick="setSort('c1')">Cat.1 <span id="sh-c1">⇅</span></th>
-      <th class="sortable" onclick="setSort('c2')">Cat.2 <span id="sh-c2">⇅</span></th>
-      <th class="sortable" onclick="setSort('c3')">Cat.3 <span id="sh-c3">⇅</span></th>
-      <th class="sortable" onclick="setSort('importo')">Importo <span id="sh-importo">⇅</span></th>
-      <th>Segno</th><th></th>
-    </tr></thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <textarea id="csvBox"></textarea>
-</div>
-
-<!-- ===== NOMI ===== -->
-<div class="page" id="page-nomi">
-  <h2>👤 Archivio Nomi</h2>
-  <div class="archivio-box">
-    <h3>Nomi / Entità salvati</h3>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Tipo</strong> ti permette di raggruppare i nomi (es. "Persona", "Azienda", "Conto") e filtrare il saldo nel Registro.</p>
-    <table class="nomi-table" id="nomiTable">
-      <thead><tr><th>Nome</th><th>Tipo</th><th>Azioni</th></tr></thead>
-      <tbody id="nomiTbody"></tbody>
+    <table>
+      <thead><tr>
+        <th class="sortable" onclick="setSort('data')">Data <span id="sh-data">⇅</span></th>
+        <th class="sortable" onclick="setSort('from')">From <span id="sh-from">⇅</span></th>
+        <th class="sortable" onclick="setSort('to')">To <span id="sh-to">⇅</span></th>
+        <th class="sortable" onclick="setSort('desc')">Descrizione <span id="sh-desc">⇅</span></th>
+        <th class="sortable" onclick="setSort('c1')">Cat.1 <span id="sh-c1">⇅</span></th>
+        <th class="sortable" onclick="setSort('c2')">Cat.2 <span id="sh-c2">⇅</span></th>
+        <th class="sortable" onclick="setSort('c3')">Cat.3 <span id="sh-c3">⇅</span></th>
+        <th class="sortable" onclick="setSort('importo')">Importo <span id="sh-importo">⇅</span></th>
+        <th>Segno</th><th></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
     </table>
-    <div class="tag-add">
-      <input type="text" id="inputNome" placeholder="Nuovo nome/entità..." onkeydown="if(event.key==='Enter')addNome()"/>
-      <input type="text" id="inputNomeTipo" placeholder="Tipo (es. Persona, Conto...)" list="tipoSuggest"/>
-      <datalist id="tipoSuggest"></datalist>
-      <button class="btn-at nome" onclick="addNome()">+ Aggiungi</button>
+  </div>
+
+  <div class="page" id="page-nomi">
+    <h2>👤 Archivio Nomi</h2>
+    <div class="archivio-box">
+      <h3>Nomi / Entità salvati</h3>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Tipo</strong> raggruppa i nomi per filtrare il saldo.</p>
+      <table class="nomi-table">
+        <thead><tr><th>Nome</th><th>Tipo</th><th>Azioni</th></tr></thead>
+        <tbody id="nomiTbody"></tbody>
+      </table>
+      <div class="tag-add">
+        <input type="text" id="inputNome" placeholder="Nuovo nome..." onkeydown="if(event.key==='Enter')addNome()"/>
+        <input type="text" id="inputNomeTipo" placeholder="Tipo..." list="tipoSuggest"/>
+        <datalist id="tipoSuggest"></datalist>
+        <button class="btn-at nome" onclick="addNome()">+ Aggiungi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-categorie">
+    <h2>🏷️ Archivio Categorie</h2>
+    <div class="archivio-box">
+      <h3>🟣 Categoria 1</h3>
+      <div class="tag-list" id="c1List"></div>
+      <div class="tag-add">
+        <input type="text" id="inputC1" placeholder="Nuova cat.1..." onkeydown="if(event.key==='Enter')addC1()"/>
+        <button class="btn-at c1" onclick="addC1()">+ Aggiungi</button>
+      </div>
+    </div>
+    <div class="archivio-box">
+      <h3>🟠 Categoria 2 <small style="color:var(--text3)">(dipende da Cat.1)</small></h3>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+        <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
+        <select class="sel-parent" id="c1ForC2" onchange="renderC2Page()"><option value="">— Seleziona —</option></select>
+      </div>
+      <div id="c2Section" class="sub-section"><span class="empty-tag">Seleziona Cat.1</span></div>
+      <div class="tag-add" id="c2AddRow" style="display:none">
+        <input type="text" id="inputC2" placeholder="Nuova cat.2..." onkeydown="if(event.key==='Enter')addC2()"/>
+        <button class="btn-at c2" onclick="addC2()">+ Aggiungi</button>
+      </div>
+    </div>
+    <div class="archivio-box">
+      <h3>🟢 Categoria 3 <small style="color:var(--text3)">(dipende da Cat.2)</small></h3>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+        <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
+        <select class="sel-parent" id="c1ForC3" onchange="syncC2ForC3();renderC3Page()"><option value="">— Seleziona —</option></select>
+        <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.2:</label>
+        <select class="sel-parent" id="c2ForC3" onchange="renderC3Page()"><option value="">— Seleziona —</option></select>
+      </div>
+      <div id="c3Section" class="sub-section"><span class="empty-tag">Seleziona Cat.1 e Cat.2</span></div>
+      <div class="tag-add" id="c3AddRow" style="display:none">
+        <input type="text" id="inputC3" placeholder="Nuova cat.3..." onkeydown="if(event.key==='Enter')addC3()"/>
+        <button class="btn-at c3" onclick="addC3()">+ Aggiungi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-backup">
+    <h2>💾 Backup</h2>
+    <div class="backup-box">
+      <h3>⬇️ Esporta dati locali</h3>
+      <p>Scarica i dati in formato JSON (i dati sono già salvati su cloud Firebase).</p>
+      <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">💾 Scarica JSON</button></div>
+    </div>
+    <div class="backup-box">
+      <h3>☁️ Sincronizzazione</h3>
+      <p>I tuoi dati sono automaticamente sincronizzati su Firebase Realtime Database. Ogni modifica viene salvata in tempo reale.</p>
+      <div id="syncStatus" class="backup-status ok">✅ Sincronizzato con Firebase</div>
     </div>
   </div>
 </div>
 
-<!-- ===== CATEGORIE ===== -->
-<div class="page" id="page-categorie">
-  <h2>🏷️ Archivio Categorie</h2>
-  <div class="archivio-box">
-    <h3>🟣 Categoria 1</h3>
-    <div class="tag-list" id="c1List"></div>
-    <div class="tag-add">
-      <input type="text" id="inputC1" placeholder="Nuova cat.1..." onkeydown="if(event.key==='Enter')addC1()"/>
-      <button class="btn-at c1" onclick="addC1()">+ Aggiungi</button>
-    </div>
-  </div>
-  <div class="archivio-box">
-    <h3>🟠 Categoria 2 <small style="color:var(--text3)">(dipende da Cat.1)</small></h3>
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-      <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
-      <select class="sel-parent" id="c1ForC2" onchange="renderC2Page()"><option value="">— Seleziona —</option></select>
-    </div>
-    <div id="c2Section" class="sub-section"><span class="empty-tag">Seleziona prima una Cat.1.</span></div>
-    <div class="tag-add" id="c2AddRow" style="display:none">
-      <input type="text" id="inputC2" placeholder="Nuova cat.2..." onkeydown="if(event.key==='Enter')addC2()"/>
-      <button class="btn-at c2" onclick="addC2()">+ Aggiungi</button>
-    </div>
-  </div>
-  <div class="archivio-box">
-    <h3>🟢 Categoria 3 <small style="color:var(--text3)">(dipende da Cat.2)</small></h3>
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-      <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
-      <select class="sel-parent" id="c1ForC3" onchange="syncC2ForC3();renderC3Page()"><option value="">— Seleziona —</option></select>
-      <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.2:</label>
-      <select class="sel-parent" id="c2ForC3" onchange="renderC3Page()"><option value="">— Seleziona —</option></select>
-    </div>
-    <div id="c3Section" class="sub-section"><span class="empty-tag">Seleziona Cat.1 e Cat.2.</span></div>
-    <div class="tag-add" id="c3AddRow" style="display:none">
-      <input type="text" id="inputC3" placeholder="Nuova cat.3..." onkeydown="if(event.key==='Enter')addC3()"/>
-      <button class="btn-at c3" onclick="addC3()">+ Aggiungi</button>
-    </div>
-  </div>
-</div>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getDatabase, ref, set, get, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
-<!-- ===== BACKUP ===== -->
-<div class="page" id="page-backup">
-  <h2>💾 Backup & Restore</h2>
-  <div class="backup-box">
-    <h3>⬇️ Salva Backup</h3>
-    <p>Esporta tutti i dati in un file <strong>.json</strong>.</p>
-    <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">💾 Scarica Backup</button></div>
-    <div id="backupPreview" class="backup-preview" style="display:none"></div>
-  </div>
-  <div class="backup-box">
-    <h3>⬆️ Ripristina Backup</h3>
-    <p>Carica un file <strong>.json</strong> salvato. <strong>Attenzione:</strong> i dati attuali verranno sostituiti.</p>
-    <div class="backup-actions">
-      <button class="btn-backup restore" onclick="document.getElementById('restoreFile').click()">📂 Carica backup</button>
-      <input type="file" id="restoreFile" accept=".json" onchange="caricaBackup(this)"/>
-    </div>
-    <div id="restoreStatus" class="backup-status"></div>
-  </div>
-  <div class="backup-box">
-    <h3>🗑️ Azzera Dati</h3>
-    <p>Cancella tutti i dati. Operazione irreversibile.</p>
-    <div class="backup-actions"><button class="btn-backup danger" onclick="azzeraDati()">⚠️ Azzera tutto</button></div>
-  </div>
-</div>
+const firebaseConfig = {
+  apiKey: "AIzaSyDbCbpwgdlPbRUlppCFX-dsbNEuyzBpVV4",
+  authDomain: "caveau-registro.firebaseapp.com",
+  databaseURL: "https://caveau-registro-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "caveau-registro",
+  storageBucket: "caveau-registro.firebasestorage.app",
+  messagingSenderId: "361376077124",
+  appId: "1:361376077124:web:411566edcc50463ce6b311"
+};
 
-<script>
-  // ─── STATE ───────────────────────────────────────────────────────────────────
-  // nomi: array of {name, tipo}
-  let rows=[], nomi=[], c1=[], c2Map={}, c3Map={};
-  let fC1=new Set(), fC2=new Set(), fC3=new Set();
-  let entityFilter='', tipoFilter='', editingIdx=null, editingNomeIdx=null;
-  let sortField='data', sortDir=1, filterOpen=false;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-  document.getElementById('data').valueAsDate=new Date();
+let rows=[], nomi=[], c1=[], c2Map={}, c3Map={};
+let fC1=new Set(), fC2=new Set(), fC3=new Set();
+let entityFilter='', tipoFilter='', editingIdx=null, editingNomeIdx=null;
+let sortField='data', sortDir=1, filterOpen=false;
+let currentUser = null;
 
-  // ─── DARK MODE ────────────────────────────────────────────────────────────────
-  function toggleDark(on){ document.body.classList.toggle('dark',on); document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro'; try{localStorage.setItem('theme',on?'dark':'light');}catch(e){} }
-  try{ if(localStorage.getItem('theme')==='dark'){ document.body.classList.add('dark'); document.getElementById('darkToggle').checked=true; document.getElementById('themeLabel').textContent='Scuro'; } }catch(e){}
-
-  function openSettings(){ document.getElementById('settingsOverlay').classList.add('open'); }
-  function closeSettings(){ document.getElementById('settingsOverlay').classList.remove('open'); }
-  function closeSettingsOutside(e){ if(e.target===document.getElementById('settingsOverlay'))closeSettings(); }
-
-  // ─── FILTER PANEL ─────────────────────────────────────────────────────────────
-  function toggleFilterPanel(){
-    filterOpen=!filterOpen;
-    document.getElementById('filterPanel').classList.toggle('open',filterOpen);
-    document.getElementById('filterToggleBar').classList.toggle('open',filterOpen);
-    document.getElementById('filterChevron').classList.toggle('open',filterOpen);
+window.handleLogin = async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Accesso...';
+  err.style.display = 'none';
+  
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (error) {
+    err.textContent = error.code === 'auth/invalid-credential' ? '❌ Email o password errati' : '❌ Errore: ' + error.message;
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = '🔒 Accedi';
   }
-  function updateFilterBadge(){
-    let n=0;
-    if(entityFilter) n++;
-    if(document.getElementById('dateFrom').value||document.getElementById('dateTo').value) n++;
-    if(fC1.size>0) n++; if(fC2.size>0) n++; if(fC3.size>0) n++;
-    const badge=document.getElementById('filterBadge');
-    badge.textContent=n+' attiv'+(n===1?'o':'i');
-    badge.classList.toggle('show', n>0);
-    ['fn1','fn2','fn3'].forEach(id=>document.getElementById(id).textContent=(n>0||tipoFilter)?'(filtrato)':'');
-  }
+};
 
-  document.addEventListener('click',e=>{
-    document.querySelectorAll('.dropdown-panel').forEach(p=>{ if(!p.closest('.multi-select-wrap').contains(e.target)) p.classList.remove('open'); });
-  });
-  function toggleDD(id,e){ e.stopPropagation(); const p=document.getElementById(id),was=p.classList.contains('open'); document.querySelectorAll('.dropdown-panel').forEach(x=>x.classList.remove('open')); if(!was)p.classList.add('open'); }
-  function fmt(n){ return '€ '+n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-  function c3k(a,b){ return a+'|'+b; }
-
-  // ─── TIPO FILTER ──────────────────────────────────────────────────────────────
-  function getTipi(){ return [...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort(); }
-
-  function syncTipoSel(){
-    const sel=document.getElementById('tipoFilterSel'), prev=tipoFilter;
-    const tipi=getTipi();
-    sel.innerHTML='<option value="">— Tutti i nomi (calcolo normale) —</option>'+
-      tipi.map(t=>`<option value="${t}" ${t===prev?'selected':''}>${t}</option>`).join('');
-    sel.className=prev?'active-sel':'';
+window.handleLogout = async () => {
+  if(confirm('Uscire dall\'app?')) {
+    await signOut(auth);
   }
+};
 
-  function onTipoSelChange(){
-    tipoFilter=document.getElementById('tipoFilterSel').value;
-    document.getElementById('tipoFilterSel').className=tipoFilter?'active-sel':'';
-    updateTipoBadge(); updateFilterBadge(); render();
-  }
-  function clearTipoFilter(){
-    tipoFilter='';
-    document.getElementById('tipoFilterSel').value='';
-    document.getElementById('tipoFilterSel').className='';
-    updateTipoBadge(); updateFilterBadge(); render();
-  }
-  function updateTipoBadge(){
-    const badge=document.getElementById('tipoBadge'), btn=document.getElementById('btnTipoReset'), info=document.getElementById('tipoInfo');
-    if(tipoFilter){
-      const nomiTipo=nomi.filter(n=>n.tipo===tipoFilter).map(n=>n.name);
-      badge.textContent='Tipo: '+tipoFilter;
-      badge.classList.add('show');
-      btn.style.display='inline-block';
-      info.textContent=`(${nomiTipo.length} nome/i: ${nomiTipo.join(', ')||'—'})`;
-    } else {
-      badge.classList.remove('show');
-      btn.style.display='none';
-      info.textContent='';
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('loginLoading').style.display = 'block';
+    document.getElementById('userEmail').textContent = user.email;
+    
+    const userRef = ref(db, 'users/' + user.uid);
+    const snapshot = await get(userRef);
+    
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      rows = data.rows || [];
+      nomi = data.nomi || [];
+      c1 = data.c1 || [];
+      c2Map = data.c2Map || {};
+      c3Map = data.c3Map || {};
     }
-  }
-
-  // Restituisce true se il nome appartiene al tipo selezionato (o se non c'è filtro tipo)
-  function nomeMatchTipo(nome){ if(!tipoFilter) return true; const n=nomi.find(x=>x.name===nome); return n?n.tipo===tipoFilter:false; }
-
-  // ─── SORT ─────────────────────────────────────────────────────────────────────
-  function setSort(field){ if(sortField===field)sortDir*=-1; else{sortField=field;sortDir=1;} updateSortHeaders();render(); }
-  function updateSortHeaders(){
-    ['data','from','to','desc','c1','c2','c3','importo'].forEach(f=>{
-      const el=document.getElementById('sh-'+f); if(!el)return;
-      el.textContent=f===sortField?(sortDir===1?'▲':'▼'):'⇅';
-      el.style.opacity=f===sortField?'1':'0.35'; el.style.fontSize='10px';
-    });
-  }
-  function getSorted(arr){
-    return [...arr].sort((a,b)=>{
-      let va=a[sortField],vb=b[sortField];
-      if(sortField==='importo'){va=parseFloat(va)||0;vb=parseFloat(vb)||0;return(va-vb)*sortDir;}
-      return String(va||'').localeCompare(String(vb||''),'it')*sortDir;
-    });
-  }
-
-  // ─── NAV ──────────────────────────────────────────────────────────────────────
-  function goTo(p){
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
-    document.getElementById('page-'+p).classList.add('active');
-    document.querySelectorAll('.nav-btn')[['registro','nomi','categorie','backup'].indexOf(p)].classList.add('active');
-    if(p==='registro'){rebuildDD();render();}
-    if(p==='nomi') renderNomiPage();
-    if(p==='categorie'){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
-    if(p==='backup') renderBackupPreview();
-  }
-
-  // ─── NOMI ─────────────────────────────────────────────────────────────────────
-  function addNome(){
-    const i=document.getElementById('inputNome'), t=document.getElementById('inputNomeTipo');
-    const v=i.value.trim(), tipo=t.value.trim();
-    if(!v)return;
-    if(nomi.find(x=>x.name===v)){alert('Già presente');return;}
-    nomi.push({name:v, tipo});
-    i.value=''; t.value='';
-    renderNomiPage(); syncSelects(); syncTipoSel(); rebuildDD();
-  }
-  function delNome(n){
-    if(rows.some(r=>r.from===n||r.to===n))if(!confirm(`Eliminare "${n}"?`))return;
-    nomi=nomi.filter(x=>x.name!==n);
-    if(entityFilter===n)entityFilter='';
-    renderNomiPage(); syncSelects(); syncEntitySel(); syncTipoSel(); updateTipoBadge(); render();
-  }
-  function startEditNome(idx){
-    editingNomeIdx=idx; renderNomiPage();
-  }
-  function cancelEditNome(){ editingNomeIdx=null; renderNomiPage(); }
-  function saveEditNome(idx){
-    const nv=document.getElementById('en-name-'+idx).value.trim();
-    const nt=document.getElementById('en-tipo-'+idx).value.trim();
-    if(!nv){alert('Il nome non può essere vuoto');return;}
-    const oldName=nomi[idx].name;
-    // Aggiorna riferimenti nelle righe
-    rows.forEach(r=>{ if(r.from===oldName)r.from=nv; if(r.to===oldName)r.to=nv; });
-    if(entityFilter===oldName)entityFilter=nv;
-    nomi[idx]={name:nv, tipo:nt};
-    editingNomeIdx=null;
-    renderNomiPage(); syncSelects(); syncEntitySel(); syncTipoSel(); updateTipoBadge(); render();
-  }
-
-  function renderNomiPage(){
-    const tbody=document.getElementById('nomiTbody');
-    if(!nomi.length){ tbody.innerHTML=`<tr><td colspan="3" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`; return; }
-    tbody.innerHTML=nomi.map((n,i)=>{
-      if(editingNomeIdx===i){
-        const tipi=getTipi();
-        return `<tr>
-          <td><input class="nome-edit-input" id="en-name-${i}" value="${n.name}"></td>
-          <td><input class="nome-edit-tipo" id="en-tipo-${i}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td>
-          <td style="white-space:nowrap">
-            <button class="btn-nome-save" onclick="saveEditNome(${i})">✔ Salva</button>
-            <button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button>
-          </td>
-        </tr>`;
+    
+    onValue(userRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        rows = data.rows || [];
+        nomi = data.nomi || [];
+        c1 = data.c1 || [];
+        c2Map = data.c2Map || {};
+        c3Map = data.c3Map || {};
+        syncSelects();
+        syncTipoSel();
+        rebuildDD();
+        render();
+        if(document.getElementById('page-nomi').classList.contains('active')) renderNomiPage();
+        if(document.getElementById('page-categorie').classList.contains('active')) {
+          renderC1Page();
+          syncParentSelects();
+          renderC2Page();
+          syncC2ForC3();
+          renderC3Page();
+        }
       }
+    });
+    
+    document.getElementById('app').classList.add('loaded');
+    document.getElementById('data').valueAsDate = new Date();
+    syncSelects();
+    syncTipoSel();
+    updateSortHeaders();
+    render();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('app').classList.remove('loaded');
+    document.getElementById('app').style.display = 'none';
+  }
+});
+
+async function saveToFirebase() {
+  if (!currentUser) return;
+  const userRef = ref(db, 'users/' + currentUser.uid);
+  await set(userRef, {
+    rows, nomi, c1, c2Map, c3Map,
+    lastModified: new Date().toISOString()
+  });
+}
+
+document.getElementById('data').valueAsDate=new Date();
+
+function toggleDark(on){ document.body.classList.toggle('dark',on); document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro'; try{localStorage.setItem('theme',on?'dark':'light');}catch(e){} }
+try{ if(localStorage.getItem('theme')==='dark'){ document.body.classList.add('dark'); document.getElementById('darkToggle').checked=true; document.getElementById('themeLabel').textContent='Scuro'; } }catch(e){}
+
+function openSettings(){ document.getElementById('settingsOverlay').classList.add('open'); }
+function closeSettings(){ document.getElementById('settingsOverlay').classList.remove('open'); }
+function closeSettingsOutside(e){ if(e.target===document.getElementById('settingsOverlay'))closeSettings(); }
+
+function toggleFilterPanel(){
+  filterOpen=!filterOpen;
+  document.getElementById('filterPanel').classList.toggle('open',filterOpen);
+  document.getElementById('filterToggleBar').classList.toggle('open',filterOpen);
+  document.getElementById('filterChevron').classList.toggle('open',filterOpen);
+}
+
+function updateFilterBadge(){
+  let n=0;
+  if(entityFilter) n++;
+  if(tipoFilter) n++;
+  if(document.getElementById('dateFrom').value||document.getElementById('dateTo').value) n++;
+  if(fC1.size>0) n++; if(fC2.size>0) n++; if(fC3.size>0) n++;
+  const badge=document.getElementById('filterBadge');
+  badge.textContent=n+' attiv'+(n===1?'o':'i');
+  badge.classList.toggle('show', n>0);
+  ['fn1','fn2','fn3'].forEach(id=>document.getElementById(id).textContent=(n>0||tipoFilter)?'(filtrato)':'');
+}
+
+document.addEventListener('click',e=>{
+  document.querySelectorAll('.dropdown-panel').forEach(p=>{ if(!p.closest('.multi-select-wrap').contains(e.target)) p.classList.remove('open'); });
+});
+
+function toggleDD(id,e){ e.stopPropagation(); const p=document.getElementById(id),was=p.classList.contains('open'); document.querySelectorAll('.dropdown-panel').forEach(x=>x.classList.remove('open')); if(!was)p.classList.add('open'); }
+function fmt(n){ return '€ '+n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function c3k(a,b){ return a+'|'+b; }
+
+function getTipi(){ return [...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort(); }
+
+function syncTipoSel(){
+  const sel=document.getElementById('tipoSel'), prev=tipoFilter;
+  const tipi=getTipi();
+  sel.innerHTML='<option value="">— Tutti i tipi —</option>'+tipi.map(t=>`<option value="${t}" ${t===prev?'selected':''}>${t}</option>`).join('');
+  sel.className=prev?'tipo-select active-sel':'tipo-select';
+}
+
+function onTipoSelChange(){
+  tipoFilter=document.getElementById('tipoSel').value;
+  document.getElementById('tipoSel').className=tipoFilter?'tipo-select active-sel':'tipo-select';
+  updateFilterBadge(); render();
+}
+
+function clearTipoFilter(){
+  tipoFilter='';
+  document.getElementById('tipoSel').value='';
+  document.getElementById('tipoSel').className='tipo-select';
+  updateFilterBadge(); render();
+}
+
+function nomeMatchTipo(nome){ if(!tipoFilter) return true; const n=nomi.find(x=>x.name===nome); return n?n.tipo===tipoFilter:false; }
+
+function setSort(field){ if(sortField===field)sortDir*=-1; else{sortField=field;sortDir=1;} updateSortHeaders();render(); }
+
+function updateSortHeaders(){
+  ['data','from','to','desc','c1','c2','c3','importo'].forEach(f=>{
+    const el=document.getElementById('sh-'+f); if(!el)return;
+    el.textContent=f===sortField?(sortDir===1?'▲':'▼'):'⇅';
+    el.style.opacity=f===sortField?'1':'0.35'; el.style.fontSize='10px';
+  });
+}
+
+function getSorted(arr){
+  return [...arr].sort((a,b)=>{
+    let va=a[sortField],vb=b[sortField];
+    if(sortField==='importo'){va=parseFloat(va)||0;vb=parseFloat(vb)||0;return(va-vb)*sortDir;}
+    return String(va||'').localeCompare(String(vb||''),'it')*sortDir;
+  });
+}
+
+function goTo(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-btn')[['registro','nomi','categorie','backup'].indexOf(p)].classList.add('active');
+  if(p==='registro'){rebuildDD();render();}
+  if(p==='nomi') renderNomiPage();
+  if(p==='categorie'){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
+}
+
+async function addNome(){
+  const i=document.getElementById('inputNome'), t=document.getElementById('inputNomeTipo');
+  const v=i.value.trim(), tipo=t.value.trim();
+  if(!v)return;
+  if(nomi.find(x=>x.name===v)){alert('Già presente');return;}
+  nomi.push({name:v, tipo});
+  i.value=''; t.value='';
+  await saveToFirebase();
+  renderNomiPage(); syncSelects(); syncTipoSel(); rebuildDD();
+}
+
+async function delNome(n){
+  if(rows.some(r=>r.from===n||r.to===n))if(!confirm(`Eliminare "${n}"?`))return;
+  nomi=nomi.filter(x=>x.name!==n);
+  if(entityFilter===n)entityFilter='';
+  await saveToFirebase();
+  renderNomiPage(); syncSelects(); syncEntitySel(); syncTipoSel(); render();
+}
+
+function startEditNome(idx){ editingNomeIdx=idx; renderNomiPage(); }
+function cancelEditNome(){ editingNomeIdx=null; renderNomiPage(); }
+
+async function saveEditNome(idx){
+  const nv=document.getElementById('en-name-'+idx).value.trim();
+  const nt=document.getElementById('en-tipo-'+idx).value.trim();
+  if(!nv){alert('Nome vuoto');return;}
+  const oldName=nomi[idx].name;
+  rows.forEach(r=>{ if(r.from===oldName)r.from=nv; if(r.to===oldName)r.to=nv; });
+  if(entityFilter===oldName)entityFilter=nv;
+  nomi[idx]={name:nv, tipo:nt};
+  editingNomeIdx=null;
+  await saveToFirebase();
+  renderNomiPage(); syncSelects(); syncEntitySel(); syncTipoSel(); render();
+}
+
+function renderNomiPage(){
+  const tbody=document.getElementById('nomiTbody');
+  if(!nomi.length){ tbody.innerHTML=`<tr><td colspan="3" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`; return; }
+  tbody.innerHTML=nomi.map((n,i)=>{
+    if(editingNomeIdx===i){
       return `<tr>
-        <td><strong>${n.name}</strong></td>
-        <td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td>
+        <td><input class="nome-edit-input" id="en-name-${i}" value="${n.name}"></td>
+        <td><input class="nome-edit-tipo" id="en-tipo-${i}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td>
         <td style="white-space:nowrap">
-          <button class="btn-nome-edit" onclick="startEditNome(${i})">✏️ Modifica</button>
-          <button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button>
+          <button class="btn-nome-save" onclick="saveEditNome(${i})">✔</button>
+          <button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button>
         </td>
       </tr>`;
-    }).join('');
-    // aggiorna datalist suggerimenti tipo
-    const tipi=getTipi();
-    document.getElementById('tipoSuggest').innerHTML=tipi.map(t=>`<option value="${t}">`).join('');
-  }
+    }
+    return `<tr>
+      <td><strong>${n.name}</strong></td>
+      <td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn-nome-edit" onclick="startEditNome(${i})">✏️</button>
+        <button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+  const tipi=getTipi();
+  document.getElementById('tipoSuggest').innerHTML=tipi.map(t=>`<option value="${t}">`).join('');
+}
 
-  // ─── CAT1 ─────────────────────────────────────────────────────────────────────
-  function addC1(){ const i=document.getElementById('inputC1'),v=i.value.trim(); if(!v)return; if(c1.includes(v)){alert('Già presente');return;} c1.push(v);if(!c2Map[v])c2Map[v]=[];i.value=''; renderC1Page();syncSelects();syncParentSelects();rebuildDD(); }
-  function delC1(c){ if(rows.some(r=>r.c1===c))if(!confirm(`Eliminare "${c}"?`))return; c1=c1.filter(x=>x!==c);delete c2Map[c];fC1.delete(c); renderC1Page();syncSelects();syncParentSelects();rebuildDD();render(); }
-  function renderC1Page(){ document.getElementById('c1List').innerHTML=c1.length===0?'<span class="empty-tag">Nessuna cat.1.</span>':c1.map(c=>`<div class="tag-item c1">${c}<span class="del-tag" onclick="delC1('${c}')">×</span></div>`).join(''); }
+async function addC1(){ const i=document.getElementById('inputC1'),v=i.value.trim(); if(!v)return; if(c1.includes(v)){alert('Presente');return;} c1.push(v);if(!c2Map[v])c2Map[v]=[];i.value=''; await saveToFirebase(); renderC1Page();syncSelects();syncParentSelects();rebuildDD(); }
+async function delC1(c){ if(rows.some(r=>r.c1===c))if(!confirm(`Eliminare "${c}"?`))return; c1=c1.filter(x=>x!==c);delete c2Map[c];fC1.delete(c); await saveToFirebase(); renderC1Page();syncSelects();syncParentSelects();rebuildDD();render(); }
+function renderC1Page(){ document.getElementById('c1List').innerHTML=c1.length===0?'<span class="empty-tag">Nessuna</span>':c1.map(c=>`<div class="tag-item c1">${c}<span class="del-tag" onclick="delC1('${c}')">×</span></div>`).join(''); }
 
-  // ─── CAT2 ─────────────────────────────────────────────────────────────────────
-  function addC2(){ const par=document.getElementById('c1ForC2').value; if(!par){alert('Seleziona Cat.1');return;} const i=document.getElementById('inputC2'),v=i.value.trim(); if(!v)return; if((c2Map[par]||[]).includes(v)){alert('Già presente');return;} if(!c2Map[par])c2Map[par]=[]; c2Map[par].push(v);i.value=''; renderC2Page();syncSelects();syncC2ForC3();rebuildDD(); }
-  function delC2(par,c){ c2Map[par]=(c2Map[par]||[]).filter(x=>x!==c);fC2.delete(c); renderC2Page();syncSelects();syncC2ForC3();rebuildDD();render(); }
-  function renderC2Page(){
-    const par=document.getElementById('c1ForC2').value,sec=document.getElementById('c2Section'),row=document.getElementById('c2AddRow');
-    if(!par){sec.innerHTML='<span class="empty-tag">Seleziona prima una Cat.1.</span>';row.style.display='none';return;}
-    row.style.display='flex';
-    const subs=c2Map[par]||[];
-    sec.innerHTML=`<div class="sub-title c1">Sottocategorie di: ${par}</div>`+(subs.length===0?'<span class="empty-tag">Nessuna ancora.</span>':`<div class="tag-list">${subs.map(s=>`<div class="tag-item c2">${s}<span class="del-tag" onclick="delC2('${par}','${s}')">×</span></div>`).join('')}</div>`);
-  }
+async function addC2(){ const par=document.getElementById('c1ForC2').value; if(!par){alert('Seleziona Cat.1');return;} const i=document.getElementById('inputC2'),v=i.value.trim(); if(!v)return; if((c2Map[par]||[]).includes(v)){alert('Presente');return;} if(!c2Map[par])c2Map[par]=[]; c2Map[par].push(v);i.value=''; await saveToFirebase(); renderC2Page();syncSelects();syncC2ForC3();rebuildDD(); }
+async function delC2(par,c){ c2Map[par]=(c2Map[par]||[]).filter(x=>x!==c);fC2.delete(c); await saveToFirebase(); renderC2Page();syncSelects();syncC2ForC3();rebuildDD();render(); }
 
-  // ─── CAT3 ─────────────────────────────────────────────────────────────────────
-  function syncC2ForC3(){ const v=document.getElementById('c1ForC3').value,sel=document.getElementById('c2ForC3'),prev=sel.value; sel.innerHTML='<option value="">— Seleziona —</option>'+(c2Map[v]||[]).map(c=>`<option value="${c}" ${c===prev?'selected':''}>${c}</option>`).join(''); }
-  function addC3(){ const c1v=document.getElementById('c1ForC3').value,c2v=document.getElementById('c2ForC3').value; if(!c1v||!c2v){alert('Seleziona Cat.1 e Cat.2');return;} const k=c3k(c1v,c2v),i=document.getElementById('inputC3'),v=i.value.trim(); if(!v)return; if((c3Map[k]||[]).includes(v)){alert('Già presente');return;} if(!c3Map[k])c3Map[k]=[]; c3Map[k].push(v);i.value=''; renderC3Page();syncSelects();rebuildDD(); }
-  function delC3(c1v,c2v,c){ const k=c3k(c1v,c2v); c3Map[k]=(c3Map[k]||[]).filter(x=>x!==c);fC3.delete(c); renderC3Page();syncSelects();rebuildDD();render(); }
-  function renderC3Page(){
-    const c1v=document.getElementById('c1ForC3').value,c2v=document.getElementById('c2ForC3').value;
-    const sec=document.getElementById('c3Section'),row=document.getElementById('c3AddRow');
-    if(!c1v||!c2v){sec.innerHTML='<span class="empty-tag">Seleziona Cat.1 e Cat.2.</span>';row.style.display='none';return;}
-    row.style.display='flex';
-    const subs=c3Map[c3k(c1v,c2v)]||[];
-    sec.innerHTML=`<div class="sub-title c2">Sottocategorie di: ${c1v} › ${c2v}</div>`+(subs.length===0?'<span class="empty-tag">Nessuna ancora.</span>':`<div class="tag-list">${subs.map(s=>`<div class="tag-item c3">${s}<span class="del-tag" onclick="delC3('${c1v}','${c2v}','${s}')">×</span></div>`).join('')}</div>`);
-  }
+function renderC2Page(){
+  const par=document.getElementById('c1ForC2').value,sec=document.getElementById('c2Section'),row=document.getElementById('c2AddRow');
+  if(!par){sec.innerHTML='<span class="empty-tag">Seleziona Cat.1</span>';row.style.display='none';return;}
+  row.style.display='flex';
+  const subs=c2Map[par]||[];
+  sec.innerHTML=`<div class="sub-title c1">Sottocategorie di: ${par}</div>`+(subs.length===0?'<span class="empty-tag">Nessuna</span>':`<div class="tag-list">${subs.map(s=>`<div class="tag-item c2">${s}<span class="del-tag" onclick="delC2('${par}','${s}')">×</span></div>`).join('')}</div>`);
+}
 
-  function syncParentSelects(){ ['c1ForC2','c1ForC3'].forEach(id=>{ const sel=document.getElementById(id),prev=sel.value; sel.innerHTML='<option value="">— Seleziona —</option>'+c1.map(c=>`<option value="${c}" ${c===prev?'selected':''}>${c}</option>`).join(''); }); }
+function syncC2ForC3(){ const v=document.getElementById('c1ForC3').value,sel=document.getElementById('c2ForC3'),prev=sel.value; sel.innerHTML='<option value="">— Seleziona —</option>'+(c2Map[v]||[]).map(c=>`<option value="${c}" ${c===prev?'selected':''}>${c}</option>`).join(''); }
 
-  function syncSelects(){
-    const opts='<option value="">—</option>'+nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
-    document.getElementById('selFrom').innerHTML=opts;
-    document.getElementById('selTo').innerHTML=opts;
-    document.getElementById('selC1').innerHTML='<option value="">— Cat.1 —</option>'+c1.map(c=>`<option value="${c}">${c}</option>`).join('');
-    onC1Change(); syncEntitySel();
-  }
-  function syncEntitySel(){
-    const sel=document.getElementById('entitySel'),prev=entityFilter;
-    sel.innerHTML='<option value="">— Tutti i movimenti —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name}</option>`).join('');
-    sel.className='entity-select'+(prev?' active-sel':'');
-  }
-  function onC1Change(val,c2val,c3val){ const v=val||document.getElementById('selC1').value; const subs=c2Map[v]||[]; const s2=document.getElementById('selC2'); s2.innerHTML='<option value="">— Cat.2 —</option>'+subs.map(s=>`<option value="${s}" ${s===c2val?'selected':''}>${s}</option>`).join(''); s2.disabled=subs.length===0; onC2Change(v,c3val); }
-  function onC2Change(c1val,c3val){ const v1=c1val||document.getElementById('selC1').value,v2=document.getElementById('selC2').value; const subs=c3Map[c3k(v1,v2)]||[]; const s3=document.getElementById('selC3'); s3.innerHTML='<option value="">— Cat.3 —</option>'+subs.map(s=>`<option value="${s}" ${s===c3val?'selected':''}>${s}</option>`).join(''); s3.disabled=subs.length===0; }
+async function addC3(){ const c1v=document.getElementById('c1ForC3').value,c2v=document.getElementById('c2ForC3').value; if(!c1v||!c2v){alert('Seleziona Cat.1 e Cat.2');return;} const k=c3k(c1v,c2v),i=document.getElementById('inputC3'),v=i.value.trim(); if(!v)return; if((c3Map[k]||[]).includes(v)){alert('Presente');return;} if(!c3Map[k])c3Map[k]=[]; c3Map[k].push(v);i.value=''; await saveToFirebase(); renderC3Page();syncSelects();rebuildDD(); }
+async function delC3(c1v,c2v,c){ const k=c3k(c1v,c2v); c3Map[k]=(c3Map[k]||[]).filter(x=>x!==c);fC3.delete(c); await saveToFirebase(); renderC3Page();syncSelects();rebuildDD();render(); }
 
-  // ─── ENTITY FILTER ────────────────────────────────────────────────────────────
-  function onEntitySelChange(){ entityFilter=document.getElementById('entitySel').value; document.getElementById('entitySel').className='entity-select'+(entityFilter?' active-sel':''); updateEntityBanner(); updateFilterBadge(); render(); }
-  function clearEntityFilter(){ entityFilter=''; document.getElementById('entitySel').value=''; document.getElementById('entitySel').className='entity-select'; updateEntityBanner(); updateFilterBadge(); render(); }
-  function filterByEntity(name){ entityFilter=name; document.getElementById('entitySel').value=name; document.getElementById('entitySel').className='entity-select active-sel'; updateEntityBanner(); updateFilterBadge(); if(!filterOpen)toggleFilterPanel(); render(); }
-  function updateEntityBanner(){
-    const b=document.getElementById('entityBanner');
+function renderC3Page(){
+  const c1v=document.getElementById('c1ForC3').value,c2v=document.getElementById('c2ForC3').value;
+  const sec=document.getElementById('c3Section'),row=document.getElementById('c3AddRow');
+  if(!c1v||!c2v){sec.innerHTML='<span class="empty-tag">Seleziona Cat.1 e Cat.2</span>';row.style.display='none';return;}
+  row.style.display='flex';
+  const subs=c3Map[c3k(c1v,c2v)]||[];
+  sec.innerHTML=`<div class="sub-title c2">Sottocategorie: ${c1v} › ${c2v}</div>`+(subs.length===0?'<span class="empty-tag">Nessuna</span>':`<div class="tag-list">${subs.map(s=>`<div class="tag-item c3">${s}<span class="del-tag" onclick="delC3('${c1v}','${c2v}','${s}')">×</span></div>`).join('')}</div>`);
+}
+
+function syncParentSelects(){ ['c1ForC2','c1ForC3'].forEach(id=>{ const sel=document.getElementById(id),prev=sel.value; sel.innerHTML='<option value="">— Seleziona —</option>'+c1.map(c=>`<option value="${c}" ${c===prev?'selected':''}>${c}</option>`).join(''); }); }
+
+function syncSelects(){
+  const opts='<option value="">—</option>'+nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
+  document.getElementById('selFrom').innerHTML=opts;
+  document.getElementById('selTo').innerHTML=opts;
+  document.getElementById('selC1').innerHTML='<option value="">— Cat.1 —</option>'+c1.map(c=>`<option value="${c}">${c}</option>`).join('');
+  onC1Change(); syncEntitySel();
+}
+
+function syncEntitySel(){
+  const sel=document.getElementById('entitySel'),prev=entityFilter;
+  sel.innerHTML='<option value="">— Tutti —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name}</option>`).join('');
+  sel.className='entity-select'+(prev?' active-sel':'');
+}
+
+function onC1Change(val,c2val,c3val){ const v=val||document.getElementById('selC1').value; const subs=c2Map[v]||[]; const s2=document.getElementById('selC2'); s2.innerHTML='<option value="">— Cat.2 —</option>'+subs.map(s=>`<option value="${s}" ${s===c2val?'selected':''}>${s}</option>`).join(''); s2.disabled=subs.length===0; onC2Change(v,c3val); }
+function onC2Change(c1val,c3val){ const v1=c1val||document.getElementById('selC1').value,v2=document.getElementById('selC2').value; const subs=c3Map[c3k(v1,v2)]||[]; const s3=document.getElementById('selC3'); s3.innerHTML='<option value="">— Cat.3 —</option>'+subs.map(s=>`<option value="${s}" ${s===c3val?'selected':''}>${s}</option>`).join(''); s3.disabled=subs.length===0; }
+
+function onEntitySelChange(){ entityFilter=document.getElementById('entitySel').value; document.getElementById('entitySel').className='entity-select'+(entityFilter?' active-sel':''); updateEntityBanner(); updateFilterBadge(); render(); }
+function clearEntityFilter(){ entityFilter=''; document.getElementById('entitySel').value=''; document.getElementById('entitySel').className='entity-select'; updateEntityBanner(); updateFilterBadge(); render(); }
+function filterByEntity(name){ entityFilter=name; document.getElementById('entitySel').value=name; document.getElementById('entitySel').className='entity-select active-sel'; updateEntityBanner(); updateFilterBadge(); if(!filterOpen)toggleFilterPanel(); render(); }
+
+function updateEntityBanner(){
+  const b=document.getElementById('entityBanner');
+  if(entityFilter){
+    b.classList.add('active');
+    const no=nomi.find(x=>x.name===entityFilter);
+    const tipoStr=no&&no.tipo?` [${no.tipo}]`:'';
+    document.getElementById('entityBannerLabel').textContent=`Movimenti: ${entityFilter}${tipoStr}`;
+  } else b.classList.remove('active');
+}
+
+function rebuildDD(){
+  const vc1=fC1.size>0?[...fC1]:c1;
+  document.getElementById('ddC1').innerHTML=c1.length===0?'<div class="dropdown-empty">Nessuna</div>':c1.map(c=>`<label class="dropdown-item di-c1"><input type="checkbox" ${fC1.has(c)?'checked':''} onchange="toggleF('c1','${c}',this.checked)">${c}</label>`).join('');
+  updTr('trC1',fC1,'Tutte cat.1','af-c1');
+  const ac2=[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];
+  document.getElementById('ddC2').innerHTML=ac2.length===0?'<div class="dropdown-empty">Nessuna</div>':ac2.map(s=>`<label class="dropdown-item di-c2"><input type="checkbox" ${fC2.has(s)?'checked':''} onchange="toggleF('c2','${s}',this.checked)">${s}</label>`).join('');
+  updTr('trC2',fC2,'Tutte cat.2','af-c2');
+  const vc2=fC2.size>0?[...fC2]:ac2, ac3=[...new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])))];
+  document.getElementById('ddC3').innerHTML=ac3.length===0?'<div class="dropdown-empty">Nessuna</div>':ac3.map(s=>`<label class="dropdown-item di-c3"><input type="checkbox" ${fC3.has(s)?'checked':''} onchange="toggleF('c3','${s}',this.checked)">${s}</label>`).join('');
+  updTr('trC3',fC3,'Tutte cat.3','af-c3');
+}
+
+function updTr(id,set,def,cls){ const el=document.getElementById(id); el.className='mst'; if(set.size>0){el.textContent=[...set].join(', ');el.classList.add(cls);}else el.textContent=def; }
+
+function toggleF(type,val,checked){
+  const map={c1:fC1,c2:fC2,c3:fC3};
+  checked?map[type].add(val):map[type].delete(val);
+  if(type==='c1'){const vc1=fC1.size>0?[...fC1]:c1;const ac2=new Set(vc1.flatMap(c=>c2Map[c]||[]));for(const v of [...fC2])if(!ac2.has(v))fC2.delete(v);}
+  if(type==='c2'){const vc1=fC1.size>0?[...fC1]:c1;const vc2=fC2.size>0?[...fC2]:[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];const ac3=new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])));for(const v of [...fC3])if(!ac3.has(v))fC3.delete(v);}
+  rebuildDD(); updateFilterBadge(); render();
+}
+
+function clearFilters(){ fC1.clear();fC2.clear();fC3.clear(); document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; clearEntityFilter(); clearTipoFilter(); rebuildDD(); updateFilterBadge(); render(); }
+function clearDate(){ document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; updateFilterBadge(); render(); }
+
+async function aggiungi(){
+  const data=document.getElementById('data').value, from=document.getElementById('selFrom').value, to=document.getElementById('selTo').value;
+  const desc=document.getElementById('descrizione').value.trim();
+  const c1v=document.getElementById('selC1').value||'-', c2v=document.getElementById('selC2').value||'-', c3v=document.getElementById('selC3').value||'-';
+  const importo=parseFloat(document.getElementById('importo').value);
+  if(!data||!from||!to||!desc||isNaN(importo)||importo<=0){alert('Compila tutto');return;}
+  if(from===to){alert('From=To non valido');return;}
+  rows.push({data,from,to,desc,c1:c1v,c2:c2v,c3:c3v,importo});
+  rows.sort((a,b)=>a.data.localeCompare(b.data));
+  document.getElementById('descrizione').value=''; document.getElementById('importo').value='';
+  await saveToFirebase();
+  render();
+}
+
+function startEdit(i){editingIdx=i;render();}
+function cancelEdit(){editingIdx=null;render();}
+
+async function saveEdit(i){
+  const fi=getFiltered(),orig=rows.indexOf(fi[i]),r=rows[orig];
+  r.data=document.getElementById('ed-data').value||r.data;
+  r.from=document.getElementById('ed-from').value||r.from;
+  r.to=document.getElementById('ed-to').value||r.to;
+  r.desc=document.getElementById('ed-desc').value||r.desc;
+  r.c1=document.getElementById('ed-c1').value||r.c1;
+  r.c2=document.getElementById('ed-c2').value||r.c2;
+  r.c3=document.getElementById('ed-c3').value||r.c3;
+  r.importo=parseFloat(document.getElementById('ed-imp').value)||r.importo;
+  rows.sort((a,b)=>a.data.localeCompare(b.data));
+  editingIdx=null;
+  await saveToFirebase();
+  render();
+}
+
+async function elimina(i){
+  if(!confirm('Eliminare?'))return;
+  rows.splice(rows.indexOf(getFiltered()[i]),1);
+  await saveToFirebase();
+  render();
+}
+
+function edC1Change(v){const s=document.getElementById('ed-c2');const subs=c2Map[v]||[];s.innerHTML='<option value="-">—</option>'+subs.map(x=>`<option value="${x}">${x}</option>`).join('');document.getElementById('ed-c3').innerHTML='<option value="-">—</option>';}
+function edC2Change(c1v,c2v){const s=document.getElementById('ed-c3');const subs=c3Map[c3k(c1v,c2v)]||[];s.innerHTML='<option value="-">—</option>'+subs.map(x=>`<option value="${x}">${x}</option>`).join('');}
+
+function getFiltered(){
+  const from=document.getElementById('dateFrom').value, to=document.getElementById('dateTo').value;
+  return rows.filter(r=>{
+    if(from&&r.data<from)return false; if(to&&r.data>to)return false;
+    if(entityFilter&&r.from!==entityFilter&&r.to!==entityFilter)return false;
+    if(fC1.size>0&&!fC1.has(r.c1))return false; if(fC2.size>0&&!fC2.has(r.c2))return false; if(fC3.size>0&&!fC3.has(r.c3))return false;
+    return true;
+  });
+}
+
+function getSign(r){ if(!entityFilter)return null; if(r.to===entityFilter)return '+'; if(r.from===entityFilter)return '-'; return null; }
+function getTipoNome(name){ const n=nomi.find(x=>x.name===name); return n?n.tipo||'':''; }
+
+function render(){
+  const tbody=document.getElementById('tbody'), filtered=getSorted(getFiltered());
+  let totIn=0, totOut=0;
+
+  filtered.forEach(r=>{
     if(entityFilter){
-      b.classList.add('active');
-      const no=nomi.find(x=>x.name===entityFilter);
-      const tipoStr=no&&no.tipo?` [${no.tipo}]`:'';
-      document.getElementById('entityBannerLabel').textContent=`Movimenti di: ${entityFilter}${tipoStr}  (verde = entrata in To, rosso = uscita da From)`;
-    } else b.classList.remove('active');
-  }
-
-  // ─── DROPDOWN FILTRI ──────────────────────────────────────────────────────────
-  function rebuildDD(){
-    const vc1=fC1.size>0?[...fC1]:c1;
-    document.getElementById('ddC1').innerHTML=c1.length===0?'<div class="dropdown-empty">Nessuna cat.1</div>':c1.map(c=>`<label class="dropdown-item di-c1"><input type="checkbox" ${fC1.has(c)?'checked':''} onchange="toggleF('c1','${c}',this.checked)">${c}</label>`).join('');
-    updTr('trC1',fC1,'Tutte le cat.1','af-c1');
-    const ac2=[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];
-    document.getElementById('ddC2').innerHTML=ac2.length===0?'<div class="dropdown-empty">Nessuna cat.2</div>':ac2.map(s=>`<label class="dropdown-item di-c2"><input type="checkbox" ${fC2.has(s)?'checked':''} onchange="toggleF('c2','${s}',this.checked)">${s}</label>`).join('');
-    updTr('trC2',fC2,'Tutte le cat.2','af-c2');
-    const vc2=fC2.size>0?[...fC2]:ac2, ac3=[...new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])))];
-    document.getElementById('ddC3').innerHTML=ac3.length===0?'<div class="dropdown-empty">Nessuna cat.3</div>':ac3.map(s=>`<label class="dropdown-item di-c3"><input type="checkbox" ${fC3.has(s)?'checked':''} onchange="toggleF('c3','${s}',this.checked)">${s}</label>`).join('');
-    updTr('trC3',fC3,'Tutte le cat.3','af-c3');
-  }
-  function updTr(id,set,def,cls){ const el=document.getElementById(id); el.className='mst'; if(set.size>0){el.textContent=[...set].join(', ');el.classList.add(cls);}else el.textContent=def; }
-  function toggleF(type,val,checked){
-    const map={c1:fC1,c2:fC2,c3:fC3};
-    checked?map[type].add(val):map[type].delete(val);
-    if(type==='c1'){const vc1=fC1.size>0?[...fC1]:c1;const ac2=new Set(vc1.flatMap(c=>c2Map[c]||[]));for(const v of [...fC2])if(!ac2.has(v))fC2.delete(v);}
-    if(type==='c2'){const vc1=fC1.size>0?[...fC1]:c1;const vc2=fC2.size>0?[...fC2]:[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];const ac3=new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])));for(const v of [...fC3])if(!ac3.has(v))fC3.delete(v);}
-    rebuildDD(); updateFilterBadge(); render();
-  }
-  function clearFilters(){ fC1.clear();fC2.clear();fC3.clear(); document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; clearEntityFilter(); rebuildDD(); updateFilterBadge(); render(); }
-  function clearDate(){ document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; updateFilterBadge(); render(); }
-
-  // ─── AGGIUNGI ─────────────────────────────────────────────────────────────────
-  function aggiungi(){
-    const data=document.getElementById('data').value, from=document.getElementById('selFrom').value, to=document.getElementById('selTo').value;
-    const desc=document.getElementById('descrizione').value.trim();
-    const c1v=document.getElementById('selC1').value||'-', c2v=document.getElementById('selC2').value||'-', c3v=document.getElementById('selC3').value||'-';
-    const importo=parseFloat(document.getElementById('importo').value);
-    if(!data||!from||!to||!desc||isNaN(importo)||importo<=0){alert('Compila: data, From, To, descrizione e importo');return;}
-    if(from===to){alert('From e To non possono essere uguali');return;}
-    rows.push({data,from,to,desc,c1:c1v,c2:c2v,c3:c3v,importo});
-    rows.sort((a,b)=>a.data.localeCompare(b.data));
-    document.getElementById('descrizione').value=''; document.getElementById('importo').value='';
-    render();
-  }
-
-  // ─── EDIT RIGA ────────────────────────────────────────────────────────────────
-  function startEdit(i){editingIdx=i;render();}
-  function cancelEdit(){editingIdx=null;render();}
-  function saveEdit(i){
-    const fi=getFiltered(),orig=rows.indexOf(fi[i]),r=rows[orig];
-    r.data=document.getElementById('ed-data').value||r.data; r.from=document.getElementById('ed-from').value||r.from;
-    r.to=document.getElementById('ed-to').value||r.to; r.desc=document.getElementById('ed-desc').value||r.desc;
-    r.c1=document.getElementById('ed-c1').value||r.c1; r.c2=document.getElementById('ed-c2').value||r.c2;
-    r.c3=document.getElementById('ed-c3').value||r.c3; r.importo=parseFloat(document.getElementById('ed-imp').value)||r.importo;
-    rows.sort((a,b)=>a.data.localeCompare(b.data)); editingIdx=null; render();
-  }
-  function elimina(i){if(!confirm('Eliminare questa riga?'))return;rows.splice(rows.indexOf(getFiltered()[i]),1);render();}
-  function edC1Change(v){const s=document.getElementById('ed-c2');const subs=c2Map[v]||[];s.innerHTML='<option value="-">—</option>'+subs.map(x=>`<option value="${x}">${x}</option>`).join('');document.getElementById('ed-c3').innerHTML='<option value="-">—</option>';}
-  function edC2Change(c1v,c2v){const s=document.getElementById('ed-c3');const subs=c3Map[c3k(c1v,c2v)]||[];s.innerHTML='<option value="-">—</option>'+subs.map(x=>`<option value="${x}">${x}</option>`).join('');}
-
-  // ─── GET FILTERED ─────────────────────────────────────────────────────────────
-  function getFiltered(){
-    const from=document.getElementById('dateFrom').value, to=document.getElementById('dateTo').value;
-    return rows.filter(r=>{
-      if(from&&r.data<from)return false; if(to&&r.data>to)return false;
-      if(entityFilter&&r.from!==entityFilter&&r.to!==entityFilter)return false;
-      if(fC1.size>0&&!fC1.has(r.c1))return false; if(fC2.size>0&&!fC2.has(r.c2))return false; if(fC3.size>0&&!fC3.has(r.c3))return false;
-      return true;
-    });
-  }
-  function getSign(r){ if(!entityFilter)return null; if(r.to===entityFilter)return '+'; if(r.from===entityFilter)return '-'; return null; }
-
-  // Helper: tipo di un nome
-  function getTipoNome(name){ const n=nomi.find(x=>x.name===name); return n?n.tipo||'':''; }
-
-  // ─── RENDER ───────────────────────────────────────────────────────────────────
-  function render(){
-    const tbody=document.getElementById('tbody'), filtered=getSorted(getFiltered());
-    let totIn=0, totOut=0;
-
-    filtered.forEach(r=>{
-      if(entityFilter){
-        // Con filtro entità: segno dipende dalla prospettiva dell'entità selezionata
-        if(tipoFilter){
-          // Solo se l'entità selezionata è del tipo giusto
-          if(nomeMatchTipo(entityFilter)){
-            if(r.to===entityFilter)totIn+=r.importo;
-            else if(r.from===entityFilter)totOut+=r.importo;
-          }
-        } else {
+      if(tipoFilter){
+        if(nomeMatchTipo(entityFilter)){
           if(r.to===entityFilter)totIn+=r.importo;
           else if(r.from===entityFilter)totOut+=r.importo;
         }
       } else {
-        // Senza filtro entità
-        if(tipoFilter){
-          // Conta solo i movimenti dove from O to appartengono al tipo
-          const fromMatch=nomeMatchTipo(r.from), toMatch=nomeMatchTipo(r.to);
-          if(toMatch && !fromMatch) totIn+=r.importo;        // entra nel gruppo tipo
-          else if(fromMatch && !toMatch) totOut+=r.importo;  // esce dal gruppo tipo
-          // se entrambi nel tipo: movimento interno, lo contiamo come entrata (visibilità)
-          else if(fromMatch && toMatch) totIn+=r.importo;
-        } else {
-          totIn+=r.importo;
-        }
+        if(r.to===entityFilter)totIn+=r.importo;
+        else if(r.from===entityFilter)totOut+=r.importo;
       }
-    });
-
-    document.getElementById('totIn').textContent=fmt(totIn);
-    document.getElementById('totOut').textContent=fmt(totOut);
-    document.getElementById('saldo').textContent=fmt(totIn-totOut);
-    document.getElementById('totCount').textContent=filtered.length;
-    document.getElementById('saldoCard').className='card '+((totIn-totOut)>=0?'saldo-pos':'saldo-neg');
-
-    // Aggiorna label card in base al filtro tipo
-    if(tipoFilter){
-      document.querySelector('#saldoCard label').innerHTML=`Saldo Tipo: <strong>${tipoFilter}</strong> <span id="fn3" class="filter-note">(filtrato)</span>`;
-      document.querySelector('.card.in label').innerHTML=`Entrate (Tipo: ${tipoFilter}) <span id="fn1" class="filter-note">(filtrato)</span>`;
-      document.querySelector('.card.out label').innerHTML=`Uscite (Tipo: ${tipoFilter}) <span id="fn2" class="filter-note">(filtrato)</span>`;
     } else {
-      document.querySelector('#saldoCard label').innerHTML=`Saldo <span id="fn3" class="filter-note"></span>`;
-      document.querySelector('.card.in label').innerHTML=`Totale Entrate <span id="fn1" class="filter-note"></span>`;
-      document.querySelector('.card.out label').innerHTML=`Totale Uscite <span id="fn2" class="filter-note"></span>`;
-    }
-    updateFilterBadge();
-
-    if(!filtered.length){ tbody.innerHTML=`<tr><td colspan="10" class="empty">Nessun movimento.</td></tr>`; return; }
-    const nomeOpts=nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
-    let html='';
-    filtered.forEach((r,i)=>{
-      const df=r.data.split('-').reverse().join('/'), sign=getSign(r);
-      const signHtml=sign?`<span class="${sign==='+'?'amount-pos':'amount-neg'}">${sign} ${fmt(r.importo)}</span>`:`<span class="amount-neu">${fmt(r.importo)}</span>`;
-      const fromTipo=getTipoNome(r.from), toTipo=getTipoNome(r.to);
-      const fromTipoTag=fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:'';
-      const toTipoTag=toTipo?`<span class="tipo-tag">${toTipo}</span>`:'';
-      if(editingIdx===i){
-        const c1Opts=c1.map(c=>`<option value="${c}" ${c===r.c1?'selected':''}>${c}</option>`).join('');
-        const c2Opts=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
-        const c3Opts=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
-        html+=`<tr class="editing">
-          <td><input class="edit-input" id="ed-data" type="date" value="${r.data}"></td>
-          <td><select class="edit-select" id="ed-from">${nomeOpts}</select></td>
-          <td><select class="edit-select" id="ed-to">${nomeOpts}</select></td>
-          <td><input class="edit-input" id="ed-desc" type="text" value="${r.desc}"></td>
-          <td><select class="edit-select" id="ed-c1" onchange="edC1Change(this.value)">${c1Opts}</select></td>
-          <td><select class="edit-select" id="ed-c2" onchange="edC2Change(document.getElementById('ed-c1').value,this.value)">${c2Opts}</select></td>
-          <td><select class="edit-select" id="ed-c3">${c3Opts}</select></td>
-          <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}" style="min-width:70px"></td>
-          <td>—</td>
-          <td><div class="row-actions"><button class="btn-save" onclick="saveEdit(${i})">✔</button><button class="btn-cancel" onclick="cancelEdit()">✕</button></div></td>
-        </tr>`;
-        setTimeout(()=>{ const ef=document.getElementById('ed-from'); if(ef)for(let o of ef.options)if(o.value===r.from)o.selected=true; const et=document.getElementById('ed-to'); if(et)for(let o of et.options)if(o.value===r.to)o.selected=true; },0);
-      }else{
-        html+=`<tr>
-          <td>${df}</td>
-          <td><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')">${r.from}</span>${fromTipoTag}</td>
-          <td><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')">${r.to}</span>${toTipoTag}</td>
-          <td>${r.desc}</td>
-          <td><span class="c1-badge">${r.c1}</span></td><td><span class="c2-badge">${r.c2}</span></td><td><span class="c3-badge">${r.c3}</span></td>
-          <td class="amount-neu">${fmt(r.importo)}</td><td>${signHtml}</td>
-          <td><div class="row-actions"><button class="btn-edit" onclick="startEdit(${i})">✏️</button><button class="btn-del" onclick="elimina(${i})">🗑</button></div></td>
-        </tr>`;
+      if(tipoFilter){
+        const fromMatch=nomeMatchTipo(r.from), toMatch=nomeMatchTipo(r.to);
+        if(toMatch && !fromMatch) totIn+=r.importo;
+        else if(fromMatch && !toMatch) totOut+=r.importo;
+        else if(fromMatch && toMatch) totIn+=r.importo;
+      } else {
+        totIn+=r.importo;
       }
-    });
-    tbody.innerHTML=html;
-  }
+    }
+  });
 
-  // ─── STAMPA ───────────────────────────────────────────────────────────────────
-  function stampaPDF(){
-    const from=document.getElementById('dateFrom').value, to=document.getElementById('dateTo').value;
-    const parts=[]; if(entityFilter)parts.push(`Entità: ${entityFilter}`);
-    if(tipoFilter)parts.push(`Tipo: ${tipoFilter}`);
-    if(from||to)parts.push(`Periodo: ${from?from.split('-').reverse().join('/'):'inizio'} → ${to?to.split('-').reverse().join('/'):'oggi'}`);
-    if(fC1.size>0)parts.push('Cat.1: '+[...fC1].join(', ')); if(fC2.size>0)parts.push('Cat.2: '+[...fC2].join(', ')); if(fC3.size>0)parts.push('Cat.3: '+[...fC3].join(', '));
-    document.getElementById('printHeader').textContent=parts.length>0?'Filtri: '+parts.join(' | '):'Tutti i movimenti';
-    window.print();
-  }
+  document.getElementById('totIn').textContent=fmt(totIn);
+  document.getElementById('totOut').textContent=fmt(totOut);
+  document.getElementById('saldo').textContent=fmt(totIn-totOut);
+  document.getElementById('totCount').textContent=filtered.length;
+  document.getElementById('saldoCard').className='card '+((totIn-totOut)>=0?'saldo-pos':'saldo-neg');
 
-  // ─── BACKUP ───────────────────────────────────────────────────────────────────
-  function getBackupData(){ return {version:'1.2',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows}; }
-  function renderBackupPreview(){
-    const d=getBackupData(),prev=document.getElementById('backupPreview');
-    prev.style.display='block';
-    prev.innerHTML=`<strong>Anteprima:</strong><br>📋 Movimenti: <strong>${d.rows.length}</strong><br>👤 Nomi: <strong>${d.nomi.length}</strong> (${d.nomi.map(n=>n.name+(n.tipo?` [${n.tipo}]`:'')).join(', ')||'—'})<br>🟣 Cat.1: <strong>${d.c1.length}</strong><br>📅 ${new Date().toLocaleString('it-IT')}`;
+  if(tipoFilter){
+    document.querySelector('#saldoCard label').innerHTML=`Saldo Tipo: <strong>${tipoFilter}</strong> <span id="fn3" class="filter-note">(filtrato)</span>`;
+    document.querySelector('.card.in label').innerHTML=`Entrate (${tipoFilter}) <span id="fn1" class="filter-note">(filtrato)</span>`;
+    document.querySelector('.card.out label').innerHTML=`Uscite (${tipoFilter}) <span id="fn2" class="filter-note">(filtrato)</span>`;
+  } else {
+    document.querySelector('#saldoCard label').innerHTML=`Saldo <span id="fn3" class="filter-note"></span>`;
+    document.querySelector('.card.in label').innerHTML=`Totale Entrate <span id="fn1" class="filter-note"></span>`;
+    document.querySelector('.card.out label').innerHTML=`Totale Uscite <span id="fn2" class="filter-note"></span>`;
   }
-  function salvaBackup(){
-    const json=JSON.stringify(getBackupData(),null,2),date=new Date().toISOString().slice(0,10);
-    try{ const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a'); a.href=url;a.download=`caveau_backup_${date}.json`;a.click();URL.revokeObjectURL(url); }catch(e){}
-    goTo('backup'); renderBackupPreview();
-  }
-  function caricaBackup(input){
-    const file=input.files[0]; if(!file)return;
-    const reader=new FileReader();
-    reader.onload=function(e){
-      const status=document.getElementById('restoreStatus');
-      try{
-        const d=JSON.parse(e.target.result);
-        if(!d.rows||!d.nomi||!d.c1||!d.c2Map||!d.c3Map)throw new Error('Struttura non valida.');
-        if(!confirm(`Ripristinare backup del ${d.date?new Date(d.date).toLocaleString('it-IT'):'?'}?\n${d.rows.length} movimenti. I dati attuali verranno SOSTITUITI.`)){input.value='';return;}
-        rows=d.rows;
-        // Compatibilità: backup vecchio con nomi come array di stringhe
-        if(d.nomi.length>0 && typeof d.nomi[0]==='string'){
-          nomi=d.nomi.map(n=>({name:n,tipo:''}));
-        } else { nomi=d.nomi; }
-        c1=d.c1;c2Map=d.c2Map;c3Map=d.c3Map;
-        fC1.clear();fC2.clear();fC3.clear();entityFilter='';tipoFilter='';editingIdx=null;
-        syncSelects();syncParentSelects();syncTipoSel();rebuildDD();updateFilterBadge();updateTipoBadge();render();
-        status.className='backup-status ok'; status.textContent=`✅ Ripristinato! ${rows.length} movimenti caricati.`;
-        renderBackupPreview();
-      }catch(err){ status.className='backup-status err'; status.textContent='❌ Errore: '+err.message; }
-      input.value='';
-    };
-    reader.readAsText(file);
-  }
-  function azzeraDati(){
-    if(!confirm('⚠️ Cancellare TUTTI i dati?'))return; if(!confirm('Sei sicuro? Operazione IRREVERSIBILE.'))return;
-    rows=[];nomi=[];c1=[];c2Map={};c3Map={};fC1.clear();fC2.clear();fC3.clear();entityFilter='';tipoFilter='';editingIdx=null;
-    syncSelects();syncParentSelects();syncTipoSel();rebuildDD();updateFilterBadge();updateTipoBadge();render();
-    document.getElementById('backupPreview').style.display='none';
-    const s=document.getElementById('restoreStatus');s.className='backup-status ok';s.textContent='✅ Dati cancellati.';
-  }
-
-  // ─── INIT ─────────────────────────────────────────────────────────────────────
-  updateSortHeaders();
   updateFilterBadge();
-  render();
+
+  if(!filtered.length){ tbody.innerHTML=`<tr><td colspan="10" class="empty">Nessun movimento</td></tr>`; return; }
+  const nomeOpts=nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
+  let html='';
+  filtered.forEach((r,i)=>{
+    const df=r.data.split('-').reverse().join('/'), sign=getSign(r);
+    const signHtml=sign?`<span class="${sign==='+'?'amount-pos':'amount-neg'}">${sign} ${fmt(r.importo)}</span>`:`<span class="amount-neu">${fmt(r.importo)}</span>`;
+    const fromTipo=getTipoNome(r.from), toTipo=getTipoNome(r.to);
+    const fromTipoTag=fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:'';
+    const toTipoTag=toTipo?`<span class="tipo-tag">${toTipo}</span>`:'';
+    if(editingIdx===i){
+      const c1Opts=c1.map(c=>`<option value="${c}" ${c===r.c1?'selected':''}>${c}</option>`).join('');
+      const c2Opts=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
+      const c3Opts=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
+      html+=`<tr class="editing">
+        <td><input class="edit-input" id="ed-data" type="date" value="${r.data}"></td>
+        <td><select class="edit-select" id="ed-from">${nomeOpts}</select></td>
+        <td><select class="edit-select" id="ed-to">${nomeOpts}</select></td>
+        <td><input class="edit-input" id="ed-desc" type="text" value="${r.desc}"></td>
+        <td><select class="edit-select" id="ed-c1" onchange="edC1Change(this.value)">${c1Opts}</select></td>
+        <td><select class="edit-select" id="ed-c2" onchange="edC2Change(document.getElementById('ed-c1').value,this.value)">${c2Opts}</select></td>
+        <td><select class="edit-select" id="ed-c3">${c3Opts}</select></td>
+        <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}"></td>
+        <td>—</td>
+        <td><div class="row-actions"><button class="btn-save" onclick="saveEdit(${i})">✔</button><button class="btn-cancel" onclick="cancelEdit()">✕</button></div></td>
+      </tr>`;
+      setTimeout(()=>{ const ef=document.getElementById('ed-from'); if(ef)for(let o of ef.options)if(o.value===r.from)o.selected=true; const et=document.getElementById('ed-to'); if(et)for(let o of et.options)if(o.value===r.to)o.selected=true; },0);
+    }else{
+      html+=`<tr>
+        <td>${df}</td>
+        <td><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')">${r.from}</span>${fromTipoTag}</td>
+        <td><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')">${r.to}</span>${toTipoTag}</td>
+        <td>${r.desc}</td>
+        <td><span class="c1-badge">${r.c1}</span></td><td><span class="c2-badge">${r.c2}</span></td><td><span class="c3-badge">${r.c3}</span></td>
+        <td class="amount-neu">${fmt(r.importo)}</td><td>${signHtml}</td>
+        <td><div class="row-actions"><button class="btn-edit" onclick="startEdit(${i})">✏️</button><button class="btn-del" onclick="elimina(${i})">🗑</button></div></td>
+      </tr>`;
+    }
+  });
+  tbody.innerHTML=html;
+}
+
+function stampaPDF(){
+  const from=document.getElementById('dateFrom').value, to=document.getElementById('dateTo').value;
+  window.print();
+}
+
+function salvaBackup(){
+  const json=JSON.stringify({version:'1.3-firebase',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows},null,2);
+  const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+
+window.goTo = goTo;
+window.aggiungi = aggiungi;
+window.startEdit = startEdit;
+window.saveEdit = saveEdit;
+window.cancelEdit = cancelEdit;
+window.elimina = elimina;
+window.addNome = addNome;
+window.delNome = delNome;
+window.startEditNome = startEditNome;
+window.saveEditNome = saveEditNome;
+window.cancelEditNome = cancelEditNome;
+window.addC1 = addC1;
+window.delC1 = delC1;
+window.addC2 = addC2;
+window.delC2 = delC2;
+window.addC3 = addC3;
+window.delC3 = delC3;
+window.renderC2Page = renderC2Page;
+window.renderC3Page = renderC3Page;
+window.syncC2ForC3 = syncC2ForC3;
+window.onC1Change = onC1Change;
+window.onC2Change = onC2Change;
+window.edC1Change = edC1Change;
+window.edC2Change = edC2Change;
+window.setSort = setSort;
+window.toggleDD = toggleDD;
+window.toggleF = toggleF;
+window.clearFilters = clearFilters;
+window.clearDate = clearDate;
+window.onEntitySelChange = onEntitySelChange;
+window.clearEntityFilter = clearEntityFilter;
+window.filterByEntity = filterByEntity;
+window.onTipoSelChange = onTipoSelChange;
+window.clearTipoFilter = clearTipoFilter;
+window.toggleFilterPanel = toggleFilterPanel;
+window.stampaPDF = stampaPDF;
+window.salvaBackup = salvaBackup;
+window.openSettings = openSettings;
+window.closeSettings = closeSettings;
+window.closeSettingsOutside = closeSettingsOutside;
+window.toggleDark = toggleDark;
+window.saveToFirebase = saveToFirebase;
 </script>
 </body>
 </html>
