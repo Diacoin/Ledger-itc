@@ -797,18 +797,33 @@ function clearDate(){ document.getElementById('dateFrom').value=''; document.get
 
 // ── SELECTS SYNC ─────────────────────────────────────
 function syncSelects(){
-  const opts='<option value="">—</option>'+nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
+  const nomiSort=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
+  const opts='<option value="">—</option>'+nomiSort.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
   document.getElementById('selFrom').innerHTML=opts; document.getElementById('selTo').innerHTML=opts;
-  document.getElementById('selC1').innerHTML='<option value="">— Cat.1 —</option>'+c1.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const c1Sort=[...c1].sort((a,b)=>a.localeCompare(b,'it'));
+  document.getElementById('selC1').innerHTML='<option value="">— Cat.1 —</option>'+c1Sort.map(c=>`<option value="${c}">${c}</option>`).join('');
   onC1Change(); syncEntitySel();
 }
 function syncEntitySel(){
   const sel=document.getElementById('entitySel'),prev=entityFilter;
-  sel.innerHTML='<option value="">— Tutti —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name}</option>`).join('');
+  const nomiSort=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
+  sel.innerHTML='<option value="">— Tutti —</option>'+nomiSort.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name}</option>`).join('');
   sel.className='entity-select'+(prev?' active-sel':'');
 }
-function onC1Change(val,c2val,c3val){ const v=val||document.getElementById('selC1').value; const subs=c2Map[v]||[]; const s2=document.getElementById('selC2'); s2.innerHTML='<option value="">— Cat.2 —</option>'+subs.map(s=>`<option value="${s}" ${s===c2val?'selected':''}>${s}</option>`).join(''); s2.disabled=subs.length===0; onC2Change(v,c3val); }
-function onC2Change(c1val,c3val){ const v1=c1val||document.getElementById('selC1').value,v2=document.getElementById('selC2').value; const subs=c3Map[c3k(v1,v2)]||[]; const s3=document.getElementById('selC3'); s3.innerHTML='<option value="">— Cat.3 —</option>'+subs.map(s=>`<option value="${s}" ${s===c3val?'selected':''}>${s}</option>`).join(''); s3.disabled=subs.length===0; }
+function onC1Change(val,c2val,c3val){
+  const v=val||document.getElementById('selC1').value;
+  const subs=[...(c2Map[v]||[])].sort((a,b)=>a.localeCompare(b,'it'));
+  const s2=document.getElementById('selC2');
+  s2.innerHTML='<option value="">— Cat.2 —</option>'+subs.map(s=>`<option value="${s}" ${s===c2val?'selected':''}>${s}</option>`).join('');
+  s2.disabled=subs.length===0; onC2Change(v,c3val);
+}
+function onC2Change(c1val,c3val){
+  const v1=c1val||document.getElementById('selC1').value, v2=document.getElementById('selC2').value;
+  const subs=[...(c3Map[c3k(v1,v2)]||[])].sort((a,b)=>a.localeCompare(b,'it'));
+  const s3=document.getElementById('selC3');
+  s3.innerHTML='<option value="">— Cat.3 —</option>'+subs.map(s=>`<option value="${s}" ${s===c3val?'selected':''}>${s}</option>`).join('');
+  s3.disabled=subs.length===0;
+}
 function onEntitySelChange(){ entityFilter=document.getElementById('entitySel').value; document.getElementById('entitySel').className='entity-select'+(entityFilter?' active-sel':''); updateEntityBanner();updateFilterBadge();render(); }
 function clearEntityFilter(){ entityFilter=''; document.getElementById('entitySel').value=''; document.getElementById('entitySel').className='entity-select'; updateEntityBanner();updateFilterBadge();render(); }
 function filterByEntity(name){ entityFilter=name; document.getElementById('entitySel').value=name; document.getElementById('entitySel').className='entity-select active-sel'; updateEntityBanner();updateFilterBadge(); if(!filterOpen)toggleFilterPanel(); render(); }
