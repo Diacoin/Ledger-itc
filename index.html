@@ -248,11 +248,11 @@
   .report-output-title{font-size:14px;font-weight:bold;}
   .report-output-meta{font-size:11px;opacity:.85;}
   .report-table{width:100%;border-collapse:collapse;}
-  .report-table th{background:#1a73e8;color:white;padding:8px 10px;text-align:left;font-size:11px;white-space:nowrap;}
-  .report-table td{padding:7px 10px;font-size:11px;border-bottom:1px solid var(--border);color:var(--text);}
+  .report-table th{background:#1a73e8;color:white;padding:8px 10px;text-align:left;font-size:clamp(9px,1.1vw,12px);white-space:nowrap;}
+  .report-table td{padding:7px 10px;font-size:clamp(9px,1.1vw,12px);border-bottom:1px solid var(--border);color:var(--text);}
   .report-table tr:nth-child(even) td{background:var(--surface2);}
   .report-table tr:last-child td{border-bottom:none;}
-  .report-table .td-num{text-align:right;font-family:monospace;}
+  .report-table .td-num{text-align:right;font-family:monospace;font-size:clamp(9px,1.05vw,12px);letter-spacing:0.01em;white-space:nowrap;}
   .report-table .pos{color:#34a853;font-weight:bold;}
   .report-table .neg{color:#ea4335;font-weight:bold;}
   .report-table tfoot td{background:#e8f0fe;color:#1a73e8;font-weight:bold;font-size:12px;border-top:2px solid #1a73e8;}
@@ -733,7 +733,11 @@ function goTo(p){
 }
 
 // ── UTILS ────────────────────────────────────────────
-function fmt(n){ return '€ '+n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmt(n){
+  const parts=Math.abs(n).toFixed(2).split('.');
+  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  return (n<0?'-':'')+'€\u00a0'+parts[0]+','+parts[1];
+}
 function c3k(a,b){ return a+'|'+b; }
 function getTipi(){ return [...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort(); }
 function getTipoNome(name){ const n=nomi.find(x=>x.name===name); return n?n.tipo||'':''; }
