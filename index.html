@@ -585,6 +585,9 @@
   <!-- CATEGORIE -->
   <div class="page" id="page-categorie">
     <h2>🏷️ Archivio Categorie</h2>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+      <button class="btn-report print" onclick="stampaCategorie()" style="padding:8px 18px;background:#607d8b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;">🖨️ Stampa Categorie</button>
+    </div>
     <div class="archivio-box">
       <h3>🟣 Categoria 1</h3>
       <div class="tag-list" id="c1List"></div>
@@ -1316,6 +1319,80 @@ function renderSavedReports(){
 
 function printReport(){ window.print(); }
 
+function stampaCategorie(){
+  const w=window.open('','_blank','width=800,height:600');
+  const dark=document.body.classList.contains('dark');
+  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Archivio Categorie</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
+    body{background:white;padding:24px;color:#333;}
+    h1{font-size:18px;font-weight:900;margin-bottom:4px;}
+    .subtitle{font-size:11px;color:#888;margin-bottom:20px;letter-spacing:1px;}
+    .c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}
+    .c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;display:flex;align-items:center;gap:8px;}
+    .c2-block{border-top:1px solid #e0e0e0;}
+    .c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5e6d0;}
+    .c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;display:flex;align-items:center;gap:6px;}
+    .c3-row:last-child{border-bottom:none;}
+    .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+    .dot-c1{background:#9c27b0;} .dot-c2{background:#e67e22;} .dot-c3{background:#16a085;}
+    .empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}
+    .footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}
+    .summary-box{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+    .summary-card{background:#f5f5f5;border-radius:8px;padding:10px 18px;text-align:center;min-width:100px;}
+    .summary-card .num{font-size:22px;font-weight:900;}
+    .summary-card .lbl{font-size:10px;color:#888;margin-top:2px;}
+    .num-c1{color:#9c27b0;} .num-c2{color:#e67e22;} .num-c3{color:#16a085;}
+    @media print{body{padding:10px;}button{display:none!important;}}
+  </style></head><body>`;
+
+  const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const totC2=Object.values(c2Map).reduce((s,a)=>s+a.length,0);
+  const totC3=Object.values(c3Map).reduce((s,a)=>s+a.length,0);
+
+  html+=`<h1>🏷️ Archivio Categorie</h1>
+  <div class="subtitle">Stampato il ${now}</div>
+  <div class="summary-box">
+    <div class="summary-card"><div class="num num-c1">${c1.length}</div><div class="lbl">Cat.1</div></div>
+    <div class="summary-card"><div class="num num-c2">${totC2}</div><div class="lbl">Cat.2</div></div>
+    <div class="summary-card"><div class="num num-c3">${totC3}</div><div class="lbl">Cat.3</div></div>
+  </div>`;
+
+  if(!c1.length){ html+=`<div style="color:#aaa;font-style:italic;">Nessuna categoria presente.</div>`; }
+  else {
+    c1.forEach(cat1=>{
+      const subs2=c2Map[cat1]||[];
+      html+=`<div class="c1-block">
+        <div class="c1-header"><span class="dot dot-c1"></span>${cat1}</div>`;
+      if(!subs2.length){
+        html+=`<div class="empty">Nessuna Cat.2</div>`;
+      } else {
+        subs2.forEach(cat2=>{
+          const subs3=c3Map[c3k(cat1,cat2)]||[];
+          html+=`<div class="c2-block">
+            <div class="c2-header"><span class="dot dot-c2"></span>${cat2}</div>`;
+          if(!subs3.length){
+            html+=`<div class="empty">Nessuna Cat.3</div>`;
+          } else {
+            subs3.forEach(cat3=>{
+              html+=`<div class="c3-row"><span class="dot dot-c3"></span>${cat3}</div>`;
+            });
+          }
+          html+=`</div>`;
+        });
+      }
+      html+=`</div>`;
+    });
+  }
+
+  html+=`<div class="footer">IlTuoCaveau · ${now}</div>
+  <script>window.onload=()=>window.print();<\/script>
+  </body></html>`;
+
+  w.document.write(html);
+  w.document.close();
+}
+
 // ── BACKUP ────────────────────────────────────────────
 function salvaBackup(){
   const json=JSON.stringify({version:'1.4-reports',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports},null,2);
@@ -1334,7 +1411,7 @@ window.setSort=setSort; window.toggleDD=toggleDD; window.toggleF=toggleF; window
 window.onEntitySelChange=onEntitySelChange; window.clearEntityFilter=clearEntityFilter; window.filterByEntity=filterByEntity;
 window.onTipoSelChange=onTipoSelChange; window.clearTipoFilter=clearTipoFilter; window.toggleFilterPanel=toggleFilterPanel;
 window.stampaPDF=stampaPDF; window.salvaBackup=salvaBackup; window.openSettings=openSettings; window.closeSettings=closeSettings; window.closeSettingsOutside=closeSettingsOutside; window.toggleDark=toggleDark;
-window.onRptTypeChange=onRptTypeChange; window.runReport=runReport; window.saveReport=saveReport; window.deleteReport=deleteReport; window.loadReport=loadReport; window.newReport=newReport; window.printReport=printReport;
+window.stampaCategorie=stampaCategorie; window.onRptTypeChange=onRptTypeChange; window.runReport=runReport; window.saveReport=saveReport; window.deleteReport=deleteReport; window.loadReport=loadReport; window.newReport=newReport; window.printReport=printReport;
 </script>
 </body>
 </html>
