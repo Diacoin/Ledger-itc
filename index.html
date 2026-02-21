@@ -567,18 +567,21 @@
   <div class="page" id="page-nomi">
     <h2>👤 Archivio Nomi</h2>
     <div class="archivio-box">
+      <div class="insert-box-title" style="color:#1a73e8;font-size:13px;font-weight:bold;margin-bottom:10px;">➕ Nuovo Nome</div>
+      <div class="tag-add" style="margin-top:0;margin-bottom:0;">
+        <input type="text" id="inputNome" placeholder="Nuovo nome..." onkeydown="if(event.key==='Enter')addNome()"/>
+        <input type="text" id="inputNomeTipo" placeholder="Tipo..." list="tipoSuggest"/>
+        <datalist id="tipoSuggest"></datalist>
+        <button class="btn-at nome" onclick="addNome()">+ Aggiungi</button>
+      </div>
+    </div>
+    <div class="archivio-box">
       <h3>Nomi / Entità salvati</h3>
       <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Tipo</strong> raggruppa i nomi per filtrare il saldo.</p>
       <table class="nomi-table">
         <thead><tr><th>Nome</th><th>Tipo</th><th>Azioni</th></tr></thead>
         <tbody id="nomiTbody"></tbody>
       </table>
-      <div class="tag-add">
-        <input type="text" id="inputNome" placeholder="Nuovo nome..." onkeydown="if(event.key==='Enter')addNome()"/>
-        <input type="text" id="inputNomeTipo" placeholder="Tipo..." list="tipoSuggest"/>
-        <datalist id="tipoSuggest"></datalist>
-        <button class="btn-at nome" onclick="addNome()">+ Aggiungi</button>
-      </div>
     </div>
   </div>
 
@@ -947,10 +950,12 @@ function cancelEditNome(){ editingNomeIdx=null; renderNomiPage(); }
 async function saveEditNome(idx){ const nv=document.getElementById('en-name-'+idx).value.trim(),nt=document.getElementById('en-tipo-'+idx).value.trim(); if(!nv){alert('Nome vuoto');return;} const oldName=nomi[idx].name; rows.forEach(r=>{ if(r.from===oldName)r.from=nv; if(r.to===oldName)r.to=nv; }); if(entityFilter===oldName)entityFilter=nv; nomi[idx]={name:nv,tipo:nt}; editingNomeIdx=null; await saveToFirebase(); renderNomiPage();syncSelects();syncEntitySel();syncTipoSel();render(); }
 function renderNomiPage(){
   const tbody=document.getElementById('nomiTbody');
-  if(!nomi.length){ tbody.innerHTML=`<tr><td colspan="3" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`; return; }
-  tbody.innerHTML=nomi.map((n,i)=>{
-    if(editingNomeIdx===i) return `<tr><td><input class="nome-edit-input" id="en-name-${i}" value="${n.name}"></td><td><input class="nome-edit-tipo" id="en-tipo-${i}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td><td style="white-space:nowrap"><button class="btn-nome-save" onclick="saveEditNome(${i})">✔</button><button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button></td></tr>`;
-    return `<tr><td><strong>${n.name}</strong></td><td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td><td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${i})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;
+  const nomiSort=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
+  if(!nomiSort.length){ tbody.innerHTML=`<tr><td colspan="3" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`; return; }
+  tbody.innerHTML=nomiSort.map((n,i)=>{
+    const origIdx=nomi.indexOf(n);
+    if(editingNomeIdx===origIdx) return `<tr><td><input class="nome-edit-input" id="en-name-${origIdx}" value="${n.name}"></td><td><input class="nome-edit-tipo" id="en-tipo-${origIdx}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td><td style="white-space:nowrap"><button class="btn-nome-save" onclick="saveEditNome(${origIdx})">✔</button><button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button></td></tr>`;
+    return `<tr><td><strong>${n.name}</strong></td><td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td><td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${origIdx})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;
   }).join('');
   document.getElementById('tipoSuggest').innerHTML=getTipi().map(t=>`<option value="${t}">`).join('');
 }
