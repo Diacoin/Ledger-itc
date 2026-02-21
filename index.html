@@ -955,7 +955,7 @@ function renderNomiPage(){
   tbody.innerHTML=nomiSort.map((n,i)=>{
     const origIdx=nomi.indexOf(n);
     if(editingNomeIdx===origIdx) return `<tr><td><input class="nome-edit-input" id="en-name-${origIdx}" value="${n.name}"></td><td><input class="nome-edit-tipo" id="en-tipo-${origIdx}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td><td style="white-space:nowrap"><button class="btn-nome-save" onclick="saveEditNome(${origIdx})">✔</button><button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button></td></tr>`;
-    return `<tr><td><strong>${n.name}</strong></td><td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td><td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${origIdx})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;
+    return `<tr><td><strong style="color:white;">${n.name}</strong></td><td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td><td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${origIdx})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;
   }).join('');
   document.getElementById('tipoSuggest').innerHTML=getTipi().map(t=>`<option value="${t}">`).join('');
 }
