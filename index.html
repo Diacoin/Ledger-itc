@@ -23,6 +23,7 @@
   *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
   body{background:var(--bg);padding:20px;color:var(--text);transition:background .3s,color .3s;}
 
+  /* LOGIN */
   .login-wrapper{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
   .login-box{background:var(--surface);border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 8px 32px var(--shadow2);}
   .login-logo{text-align:center;margin-bottom:32px;}
@@ -35,23 +36,23 @@
   .login-btn:hover{background:#1558b0;}
   .login-btn:disabled{background:#ccc;cursor:not-allowed;}
   .login-error{background:#fce8e6;color:#ea4335;padding:12px;border-radius:8px;font-size:13px;text-align:center;}
-  .login-loading{text-align:center;color:var(--text3);font-size:13px;margin-top:16px;}
   #app{display:none;}
   #app.loaded{display:block;}
 
+  /* LAYOUT */
   .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
   .logo-wrap{display:flex;align-items:center;gap:8px;}
-  .header-right{display:flex;gap:8px;align-items:center;}
-  body.dark #logoSvg ellipse{stroke:#4a90d9;}
-  body.dark #logoSvg circle:first-of-type{fill:#4a90d9;}
+  .header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
   .user-info{background:var(--surface);border:1px solid var(--input-border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;}
   .btn-logout{background:#ea4335;color:white;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12px;font-weight:bold;}
   .btn-logout:hover{background:#c5221f;}
   .btn-settings{background:var(--surface);border:1px solid var(--input-border);color:var(--text2);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;transition:all .2s;}
   .btn-settings:hover{background:var(--hover);}
+
+  /* SETTINGS */
   .settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
   .settings-overlay.open{display:flex;}
-  .settings-panel{background:var(--surface);border-radius:14px;padding:24px;width:320px;box-shadow:0 8px 32px var(--shadow2);}
+  .settings-panel{background:var(--surface);border-radius:14px;padding:24px;width:340px;box-shadow:0 8px 32px var(--shadow2);}
   .settings-panel h3{font-size:16px;color:var(--text);margin-bottom:18px;}
   .settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
   .settings-row:last-child{border-bottom:none;padding-bottom:0;}
@@ -65,29 +66,34 @@
   .toggle input:checked+.toggle-slider{background:#1a73e8;}
   .toggle input:checked+.toggle-slider:before{transform:translateX(20px);}
   .btn-close-settings{width:100%;margin-top:16px;padding:10px;background:#1a73e8;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
+  .settings-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
 
-  nav{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:6px;box-shadow:0 2px 8px var(--shadow);}
-  .nav-btn{flex:1;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;color:var(--text2);transition:all .15s;}
+  /* NAV */
+  nav{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:6px;box-shadow:0 2px 8px var(--shadow);flex-wrap:wrap;}
+  .nav-btn{flex:1;min-width:80px;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:bold;color:var(--text2);transition:all .15s;}
   .nav-btn:hover{background:var(--hover);}
   .nav-btn.active{background:#1a73e8;color:white;}
   .page{display:none;} .page.active{display:block;}
   h2{text-align:center;color:#1a73e8;margin-bottom:20px;font-size:20px;}
   h3{font-size:14px;color:var(--text2);margin-bottom:10px;}
 
+  /* CARDS */
   .summary{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
   .card{flex:1;min-width:130px;padding:12px 16px;border-radius:10px;color:white;text-align:center;}
   .card.in{background:#34a853;} .card.out{background:#ea4335;}
   .card.saldo-pos{background:#1a73e8;} .card.saldo-neg{background:#e65100;} .card.neutral{background:#607d8b;}
   .card label{font-size:11px;opacity:.9;display:block;margin-bottom:3px;}
-  .card span{font-size:17px;font-weight:bold;}
+  .card span{font-size:16px;font-weight:bold;}
   .filter-note{font-size:10px;color:#ffe082;font-style:italic;}
 
+  /* ENTITY BANNER */
   .entity-banner{background:#1a73e8;color:white;border-radius:10px;padding:10px 16px;margin-bottom:10px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
   .entity-banner.active{display:flex;}
   .entity-banner span{font-size:13px;font-weight:bold;}
   .entity-banner button{background:rgba(255,255,255,.25);border:none;color:white;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;}
 
-  .filter-toggle-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:10px;padding:10px 16px;margin-bottom:8px;box-shadow:0 2px 8px var(--shadow);cursor:pointer;user-select:none;transition:border-radius .2s;}
+  /* FILTERS */
+  .filter-toggle-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:10px;padding:10px 16px;margin-bottom:8px;box-shadow:0 2px 8px var(--shadow);cursor:pointer;user-select:none;}
   .filter-toggle-bar.open{border-radius:10px 10px 0 0;}
   .filter-toggle-bar:hover{background:var(--hover);}
   .filter-toggle-left{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:bold;color:var(--text2);}
@@ -121,23 +127,43 @@
   .btn-sm.red{background:#fce8e6;color:#ea4335;}
   .btn-sm.grey{background:var(--hover);color:var(--text3);}
   .entity-filter-wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1;}
-  .entity-select,.tipo-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;flex:1;min-width:140px;background:var(--input-bg);color:var(--text);}
+  .entity-select,.tipo-select,.val-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;flex:1;min-width:120px;background:var(--input-bg);color:var(--text);}
   .entity-select.active-sel{border-color:#1a73e8;color:#1a73e8;font-weight:bold;}
   .tipo-select.active-sel{border-color:#8e44ad;color:#8e44ad;font-weight:bold;}
+  .val-select.active-sel{border-color:#e67e22;color:#e67e22;font-weight:bold;}
   .filter-reset-row{display:flex;justify-content:flex-end;margin-top:4px;}
 
+  /* INSERT BOX */
   .insert-box{background:var(--insert-bg);border:2px solid var(--insert-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 10px var(--shadow);}
   .insert-box-title{font-size:13px;font-weight:bold;color:var(--insert-border);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .controls input,.controls select{padding:7px 9px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
   .controls input[type="date"]{flex:1;min-width:115px;}
   .controls input[type="text"]{flex:2;min-width:120px;}
-  .controls input[type="number"]{flex:1;min-width:85px;}
-  .controls select{flex:1;min-width:105px;}
+  .controls input[type="number"]{flex:1;min-width:80px;}
+  .controls select{flex:1;min-width:100px;}
   .btn-add{padding:8px 16px;background:#1a73e8;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-add:hover{background:#1558b0;}
   .arrow-label{font-size:18px;color:#1a73e8;font-weight:bold;padding:0 2px;}
 
+  /* FX ROW */
+  .fx-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:8px 12px;background:rgba(230,126,34,.1);border:1px solid #e67e22;border-radius:8px;}
+  .fx-label{font-size:12px;color:#e67e22;font-weight:bold;min-width:60px;}
+  .fx-badge{background:#e67e22;color:white;border-radius:8px;padding:2px 8px;font-size:11px;font-weight:bold;white-space:nowrap;}
+  .fx-rate-info{font-size:11px;color:var(--text3);font-style:italic;}
+  .fx-loading{font-size:11px;color:#1a73e8;font-style:italic;}
+
+  /* CURRENCY BADGES */
+  .cur-eur{background:#e8f0fe;color:#1a73e8;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
+  .cur-gbp{background:#f3e5f5;color:#8e44ad;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
+  .cur-aed{background:#fff3e0;color:#e67e22;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
+  .cur-other{background:#e0f5f1;color:#16a085;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
+  body.dark .cur-eur{background:#1e3a6e;color:#7ec0f5;}
+  body.dark .cur-gbp{background:#3a1a4a;color:#ce93d8;}
+  body.dark .cur-aed{background:#3a2a10;color:#ffb74d;}
+  body.dark .cur-other{background:#0a2a25;color:#4db6ac;}
+
+  /* TABLE */
   table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);}
   thead{background:#1a73e8;color:white;}
   th{padding:9px 8px;text-align:left;font-size:11px;white-space:nowrap;}
@@ -146,13 +172,15 @@
   td{padding:7px 8px;font-size:11px;border-bottom:1px solid var(--border);color:var(--text);}
   tr:hover td{background:var(--row-hover);}
   tr.editing td{background:var(--edit-row)!important;}
+  tr.exchange-row td{background:rgba(230,126,34,.05);}
+  body.dark tr.exchange-row td{background:rgba(230,126,34,.08);}
   .badge-name{border-radius:10px;padding:2px 8px;font-size:10px;font-weight:bold;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
   .badge-name:hover{opacity:.75;}
   .badge-from{background:#fce8e6;color:#c0392b;}
   .badge-to{background:#e6f4ea;color:#1e8449;}
   body.dark .badge-from{background:#4a1a1a;color:#ff6b6b;}
   body.dark .badge-to{background:#1a3a2a;color:#6bcf8a;}
-  .tipo-tag{background:#f3e5f5;color:#8e44ad;border-radius:8px;padding:1px 6px;font-size:9px;font-weight:bold;display:inline-block;margin-left:3px;vertical-align:middle;}
+  .tipo-tag{background:#f3e5f5;color:#8e44ad;border-radius:8px;padding:1px 6px;font-size:9px;font-weight:bold;display:inline-block;margin-left:2px;vertical-align:middle;}
   body.dark .tipo-tag{background:#3a1a4a;color:#ce93d8;}
   .c1-badge{background:#f3e5f5;color:#9c27b0;border-radius:10px;padding:2px 6px;font-size:10px;font-weight:bold;}
   .c2-badge{background:#fff3e0;color:#e67e22;border-radius:10px;padding:2px 6px;font-size:10px;font-weight:bold;}
@@ -161,6 +189,7 @@
   body.dark .c2-badge{background:#3a2a10;color:#ffb74d;}
   body.dark .c3-badge{background:#0a2a25;color:#4db6ac;}
   .amount-pos{color:#34a853;font-weight:bold;} .amount-neg{color:#ea4335;font-weight:bold;} .amount-neu{color:var(--text2);font-weight:bold;}
+  .fx-tag{background:#e67e22;color:white;border-radius:6px;padding:1px 5px;font-size:9px;font-weight:bold;display:inline-block;margin-left:2px;}
   .empty{text-align:center;color:var(--text4);padding:30px;font-style:italic;}
   .row-actions{display:flex;gap:3px;}
   .btn-edit,.btn-del,.btn-save,.btn-cancel{border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 6px;}
@@ -171,6 +200,7 @@
   .btn-action{padding:8px 16px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-action.purple{background:#8e44ad;} .btn-action.purple:hover{background:#7d3c98;}
 
+  /* ARCHIVIO NOMI */
   .archivio-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .nomi-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
   .nomi-table th{text-align:left;padding:7px 10px;font-size:12px;color:white;border-bottom:2px solid var(--border);font-weight:bold;}
@@ -181,8 +211,9 @@
   .nome-tipo-empty{color:var(--text4);font-size:11px;font-style:italic;}
   .btn-nome-del{background:#fce8e6;color:#ea4335;border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 8px;}
   .btn-nome-edit{background:#e8f0fe;color:#1a73e8;border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 8px;margin-right:3px;}
-  .nome-edit-input{padding:4px 8px;border:1px solid #1a73e8;border-radius:5px;font-size:12px;background:var(--input-bg);color:var(--text);width:120px;}
-  .nome-edit-tipo{padding:4px 8px;border:1px solid #8e44ad;border-radius:5px;font-size:12px;background:var(--input-bg);color:var(--text);min-width:100px;}
+  .nome-edit-input{padding:4px 8px;border:1px solid #1a73e8;border-radius:5px;font-size:12px;background:var(--input-bg);color:var(--text);width:110px;}
+  .nome-edit-tipo{padding:4px 8px;border:1px solid #8e44ad;border-radius:5px;font-size:12px;background:var(--input-bg);color:var(--text);min-width:90px;}
+  .nome-edit-val{padding:4px 8px;border:1px solid #e67e22;border-radius:5px;font-size:12px;background:var(--input-bg);color:var(--text);min-width:70px;}
   .btn-nome-save{background:#e6f4ea;color:#34a853;border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 8px;font-weight:bold;margin-right:3px;}
   .btn-nome-cancel{background:var(--hover);color:var(--text3);border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 8px;}
   .tag-add{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center;}
@@ -204,6 +235,8 @@
   .sub-title{font-size:13px;font-weight:bold;margin-bottom:8px;}
   .sub-title.c1{color:#9c27b0;} .sub-title.c2{color:#e67e22;}
   .sel-parent{padding:7px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;min-width:160px;background:var(--input-bg);color:var(--text);}
+
+  /* BACKUP */
   .backup-box{background:var(--surface);border-radius:10px;padding:20px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .backup-box h3{font-size:15px;margin-bottom:6px;color:var(--text);}
   .backup-box p{font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5;}
@@ -212,11 +245,10 @@
   .btn-backup.save{background:#1a73e8;} .btn-backup.restore{background:#e67e22;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
-  .backup-status.err{background:#fce8e6;color:#ea4335;display:block;}
 
-  /* ============ REPORT PAGE ============ */
+  /* REPORT */
   .report-layout{display:flex;gap:16px;align-items:flex-start;}
-  .report-sidebar{width:240px;flex-shrink:0;}
+  .report-sidebar{width:230px;flex-shrink:0;}
   .report-main{flex:1;min-width:0;}
   .report-saved-list{background:var(--surface);border-radius:10px;box-shadow:0 2px 8px var(--shadow);overflow:hidden;margin-bottom:12px;}
   .report-saved-title{background:#1a73e8;color:white;padding:10px 14px;font-size:13px;font-weight:bold;}
@@ -240,7 +272,6 @@
   .btn-report.run{background:#1a73e8;}
   .btn-report.save{background:#34a853;}
   .btn-report.print{background:#607d8b;}
-  .btn-report.orange{background:#e67e22;}
   .report-name-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
   .report-name-input{flex:1;padding:7px 10px;border:2px solid #34a853;border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);min-width:160px;}
   .report-output{background:var(--surface);border-radius:10px;box-shadow:0 2px 8px var(--shadow);overflow:hidden;}
@@ -264,24 +295,27 @@
   .rtb-tipo{background:#fff3e0;color:#e67e22;}
   .rtb-date{background:#e0f5f1;color:#16a085;}
   .rtb-saldo{background:#fce8e6;color:#c0392b;}
+  .rtb-fx{background:#fff8e1;color:#f57f17;}
   body.dark .rtb-estratto{background:#1e3a6e;color:#7ec0f5;}
   body.dark .rtb-categoria{background:#3a1a4a;color:#ce93d8;}
   body.dark .rtb-tipo{background:#3a2a10;color:#ffb74d;}
   body.dark .rtb-date{background:#0a2a25;color:#4db6ac;}
   body.dark .rtb-saldo{background:#4a1a1a;color:#ff6b6b;}
+  body.dark .rtb-fx{background:#2a2000;color:#ffd54f;}
   .report-section-header{background:var(--surface2);border-top:2px solid var(--border);font-weight:bold;font-size:11px;color:var(--text2);}
   .report-section-header td{padding:6px 10px;}
+  .cur-section-header{background:rgba(26,115,232,.08);border-top:3px solid #1a73e8;}
+  body.dark .cur-section-header{background:rgba(74,144,217,.1);}
+  .cur-section-header td{padding:8px 10px;font-weight:bold;color:#1a73e8;font-size:12px;}
+
   @media(max-width:700px){
     .report-layout{flex-direction:column;}
     .report-sidebar{width:100%;}
   }
-
-  /* ============ PRINT ============ */
   @media print{
     body{background:white!important;padding:10px;}
-    .app-header,.user-info,.btn-logout{display:flex!important;}
     nav,.filter-toggle-bar,.filter-panel,.insert-box,.row-actions,.entity-banner,.btn-settings,.settings-overlay,
-    .report-sidebar,.report-config-box,.report-actions{display:none!important;}
+    .report-sidebar,.report-config-box,.report-actions,.fx-row{display:none!important;}
     .page{display:block!important;}
     #page-nomi,#page-categorie,#page-backup,#page-registro{display:none!important;}
     #page-report{display:block!important;}
@@ -290,9 +324,6 @@
     .report-table th{background:#1a73e8!important;color:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .report-table tfoot td{background:#e8f0fe!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .report-output-header{background:#1a73e8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .card{border:1px solid #ddd;color:#333!important;background:white!important;}
-    table{box-shadow:none;}
-    th{background:#1a73e8!important;color:white!important;}
   }
 </style>
 </head>
@@ -301,14 +332,14 @@
 <div class="login-wrapper" id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
-      <svg width="60" height="60" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <svg width="60" height="60" viewBox="0 0 52 52">
         <ellipse cx="26" cy="30" rx="22" ry="10" fill="none" stroke="#1a3a8f" stroke-width="2.2" stroke-dasharray="100 8" transform="rotate(-18 26 30)"/>
         <circle cx="13" cy="7" r="4.5" fill="#1a5fbf"/>
         <circle cx="24" cy="3.5" r="3" fill="#2980d9"/>
         <circle cx="34" cy="5" r="2" fill="#5ba4e8"/>
         <circle cx="41" cy="9" r="1.4" fill="#7ec0f5"/>
-        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#headGrad2)"/>
-        <defs><linearGradient id="headGrad2" x1="15" y1="14" x2="37" y2="40"><stop offset="0%" stop-color="#2060c0"/><stop offset="100%" stop-color="#0a2a7a"/></linearGradient></defs>
+        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#hg2)"/>
+        <defs><linearGradient id="hg2" x1="15" y1="14" x2="37" y2="40"><stop offset="0%" stop-color="#2060c0"/><stop offset="100%" stop-color="#0a2a7a"/></linearGradient></defs>
       </svg>
       <div class="login-title"><span style="color:#1a5fbf;">ILTUO</span><span style="color:#e67e22;">CAVEAU</span></div>
       <div class="login-subtitle">Conoscenza, Azione, Libertà</div>
@@ -319,11 +350,12 @@
       <input type="password" class="login-input" id="loginPassword" placeholder="Password" required autocomplete="current-password">
       <button type="submit" class="login-btn" id="loginBtn">🔒 Accedi</button>
     </form>
-    <div class="login-loading" id="loginLoading" style="display:none">Caricamento dati...</div>
+    <div style="text-align:center;color:var(--text3);font-size:13px;margin-top:16px;display:none" id="loginLoading">Caricamento...</div>
   </div>
 </div>
 
 <div id="app">
+  <!-- Settings -->
   <div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
     <div class="settings-panel">
       <h3>⚙️ Impostazioni</h3>
@@ -331,11 +363,21 @@
         <label>🌙 Tema scuro</label>
         <div class="toggle-wrap">
           <span class="toggle-label" id="themeLabel">Chiaro</span>
-          <label class="toggle">
-            <input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)">
-            <span class="toggle-slider"></span>
-          </label>
+          <label class="toggle"><input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)"><span class="toggle-slider"></span></label>
         </div>
+      </div>
+      <div class="settings-row">
+        <label>💱 Valuta di riferimento</label>
+        <select class="settings-select" id="refCurrSel" onchange="setRefCurr(this.value)">
+          <option value="EUR">€ Euro</option>
+          <option value="GBP">£ Sterlina</option>
+          <option value="AED">AED Dirham</option>
+        </select>
+      </div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <label>📡 Tassi FX (aggiornati)</label>
+        <div id="fxRateDisplay" style="font-size:11px;color:var(--text3);line-height:1.7;"></div>
+        <button onclick="fetchFxRates(true)" style="background:#e8f0fe;color:#1a73e8;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:bold;">🔄 Aggiorna tassi</button>
       </div>
       <button class="btn-close-settings" onclick="closeSettings()">Chiudi</button>
     </div>
@@ -343,14 +385,14 @@
 
   <div class="app-header">
     <div class="logo-wrap">
-      <svg id="logoSvg" width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <svg width="52" height="52" viewBox="0 0 52 52">
         <ellipse cx="26" cy="30" rx="22" ry="10" fill="none" stroke="#1a3a8f" stroke-width="2.2" stroke-dasharray="100 8" transform="rotate(-18 26 30)"/>
         <circle cx="13" cy="7" r="4.5" fill="#1a5fbf"/>
         <circle cx="24" cy="3.5" r="3" fill="#2980d9"/>
         <circle cx="34" cy="5" r="2" fill="#5ba4e8"/>
         <circle cx="41" cy="9" r="1.4" fill="#7ec0f5"/>
-        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#headGrad)"/>
-        <defs><linearGradient id="headGrad" x1="15" y1="14" x2="37" y2="40"><stop offset="0%" stop-color="#2060c0"/><stop offset="100%" stop-color="#0a2a7a"/></linearGradient></defs>
+        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#hg)"/>
+        <defs><linearGradient id="hg" x1="15" y1="14" x2="37" y2="40"><stop offset="0%" stop-color="#2060c0"/><stop offset="100%" stop-color="#0a2a7a"/></linearGradient></defs>
       </svg>
       <div style="line-height:1.15;">
         <div style="font-size:17px;font-weight:900;letter-spacing:.5px;"><span style="color:#1a5fbf;">ILTUO</span><span style="color:#e67e22;">CAVEAU</span></div>
@@ -373,19 +415,17 @@
     <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
   </nav>
 
-  <!-- REGISTRO -->
+  <!-- ═══ REGISTRO ═══ -->
   <div class="page active" id="page-registro">
     <h2>💸 Registro Movimenti</h2>
     <div class="entity-banner" id="entityBanner">
       <span id="entityBannerLabel"></span>
       <button onclick="clearEntityFilter()">✕ Rimuovi filtro</button>
     </div>
-    <div class="summary">
-      <div class="card in"><label>Totale Entrate <span id="fn1" class="filter-note"></span></label><span id="totIn">€ 0,00</span></div>
-      <div class="card out"><label>Totale Uscite <span id="fn2" class="filter-note"></span></label><span id="totOut">€ 0,00</span></div>
-      <div class="card saldo-pos" id="saldoCard"><label>Saldo <span id="fn3" class="filter-note"></span></label><span id="saldo">€ 0,00</span></div>
-      <div class="card neutral"><label>Movimenti</label><span id="totCount">0</span></div>
-    </div>
+
+    <!-- Summary cards per valuta -->
+    <div id="summaryArea"></div>
+
     <div class="filter-toggle-bar" id="filterToggleBar" onclick="toggleFilterPanel()">
       <div class="filter-toggle-left">🔍 Filtri <span class="filter-active-badge" id="filterBadge">0 attivi</span></div>
       <div class="filter-toggle-right"><span class="filter-chevron" id="filterChevron">▼</span></div>
@@ -406,6 +446,18 @@
         </div>
       </div>
       <div class="filter-row">
+        <span class="filter-label">💱 Valuta:</span>
+        <div class="entity-filter-wrap">
+          <select class="val-select" id="valutaSel" onchange="onValutaSelChange()">
+            <option value="">— Tutte —</option>
+            <option value="EUR">€ Euro</option>
+            <option value="GBP">£ Sterlina</option>
+            <option value="AED">AED Dirham</option>
+          </select>
+          <button class="btn-sm grey" onclick="clearValutaFilter()">✕</button>
+        </div>
+      </div>
+      <div class="filter-row">
         <span class="filter-label">📅 Periodo:</span>
         <div class="date-range">
           <input type="date" id="dateFrom" onchange="updateFilterBadge();render()">
@@ -422,21 +474,36 @@
       </div>
       <div class="filter-reset-row"><button class="btn-sm grey" onclick="clearFilters()">✕ Reset filtri</button></div>
     </div>
+
+    <!-- Insert box -->
     <div class="insert-box">
       <div class="insert-box-title">➕ Nuovo Movimento</div>
       <div class="controls">
         <input type="date" id="data"/>
-        <select id="selFrom"><option value="">— From —</option></select>
+        <select id="selFrom" onchange="onFromChange()"><option value="">— From —</option></select>
         <span class="arrow-label">→</span>
-        <select id="selTo"><option value="">— To —</option></select>
+        <select id="selTo" onchange="onToChange()"><option value="">— To —</option></select>
         <input type="text" id="descrizione" placeholder="Descrizione..."/>
         <select id="selC1" onchange="onC1Change()"><option value="">— Cat.1 —</option></select>
         <select id="selC2" onchange="onC2Change()" disabled><option value="">— Cat.2 —</option></select>
         <select id="selC3" disabled><option value="">— Cat.3 —</option></select>
-        <input type="number" id="importo" placeholder="Importo €" min="0" step="0.01"/>
+        <input type="number" id="importo" placeholder="Importo" min="0" step="0.01" oninput="onImportoChange()"/>
+        <span id="curFromBadge" style="font-size:13px;font-weight:bold;color:#1a73e8;min-width:30px;"></span>
         <button class="btn-add" onclick="aggiungi()">+ Aggiungi</button>
       </div>
+      <!-- FX row (exchange) -->
+      <div class="fx-row" id="fxRow" style="display:none">
+        <span class="fx-label">💱 Exchange:</span>
+        <span id="fxFromLabel" style="font-size:12px;font-weight:bold;color:var(--text2);"></span>
+        <span style="color:var(--text3);font-size:13px;">→</span>
+        <input type="number" id="importoTo" placeholder="Importo ricevuto" min="0" step="0.01" style="flex:1;min-width:100px;padding:5px 8px;border:1px solid #e67e22;border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);" oninput="onImportoToChange()">
+        <span id="curToBadge" style="font-size:13px;font-weight:bold;color:#e67e22;min-width:30px;"></span>
+        <span class="fx-badge" id="fxRateBadge">Tasso: —</span>
+        <span class="fx-loading" id="fxLoading" style="display:none">⏳ Recupero tasso...</span>
+        <input type="number" id="tassoFX" placeholder="Tasso (auto)" step="0.0001" style="flex:1;min-width:80px;padding:5px 8px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);" oninput="onTassoChange()">
+      </div>
     </div>
+
     <table>
       <thead><tr>
         <th class="sortable" onclick="setSort('data')">Data <span id="sh-data">⇅</span></th>
@@ -444,20 +511,19 @@
         <th class="sortable" onclick="setSort('to')">To <span id="sh-to">⇅</span></th>
         <th class="sortable" onclick="setSort('desc')">Descrizione <span id="sh-desc">⇅</span></th>
         <th class="sortable" onclick="setSort('c1')">Cat.1 <span id="sh-c1">⇅</span></th>
-        <th class="sortable" onclick="setSort('c2')">Cat.2 <span id="sh-c2">⇅</span></th>
-        <th class="sortable" onclick="setSort('c3')">Cat.3 <span id="sh-c3">⇅</span></th>
         <th class="sortable" onclick="setSort('importo')">Importo <span id="sh-importo">⇅</span></th>
-        <th>Segno</th><th></th>
+        <th>Valuta</th>
+        <th>Segno</th>
+        <th></th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 
-  <!-- REPORT -->
+  <!-- ═══ REPORT ═══ -->
   <div class="page" id="page-report">
     <h2>📊 Report</h2>
     <div class="report-layout">
-      <!-- Sidebar report salvati -->
       <div class="report-sidebar">
         <div class="report-saved-list">
           <div class="report-saved-title">📁 Report Salvati</div>
@@ -465,16 +531,13 @@
         </div>
         <button class="btn-report run" style="width:100%;margin-top:4px;" onclick="newReport()">+ Nuovo Report</button>
       </div>
-      <!-- Config + Output -->
       <div class="report-main">
         <div class="report-config-box" id="reportConfigBox">
           <div class="report-config-title">⚙️ Configurazione Report</div>
-          <!-- Nome report -->
           <div class="report-name-row">
             <span class="report-field-label" style="min-width:80px;font-size:12px;font-weight:bold;color:var(--text2);">Nome:</span>
-            <input type="text" class="report-name-input" id="rptName" placeholder="Es. Estratto Conto BancaX...">
+            <input type="text" class="report-name-input" id="rptName" placeholder="Nome report...">
           </div>
-          <!-- Tipo report -->
           <div class="report-field-row">
             <span class="report-field-label">Tipo:</span>
             <select class="report-select" id="rptType" onchange="onRptTypeChange()">
@@ -482,12 +545,11 @@
               <option value="categoria">🏷️ Riepilogo per categoria</option>
               <option value="tipo">👥 Riepilogo per tipo</option>
               <option value="date">📅 Movimenti per periodo</option>
-              <option value="saldo">📈 Saldo per entità (confronto)</option>
+              <option value="saldo">📈 Saldo per entità</option>
+              <option value="fx">💱 Report Exchange FX</option>
             </select>
           </div>
-          <!-- Parametri dinamici -->
           <div id="rptParams">
-            <!-- Estratto: entità + date -->
             <div id="rptParamEstrato">
               <div class="report-field-row">
                 <span class="report-field-label">Entità:</span>
@@ -500,7 +562,6 @@
                 <input type="date" class="report-input" id="rptTo">
               </div>
             </div>
-            <!-- Categoria: cat1 + date -->
             <div id="rptParamCategoria" style="display:none">
               <div class="report-field-row">
                 <span class="report-field-label">Cat.1:</span>
@@ -513,7 +574,6 @@
                 <input type="date" class="report-input" id="rptToCat">
               </div>
             </div>
-            <!-- Tipo: tipo + date -->
             <div id="rptParamTipo" style="display:none">
               <div class="report-field-row">
                 <span class="report-field-label">Tipo:</span>
@@ -526,7 +586,6 @@
                 <input type="date" class="report-input" id="rptToTipo">
               </div>
             </div>
-            <!-- Date: solo range -->
             <div id="rptParamDate" style="display:none">
               <div class="report-field-row">
                 <span class="report-field-label">Dal:</span>
@@ -535,13 +594,20 @@
                 <input type="date" class="report-input" id="rptToDate">
               </div>
             </div>
-            <!-- Saldo: date -->
             <div id="rptParamSaldo" style="display:none">
               <div class="report-field-row">
                 <span class="report-field-label">Dal:</span>
                 <input type="date" class="report-input" id="rptFromSaldo">
                 <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
                 <input type="date" class="report-input" id="rptToSaldo">
+              </div>
+            </div>
+            <div id="rptParamFx" style="display:none">
+              <div class="report-field-row">
+                <span class="report-field-label">Dal:</span>
+                <input type="date" class="report-input" id="rptFromFx">
+                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
+                <input type="date" class="report-input" id="rptToFx">
               </div>
             </div>
           </div>
@@ -551,7 +617,6 @@
             <button class="btn-report print" onclick="printReport()">🖨️ Stampa / PDF</button>
           </div>
         </div>
-        <!-- Output -->
         <div class="report-output" id="reportOutput" style="display:none">
           <div class="report-output-header">
             <div class="report-output-title" id="rptOutTitle">Report</div>
@@ -563,33 +628,38 @@
     </div>
   </div>
 
-  <!-- NOMI -->
+  <!-- ═══ NOMI ═══ -->
   <div class="page" id="page-nomi">
-    <h2>👤 <span style="color:white;">Archivio Nomi</span></h2>
+    <h2>👤 Archivio Nomi</h2>
     <div class="archivio-box">
       <div class="insert-box-title" style="color:#1a73e8;font-size:13px;font-weight:bold;margin-bottom:10px;">➕ Nuovo Nome</div>
       <div class="tag-add" style="margin-top:0;margin-bottom:0;">
-        <input type="text" id="inputNome" placeholder="Nuovo nome..." onkeydown="if(event.key==='Enter')addNome()"/>
+        <input type="text" id="inputNome" placeholder="Nome..." onkeydown="if(event.key==='Enter')addNome()"/>
         <input type="text" id="inputNomeTipo" placeholder="Tipo..." list="tipoSuggest"/>
         <datalist id="tipoSuggest"></datalist>
+        <select id="inputNomeVal" style="padding:8px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);">
+          <option value="EUR">€ Euro</option>
+          <option value="GBP">£ Sterlina</option>
+          <option value="AED">AED Dirham</option>
+        </select>
         <button class="btn-at nome" onclick="addNome()">+ Aggiungi</button>
       </div>
     </div>
     <div class="archivio-box">
       <h3>Nomi / Entità salvati</h3>
-      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Tipo</strong> raggruppa i nomi per filtrare il saldo.</p>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Valuta</strong> determina la valuta nativa del conto/entità. Il campo <strong>Tipo</strong> raggruppa i nomi nei report.</p>
       <table class="nomi-table">
-        <thead><tr><th>Nome</th><th>Tipo</th><th>Azioni</th></tr></thead>
+        <thead style="background:#1a73e8;"><tr><th style="background:#1a73e8;">Nome</th><th style="background:#1a73e8;">Tipo</th><th style="background:#1a73e8;">Valuta</th><th style="background:#1a73e8;">Azioni</th></tr></thead>
         <tbody id="nomiTbody"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- CATEGORIE -->
+  <!-- ═══ CATEGORIE ═══ -->
   <div class="page" id="page-categorie">
     <h2>🏷️ Archivio Categorie</h2>
     <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
-      <button class="btn-report print" onclick="stampaCategorie()" style="padding:8px 18px;background:#607d8b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;">🖨️ Stampa Categorie</button>
+      <button onclick="stampaCategorie()" style="padding:8px 18px;background:#607d8b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;">🖨️ Stampa Categorie</button>
     </div>
     <div class="archivio-box">
       <h3>🟣 Categoria 1</h3>
@@ -600,7 +670,7 @@
       </div>
     </div>
     <div class="archivio-box">
-      <h3>🟠 Categoria 2 <small style="color:var(--text3)">(dipende da Cat.1)</small></h3>
+      <h3>🟠 Categoria 2</h3>
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
         <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
         <select class="sel-parent" id="c1ForC2" onchange="renderC2Page()"><option value="">— Seleziona —</option></select>
@@ -612,7 +682,7 @@
       </div>
     </div>
     <div class="archivio-box">
-      <h3>🟢 Categoria 3 <small style="color:var(--text3)">(dipende da Cat.2)</small></h3>
+      <h3>🟢 Categoria 3</h3>
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
         <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
         <select class="sel-parent" id="c1ForC3" onchange="syncC2ForC3();renderC3Page()"><option value="">— Seleziona —</option></select>
@@ -627,18 +697,18 @@
     </div>
   </div>
 
-  <!-- BACKUP -->
+  <!-- ═══ BACKUP ═══ -->
   <div class="page" id="page-backup">
     <h2>💾 Backup</h2>
     <div class="backup-box">
       <h3>⬇️ Esporta dati locali</h3>
-      <p>Scarica i dati in formato JSON (i dati sono già salvati su cloud Firebase).</p>
+      <p>Scarica i dati in formato JSON.</p>
       <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">💾 Scarica JSON</button></div>
     </div>
     <div class="backup-box">
       <h3>☁️ Sincronizzazione</h3>
-      <p>I tuoi dati sono automaticamente sincronizzati su Firebase Realtime Database. Ogni modifica viene salvata in tempo reale.</p>
-      <div id="syncStatus" class="backup-status ok">✅ Sincronizzato con Firebase</div>
+      <p>I tuoi dati sono automaticamente sincronizzati su Firebase Realtime Database.</p>
+      <div class="backup-status ok" style="display:block">✅ Sincronizzato con Firebase</div>
     </div>
   </div>
 </div>
@@ -658,15 +728,78 @@ const firebaseConfig = {
   appId: "1:361376077124:web:411566edcc50463ce6b311"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getDatabase(fbApp);
 
+// ── STATE ──────────────────────────────────────────────
 let rows=[], nomi=[], c1=[], c2Map={}, c3Map={}, savedReports=[];
 let fC1=new Set(), fC2=new Set(), fC3=new Set();
-let entityFilter='', tipoFilter='', editingIdx=null, editingNomeIdx=null;
+let entityFilter='', tipoFilter='', valutaFilter='';
+let editingIdx=null, editingNomeIdx=null;
 let sortField='data', sortDir=1, filterOpen=false;
 let currentUser=null, activeReportIdx=null;
+let refCurr='EUR';
+// Live FX rates (base EUR)
+let fxRates = { EUR:1, GBP:0.853, AED:3.972 }; // fallback
+let fxLoaded = false;
+
+// ── CURRENCY UTILS ────────────────────────────────────
+const CUR_SYMBOLS = { EUR:'€', GBP:'£', AED:'AED', '':'?' };
+const CUR_CLASSES = { EUR:'cur-eur', GBP:'cur-gbp', AED:'cur-aed' };
+
+function curSymbol(c){ return CUR_SYMBOLS[c]||c; }
+function curClass(c){ return CUR_CLASSES[c]||'cur-other'; }
+function getNomeValuta(name){ const n=nomi.find(x=>x.name===name); return n?n.valuta||'EUR':'EUR'; }
+
+function fmtAmt(amount, cur){
+  const sym = curSymbol(cur||'EUR');
+  const parts = Math.abs(amount).toFixed(2).split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  const neg = amount < 0 ? '-' : '';
+  if(cur==='AED') return `${neg}${parts[0]},${parts[1]} ${sym}`;
+  return `${neg}${sym}\u00a0${parts[0]},${parts[1]}`;
+}
+
+function isExchangeRow(r){ return !!(r.isExchange && r.valutaTo && r.valutaTo !== r.valuta); }
+
+// ── FX RATES ──────────────────────────────────────────
+async function fetchFxRates(force=false){
+  try {
+    const cacheKey = 'fxRates_v2', cacheTimeKey = 'fxRatesTime';
+    const now = Date.now();
+    if(!force){
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        const t = parseInt(localStorage.getItem(cacheTimeKey)||'0');
+        if(cached && (now-t) < 4*3600*1000){ fxRates = JSON.parse(cached); fxLoaded=true; updateFxDisplay(); return; }
+      } catch(e){}
+    }
+    const res = await fetch('https://open.er-api.com/v6/latest/EUR');
+    const data = await res.json();
+    if(data.rates){
+      fxRates = { EUR:1, GBP: data.rates.GBP, AED: data.rates.AED };
+      fxLoaded = true;
+      try { localStorage.setItem(cacheKey, JSON.stringify(fxRates)); localStorage.setItem(cacheTimeKey, String(now)); } catch(e){}
+      updateFxDisplay();
+    }
+  } catch(e){ console.warn('FX fetch failed, using fallback',e); updateFxDisplay(); }
+}
+
+function updateFxDisplay(){
+  const el = document.getElementById('fxRateDisplay');
+  if(!el) return;
+  el.innerHTML = `1 EUR = ${fxRates.GBP?.toFixed(4)||'—'} GBP<br>1 EUR = ${fxRates.AED?.toFixed(4)||'—'} AED<br>1 GBP = ${(fxRates.AED/fxRates.GBP)?.toFixed(4)||'—'} AED`;
+}
+
+// Tasso da curFrom a curTo
+function getRate(from, to){
+  if(from===to) return 1;
+  // tassi base EUR
+  const rFrom = fxRates[from]||1;
+  const rTo   = fxRates[to]||1;
+  return rTo/rFrom; // 1 from = ? to
+}
 
 // ── AUTH ──────────────────────────────────────────────
 window.handleLogin = async (e) => {
@@ -676,35 +809,31 @@ window.handleLogin = async (e) => {
   btn.disabled=true; btn.textContent='⏳ Accesso...'; err.style.display='none';
   try { await signInWithEmailAndPassword(auth, email, pass); }
   catch(error) {
-    err.textContent=error.code==='auth/invalid-credential'?'❌ Email o password errati':'❌ Errore: '+error.message;
+    err.textContent = error.code==='auth/invalid-credential'?'❌ Email o password errati':'❌ Errore: '+error.message;
     err.style.display='block'; btn.disabled=false; btn.textContent='🔒 Accedi';
   }
 };
-window.handleLogout = async () => { if(confirm('Uscire dall\'app?')) await signOut(auth); };
+window.handleLogout = async () => { if(confirm('Uscire?')) await signOut(auth); };
 
 onAuthStateChanged(auth, async (user) => {
-  if(user) {
+  if(user){
     currentUser=user;
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('loginLoading').style.display='block';
     document.getElementById('userEmail').textContent=user.email;
+    fetchFxRates();
     const userRef=ref(db,'users/'+user.uid);
-    const snapshot=await get(userRef);
-    if(snapshot.exists()) {
-      const d=snapshot.val();
-      rows=d.rows||[]; nomi=d.nomi||[]; c1=d.c1||[]; c2Map=d.c2Map||{}; c3Map=d.c3Map||{}; savedReports=d.savedReports||[];
-    }
-    onValue(userRef, (snapshot) => {
-      if(snapshot.exists()) {
-        const d=snapshot.val();
-        rows=d.rows||[]; nomi=d.nomi||[]; c1=d.c1||[]; c2Map=d.c2Map||{}; c3Map=d.c3Map||{}; savedReports=d.savedReports||[];
-        syncSelects(); syncTipoSel(); rebuildDD(); render();
+    const snap=await get(userRef);
+    if(snap.exists()){ loadData(snap.val()); }
+    onValue(userRef, snap2 => {
+      if(snap2.exists()){ loadData(snap2.val()); syncSelects();syncTipoSel();rebuildDD();render();
         if(document.getElementById('page-nomi').classList.contains('active')) renderNomiPage();
-        if(document.getElementById('page-categorie').classList.contains('active')) { renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page(); }
-        if(document.getElementById('page-report').classList.contains('active')) { syncReportSelects(); renderSavedReports(); }
+        if(document.getElementById('page-categorie').classList.contains('active')){ renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page(); }
+        if(document.getElementById('page-report').classList.contains('active')){ syncReportSelects();renderSavedReports(); }
       }
     });
     document.getElementById('app').classList.add('loaded');
+    document.getElementById('app').style.display='block';
     document.getElementById('data').valueAsDate=new Date();
     syncSelects(); syncTipoSel(); updateSortHeaders(); render();
   } else {
@@ -714,17 +843,26 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-async function saveToFirebase() {
-  if(!currentUser) return;
-  await set(ref(db,'users/'+currentUser.uid), { rows, nomi, c1, c2Map, c3Map, savedReports, lastModified:new Date().toISOString() });
+function loadData(d){
+  rows=d.rows||[]; nomi=d.nomi||[]; c1=d.c1||[]; c2Map=d.c2Map||{}; c3Map=d.c3Map||{};
+  savedReports=d.savedReports||[]; refCurr=d.refCurr||'EUR';
+  // migrate legacy rows: set valuta from nomi if missing
+  rows.forEach(r=>{ if(!r.valuta) r.valuta=getNomeValuta(r.from); });
 }
 
-// ── THEME ────────────────────────────────────────────
+async function saveToFirebase(){
+  if(!currentUser) return;
+  await set(ref(db,'users/'+currentUser.uid), { rows, nomi, c1, c2Map, c3Map, savedReports, refCurr, lastModified:new Date().toISOString() });
+}
+
+// ── THEME / SETTINGS ──────────────────────────────────
 function toggleDark(on){ document.body.classList.toggle('dark',on); document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro'; try{localStorage.setItem('theme',on?'dark':'light');}catch(e){} }
 try{ if(localStorage.getItem('theme')==='dark'){ document.body.classList.add('dark'); document.getElementById('darkToggle').checked=true; document.getElementById('themeLabel').textContent='Scuro'; } }catch(e){}
-function openSettings(){ document.getElementById('settingsOverlay').classList.add('open'); }
+function openSettings(){ updateFxDisplay(); document.getElementById('refCurrSel').value=refCurr; document.getElementById('settingsOverlay').classList.add('open'); }
 function closeSettings(){ document.getElementById('settingsOverlay').classList.remove('open'); }
 function closeSettingsOutside(e){ if(e.target===document.getElementById('settingsOverlay'))closeSettings(); }
+async function setRefCurr(v){ refCurr=v; await saveToFirebase(); renderSummary(); }
+window.fetchFxRates = fetchFxRates;
 
 // ── NAV ──────────────────────────────────────────────
 function goTo(p){
@@ -738,18 +876,57 @@ function goTo(p){
   if(p==='report'){syncReportSelects();renderSavedReports();}
 }
 
-// ── UTILS ────────────────────────────────────────────
-function fmt(n){
-  const parts=Math.abs(n).toFixed(2).split('.');
-  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-  return (n<0?'-':'')+'€\u00a0'+parts[0]+','+parts[1];
-}
+// ── UTILS ─────────────────────────────────────────────
 function c3k(a,b){ return a+'|'+b; }
 function getTipi(){ return [...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort(); }
 function getTipoNome(name){ const n=nomi.find(x=>x.name===name); return n?n.tipo||'':''; }
 function fmtDate(s){ return s?s.split('-').reverse().join('/'):''; }
 
-// ── FILTER / SORT (registro) ──────────────────────────
+// ── SUMMARY CARDS ─────────────────────────────────────
+function renderSummary(){
+  const filtered = getFiltered();
+  // Group by currency
+  const byCur = {};
+  filtered.forEach(r=>{
+    const cur = r.valuta||'EUR';
+    if(!byCur[cur]) byCur[cur]={in:0,out:0};
+    if(entityFilter){
+      if(r.to===entityFilter) byCur[cur].in+=r.importo;
+      else if(r.from===entityFilter) byCur[cur].out+=r.importo;
+    } else {
+      byCur[cur].in+=r.importo;
+    }
+    // If exchange, also track destination currency
+    if(isExchangeRow(r) && r.importoTo && r.valutaTo){
+      const ct = r.valutaTo;
+      if(!byCur[ct]) byCur[ct]={in:0,out:0};
+      if(entityFilter){ if(r.to===entityFilter) byCur[ct].in+=r.importoTo; }
+    }
+  });
+
+  const currencies = Object.keys(byCur).sort();
+  let html='';
+  if(currencies.length===0){
+    html=`<div class="summary">
+      <div class="card in"><label>Entrate</label><span>—</span></div>
+      <div class="card out"><label>Uscite</label><span>—</span></div>
+      <div class="card neutral"><label>Movimenti</label><span>${filtered.length}</span></div>
+    </div>`;
+  } else {
+    html='<div class="summary">';
+    currencies.forEach(cur=>{
+      const d=byCur[cur], saldo=d.in-d.out;
+      if(d.in>0) html+=`<div class="card in"><label>${curSymbol(cur)} Entrate</label><span>${fmtAmt(d.in,cur)}</span></div>`;
+      if(d.out>0) html+=`<div class="card out"><label>${curSymbol(cur)} Uscite</label><span>${fmtAmt(d.out,cur)}</span></div>`;
+      if(d.in>0||d.out>0) html+=`<div class="card ${saldo>=0?'saldo-pos':'saldo-neg'}"><label>${curSymbol(cur)} Saldo</label><span>${fmtAmt(saldo,cur)}</span></div>`;
+    });
+    html+=`<div class="card neutral"><label>Movimenti</label><span>${filtered.length}</span></div>`;
+    html+='</div>';
+  }
+  document.getElementById('summaryArea').innerHTML=html;
+}
+
+// ── FILTER / SORT ─────────────────────────────────────
 function toggleFilterPanel(){
   filterOpen=!filterOpen;
   document.getElementById('filterPanel').classList.toggle('open',filterOpen);
@@ -758,59 +935,70 @@ function toggleFilterPanel(){
 }
 function updateFilterBadge(){
   let n=0;
-  if(entityFilter)n++; if(tipoFilter)n++;
+  if(entityFilter)n++; if(tipoFilter)n++; if(valutaFilter)n++;
   if(document.getElementById('dateFrom').value||document.getElementById('dateTo').value)n++;
   if(fC1.size>0)n++; if(fC2.size>0)n++; if(fC3.size>0)n++;
   const badge=document.getElementById('filterBadge');
   badge.textContent=n+' attiv'+(n===1?'o':'i'); badge.classList.toggle('show',n>0);
-  ['fn1','fn2','fn3'].forEach(id=>document.getElementById(id).textContent=(n>0||tipoFilter)?'(filtrato)':'');
 }
-document.addEventListener('click',e=>{ document.querySelectorAll('.dropdown-panel').forEach(p=>{ if(!p.closest('.multi-select-wrap').contains(e.target)) p.classList.remove('open'); }); });
+document.addEventListener('click',e=>{ document.querySelectorAll('.dropdown-panel').forEach(p=>{ if(!p.closest('.multi-select-wrap').contains(e.target))p.classList.remove('open'); }); });
 function toggleDD(id,e){ e.stopPropagation(); const p=document.getElementById(id),was=p.classList.contains('open'); document.querySelectorAll('.dropdown-panel').forEach(x=>x.classList.remove('open')); if(!was)p.classList.add('open'); }
 
 function syncTipoSel(){
-  const sel=document.getElementById('tipoSel'), prev=tipoFilter;
+  const sel=document.getElementById('tipoSel'),prev=tipoFilter;
   sel.innerHTML='<option value="">— Tutti i tipi —</option>'+getTipi().map(t=>`<option value="${t}" ${t===prev?'selected':''}>${t}</option>`).join('');
   sel.className=prev?'tipo-select active-sel':'tipo-select';
 }
 function onTipoSelChange(){ tipoFilter=document.getElementById('tipoSel').value; document.getElementById('tipoSel').className=tipoFilter?'tipo-select active-sel':'tipo-select'; updateFilterBadge();render(); }
 function clearTipoFilter(){ tipoFilter=''; document.getElementById('tipoSel').value=''; document.getElementById('tipoSel').className='tipo-select'; updateFilterBadge();render(); }
-function nomeMatchTipo(nome){ if(!tipoFilter)return true; const n=nomi.find(x=>x.name===nome); return n?n.tipo===tipoFilter:false; }
+function onValutaSelChange(){ valutaFilter=document.getElementById('valutaSel').value; document.getElementById('valutaSel').className=valutaFilter?'val-select active-sel':'val-select'; updateFilterBadge();render(); }
+function clearValutaFilter(){ valutaFilter=''; document.getElementById('valutaSel').value=''; document.getElementById('valutaSel').className='val-select'; updateFilterBadge();render(); }
 
 function setSort(field){ if(sortField===field)sortDir*=-1; else{sortField=field;sortDir=1;} updateSortHeaders();render(); }
 function updateSortHeaders(){
-  ['data','from','to','desc','c1','c2','c3','importo'].forEach(f=>{
+  ['data','from','to','desc','c1','importo'].forEach(f=>{
     const el=document.getElementById('sh-'+f); if(!el)return;
     el.textContent=f===sortField?(sortDir===1?'▲':'▼'):'⇅'; el.style.opacity=f===sortField?'1':'0.35'; el.style.fontSize='10px';
   });
 }
-function getSorted(arr){ return [...arr].sort((a,b)=>{ let va=a[sortField],vb=b[sortField]; if(sortField==='importo'){va=parseFloat(va)||0;vb=parseFloat(vb)||0;return(va-vb)*sortDir;} return String(va||'').localeCompare(String(vb||''),'it')*sortDir; }); }
-
+function getSorted(arr){
+  return [...arr].sort((a,b)=>{
+    let va=a[sortField], vb=b[sortField];
+    if(sortField==='importo'){ va=parseFloat(va)||0; vb=parseFloat(vb)||0; return (va-vb)*sortDir; }
+    return String(va||'').localeCompare(String(vb||''),'it')*sortDir;
+  });
+}
 function getFiltered(){
   const from=document.getElementById('dateFrom').value, to=document.getElementById('dateTo').value;
   return rows.filter(r=>{
-    if(from&&r.data<from)return false; if(to&&r.data>to)return false;
+    if(from&&r.data<from)return false;
+    if(to&&r.data>to)return false;
     if(entityFilter&&r.from!==entityFilter&&r.to!==entityFilter)return false;
-    if(fC1.size>0&&!fC1.has(r.c1))return false; if(fC2.size>0&&!fC2.has(r.c2))return false; if(fC3.size>0&&!fC3.has(r.c3))return false;
+    if(tipoFilter){ const ftm=getTipoNome(r.from)===tipoFilter, ttm=getTipoNome(r.to)===tipoFilter; if(!ftm&&!ttm)return false; }
+    if(valutaFilter&&r.valuta!==valutaFilter&&r.valutaTo!==valutaFilter)return false;
+    if(fC1.size>0&&!fC1.has(r.c1))return false;
+    if(fC2.size>0&&!fC2.has(r.c2))return false;
+    if(fC3.size>0&&!fC3.has(r.c3))return false;
     return true;
   });
 }
-function clearFilters(){ fC1.clear();fC2.clear();fC3.clear(); document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; clearEntityFilter(); clearTipoFilter(); rebuildDD();updateFilterBadge();render(); }
+function clearFilters(){ fC1.clear();fC2.clear();fC3.clear(); document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; clearEntityFilter();clearTipoFilter();clearValutaFilter();rebuildDD();updateFilterBadge();render(); }
 function clearDate(){ document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; updateFilterBadge();render(); }
 
-// ── SELECTS SYNC ─────────────────────────────────────
+// ── SELECTS SYNC ──────────────────────────────────────
 function syncSelects(){
-  const nomiSort=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
-  const opts='<option value="">—</option>'+nomiSort.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
-  document.getElementById('selFrom').innerHTML=opts; document.getElementById('selTo').innerHTML=opts;
-  const c1Sort=[...c1].sort((a,b)=>a.localeCompare(b,'it'));
-  document.getElementById('selC1').innerHTML='<option value="">— Cat.1 —</option>'+c1Sort.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const ns=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
+  const opts='<option value="">—</option>'+ns.map(n=>`<option value="${n.name}">${n.name} (${curSymbol(n.valuta||'EUR')})</option>`).join('');
+  document.getElementById('selFrom').innerHTML=opts;
+  document.getElementById('selTo').innerHTML=opts;
+  const c1s=[...c1].sort((a,b)=>a.localeCompare(b,'it'));
+  document.getElementById('selC1').innerHTML='<option value="">— Cat.1 —</option>'+c1s.map(c=>`<option value="${c}">${c}</option>`).join('');
   onC1Change(); syncEntitySel();
 }
 function syncEntitySel(){
   const sel=document.getElementById('entitySel'),prev=entityFilter;
-  const nomiSort=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
-  sel.innerHTML='<option value="">— Tutti —</option>'+nomiSort.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name}</option>`).join('');
+  const ns=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
+  sel.innerHTML='<option value="">— Tutti —</option>'+ns.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name} (${curSymbol(n.valuta||'EUR')})</option>`).join('');
   sel.className='entity-select'+(prev?' active-sel':'');
 }
 function onC1Change(val,c2val,c3val){
@@ -830,8 +1018,72 @@ function onC2Change(c1val,c3val){
 function onEntitySelChange(){ entityFilter=document.getElementById('entitySel').value; document.getElementById('entitySel').className='entity-select'+(entityFilter?' active-sel':''); updateEntityBanner();updateFilterBadge();render(); }
 function clearEntityFilter(){ entityFilter=''; document.getElementById('entitySel').value=''; document.getElementById('entitySel').className='entity-select'; updateEntityBanner();updateFilterBadge();render(); }
 function filterByEntity(name){ entityFilter=name; document.getElementById('entitySel').value=name; document.getElementById('entitySel').className='entity-select active-sel'; updateEntityBanner();updateFilterBadge(); if(!filterOpen)toggleFilterPanel(); render(); }
-function updateEntityBanner(){ const b=document.getElementById('entityBanner'); if(entityFilter){ b.classList.add('active'); const no=nomi.find(x=>x.name===entityFilter); document.getElementById('entityBannerLabel').textContent=`Movimenti: ${entityFilter}${no&&no.tipo?' ['+no.tipo+']':''}`; } else b.classList.remove('active'); }
+function updateEntityBanner(){ const b=document.getElementById('entityBanner'); if(entityFilter){ b.classList.add('active'); const no=nomi.find(x=>x.name===entityFilter); document.getElementById('entityBannerLabel').textContent=`Movimenti: ${entityFilter}${no&&no.tipo?' ['+no.tipo+']':''}${no?' ('+curSymbol(no.valuta||'EUR')+')':''}`; } else b.classList.remove('active'); }
 
+// ── FX FORM LOGIC ─────────────────────────────────────
+function onFromChange(){
+  updateFxRow();
+}
+function onToChange(){
+  updateFxRow();
+}
+function updateFxRow(){
+  const fromName = document.getElementById('selFrom').value;
+  const toName   = document.getElementById('selTo').value;
+  if(!fromName||!toName){ document.getElementById('fxRow').style.display='none'; document.getElementById('curFromBadge').textContent=''; return; }
+  const curFrom = getNomeValuta(fromName);
+  const curTo   = getNomeValuta(toName);
+  document.getElementById('curFromBadge').textContent = curSymbol(curFrom);
+  if(curFrom!==curTo){
+    document.getElementById('fxRow').style.display='flex';
+    document.getElementById('fxFromLabel').textContent = `${fmtAmt(parseFloat(document.getElementById('importo').value)||0, curFrom)}`;
+    document.getElementById('curToBadge').textContent = curSymbol(curTo);
+    // Auto-fill tasso if not manually set
+    const tassoEl = document.getElementById('tassoFX');
+    if(!tassoEl.dataset.manual){
+      const rate = getRate(curFrom, curTo);
+      tassoEl.value = rate.toFixed(4);
+      document.getElementById('fxRateBadge').textContent = `1 ${curFrom} = ${rate.toFixed(4)} ${curTo}`;
+      // Auto-calc importoTo
+      const imp = parseFloat(document.getElementById('importo').value)||0;
+      if(imp>0){ document.getElementById('importoTo').value = (imp*rate).toFixed(2); }
+    }
+  } else {
+    document.getElementById('fxRow').style.display='none';
+  }
+}
+function onImportoChange(){
+  const fromName = document.getElementById('selFrom').value;
+  const toName   = document.getElementById('selTo').value;
+  if(!fromName||!toName)return;
+  const curFrom=getNomeValuta(fromName), curTo=getNomeValuta(toName);
+  if(curFrom===curTo)return;
+  const imp = parseFloat(document.getElementById('importo').value)||0;
+  document.getElementById('fxFromLabel').textContent = `${fmtAmt(imp, curFrom)}`;
+  const tasso = parseFloat(document.getElementById('tassoFX').value)||getRate(curFrom,curTo);
+  document.getElementById('importoTo').value = (imp*tasso).toFixed(2);
+}
+function onImportoToChange(){
+  const imp = parseFloat(document.getElementById('importo').value)||0;
+  const impTo = parseFloat(document.getElementById('importoTo').value)||0;
+  if(imp>0&&impTo>0){
+    const rate=(impTo/imp);
+    document.getElementById('tassoFX').value=rate.toFixed(4);
+    document.getElementById('fxRateBadge').textContent=`1 ${getNomeValuta(document.getElementById('selFrom').value)} = ${rate.toFixed(4)} ${getNomeValuta(document.getElementById('selTo').value)}`;
+  }
+}
+function onTassoChange(){
+  const tassoEl=document.getElementById('tassoFX');
+  tassoEl.dataset.manual='1';
+  const imp=parseFloat(document.getElementById('importo').value)||0;
+  const tasso=parseFloat(tassoEl.value)||0;
+  if(imp>0&&tasso>0){ document.getElementById('importoTo').value=(imp*tasso).toFixed(2); }
+  const fromName=document.getElementById('selFrom').value, toName=document.getElementById('selTo').value;
+  const curFrom=getNomeValuta(fromName), curTo=getNomeValuta(toName);
+  document.getElementById('fxRateBadge').textContent=`1 ${curFrom} = ${tasso.toFixed(4)} ${curTo}`;
+}
+
+// ── DROPDOWN REBUILD ──────────────────────────────────
 function rebuildDD(){
   const vc1=fC1.size>0?[...fC1]:c1;
   document.getElementById('ddC1').innerHTML=c1.length===0?'<div class="dropdown-empty">Nessuna</div>':c1.map(c=>`<label class="dropdown-item di-c1"><input type="checkbox" ${fC1.has(c)?'checked':''} onchange="toggleF('c1','${c}',this.checked)">${c}</label>`).join('');
@@ -844,65 +1096,66 @@ function rebuildDD(){
   updTr('trC3',fC3,'Tutte cat.3','af-c3');
 }
 function updTr(id,set,def,cls){ const el=document.getElementById(id); el.className='mst'; if(set.size>0){el.textContent=[...set].join(', ');el.classList.add(cls);}else el.textContent=def; }
-function toggleF(type,val,checked){ const map={c1:fC1,c2:fC2,c3:fC3}; checked?map[type].add(val):map[type].delete(val); if(type==='c1'){const vc1=fC1.size>0?[...fC1]:c1;const ac2=new Set(vc1.flatMap(c=>c2Map[c]||[]));for(const v of [...fC2])if(!ac2.has(v))fC2.delete(v);} if(type==='c2'){const vc1=fC1.size>0?[...fC1]:c1;const vc2=fC2.size>0?[...fC2]:[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];const ac3=new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])));for(const v of [...fC3])if(!ac3.has(v))fC3.delete(v);} rebuildDD();updateFilterBadge();render(); }
+function toggleF(type,val,checked){
+  const map={c1:fC1,c2:fC2,c3:fC3}; checked?map[type].add(val):map[type].delete(val);
+  if(type==='c1'){const vc1=fC1.size>0?[...fC1]:c1;const ac2=new Set(vc1.flatMap(c=>c2Map[c]||[]));for(const v of [...fC2])if(!ac2.has(v))fC2.delete(v);}
+  if(type==='c2'){const vc1=fC1.size>0?[...fC1]:c1;const vc2=fC2.size>0?[...fC2]:[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];const ac3=new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])));for(const v of [...fC3])if(!ac3.has(v))fC3.delete(v);}
+  rebuildDD();updateFilterBadge();render();
+}
 
 // ── RENDER REGISTRO ───────────────────────────────────
-function getSign(r){ if(!entityFilter)return null; if(r.to===entityFilter)return'+'; if(r.from===entityFilter)return'-'; return null; }
-
 function render(){
+  renderSummary();
   const tbody=document.getElementById('tbody'), filtered=getSorted(getFiltered());
-  let totIn=0, totOut=0;
-  filtered.forEach(r=>{
-    if(entityFilter){ if(r.to===entityFilter)totIn+=r.importo; else if(r.from===entityFilter)totOut+=r.importo; }
-    else { if(tipoFilter){ const fm=nomeMatchTipo(r.from),tm=nomeMatchTipo(r.to); if(tm&&!fm)totIn+=r.importo; else if(fm&&!tm)totOut+=r.importo; else if(fm&&tm)totIn+=r.importo; } else totIn+=r.importo; }
-  });
-  document.getElementById('totIn').textContent=fmt(totIn);
-  document.getElementById('totOut').textContent=fmt(totOut);
-  document.getElementById('saldo').textContent=fmt(totIn-totOut);
-  document.getElementById('totCount').textContent=filtered.length;
-  document.getElementById('saldoCard').className='card '+((totIn-totOut)>=0?'saldo-pos':'saldo-neg');
-  if(tipoFilter){
-    document.querySelector('#saldoCard label').innerHTML=`Saldo Tipo: <strong>${tipoFilter}</strong> <span id="fn3" class="filter-note">(filtrato)</span>`;
-    document.querySelector('.card.in label').innerHTML=`Entrate (${tipoFilter}) <span id="fn1" class="filter-note">(filtrato)</span>`;
-    document.querySelector('.card.out label').innerHTML=`Uscite (${tipoFilter}) <span id="fn2" class="filter-note">(filtrato)</span>`;
-  } else {
-    document.querySelector('#saldoCard label').innerHTML=`Saldo <span id="fn3" class="filter-note"></span>`;
-    document.querySelector('.card.in label').innerHTML=`Totale Entrate <span id="fn1" class="filter-note"></span>`;
-    document.querySelector('.card.out label').innerHTML=`Totale Uscite <span id="fn2" class="filter-note"></span>`;
-  }
-  updateFilterBadge();
-  if(!filtered.length){ tbody.innerHTML=`<tr><td colspan="10" class="empty">Nessun movimento</td></tr>`; return; }
+  if(!filtered.length){ tbody.innerHTML=`<tr><td colspan="9" class="empty">Nessun movimento</td></tr>`; return; }
   const nomeOpts=nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
+  const c1Opts=c1.map(c=>`<option value="${c}">${c}</option>`).join('');
   let html='';
   filtered.forEach((r,i)=>{
-    const df=fmtDate(r.data), sign=getSign(r);
-    const signHtml=sign?`<span class="${sign==='+'?'amount-pos':'amount-neg'}">${sign} ${fmt(r.importo)}</span>`:`<span class="amount-neu">${fmt(r.importo)}</span>`;
+    const isEx=isExchangeRow(r);
+    const df=fmtDate(r.data);
+    const cur=r.valuta||'EUR', curTo=r.valutaTo||cur;
     const fromTipo=getTipoNome(r.from), toTipo=getTipoNome(r.to);
+    let signHtml='';
+    if(entityFilter){
+      if(r.to===entityFilter) signHtml=`<span class="amount-pos">+ ${fmtAmt(isEx&&r.valutaTo?r.importoTo||r.importo:r.importo,isEx&&r.valutaTo?r.valutaTo:cur)}</span>`;
+      else signHtml=`<span class="amount-neg">- ${fmtAmt(r.importo,cur)}</span>`;
+    }
+    const valHtml=isEx
+      ? `<span class="${curClass(cur)}">${curSymbol(cur)}</span> <span style="color:var(--text3);font-size:10px;">→</span> <span class="${curClass(curTo)}">${curSymbol(curTo)}</span> <span class="fx-tag">FX</span>`
+      : `<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
     if(editingIdx===i){
-      const c1Opts=c1.map(c=>`<option value="${c}" ${c===r.c1?'selected':''}>${c}</option>`).join('');
-      const c2Opts=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
-      const c3Opts=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
+      const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
+      const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
       html+=`<tr class="editing">
         <td><input class="edit-input" id="ed-data" type="date" value="${r.data}"></td>
         <td><select class="edit-select" id="ed-from">${nomeOpts}</select></td>
         <td><select class="edit-select" id="ed-to">${nomeOpts}</select></td>
         <td><input class="edit-input" id="ed-desc" type="text" value="${r.desc}"></td>
         <td><select class="edit-select" id="ed-c1" onchange="edC1Change(this.value)">${c1Opts}</select></td>
-        <td><select class="edit-select" id="ed-c2" onchange="edC2Change(document.getElementById('ed-c1').value,this.value)">${c2Opts}</select></td>
-        <td><select class="edit-select" id="ed-c3">${c3Opts}</select></td>
-        <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}"></td>
+        <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}"> ${isEx?`<br><small>→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}</td>
+        <td>${valHtml}</td>
         <td>—</td>
         <td><div class="row-actions"><button class="btn-save" onclick="saveEdit(${i})">✔</button><button class="btn-cancel" onclick="cancelEdit()">✕</button></div></td>
       </tr>`;
-      setTimeout(()=>{ const ef=document.getElementById('ed-from'); if(ef)for(let o of ef.options)if(o.value===r.from)o.selected=true; const et=document.getElementById('ed-to'); if(et)for(let o of et.options)if(o.value===r.to)o.selected=true; },0);
+      setTimeout(()=>{
+        const ef=document.getElementById('ed-from'); if(ef) for(let o of ef.options) if(o.value===r.from)o.selected=true;
+        const et=document.getElementById('ed-to'); if(et) for(let o of et.options) if(o.value===r.to)o.selected=true;
+        const ec=document.getElementById('ed-c1'); if(ec) for(let o of ec.options) if(o.value===r.c1)o.selected=true;
+      },0);
     } else {
-      html+=`<tr>
+      const importoDisplay = isEx
+        ? `${fmtAmt(r.importo,cur)}<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,curTo)}</small>`
+        : fmtAmt(r.importo,cur);
+      html+=`<tr ${isEx?'class="exchange-row"':''}>
         <td>${df}</td>
         <td><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')">${r.from}</span>${fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:''}</td>
         <td><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')">${r.to}</span>${toTipo?`<span class="tipo-tag">${toTipo}</span>`:''}</td>
         <td>${r.desc}</td>
-        <td><span class="c1-badge">${r.c1}</span></td><td><span class="c2-badge">${r.c2}</span></td><td><span class="c3-badge">${r.c3}</span></td>
-        <td class="amount-neu">${fmt(r.importo)}</td><td>${signHtml}</td>
+        <td><span class="c1-badge">${r.c1||'—'}</span></td>
+        <td class="amount-neu">${importoDisplay}</td>
+        <td>${valHtml}</td>
+        <td>${signHtml}</td>
         <td><div class="row-actions"><button class="btn-edit" onclick="startEdit(${i})">✏️</button><button class="btn-del" onclick="elimina(${i})">🗑</button></div></td>
       </tr>`;
     }
@@ -912,50 +1165,100 @@ function render(){
 
 // ── CRUD REGISTRO ─────────────────────────────────────
 async function aggiungi(){
-  const data=document.getElementById('data').value, from=document.getElementById('selFrom').value, to=document.getElementById('selTo').value;
+  const data=document.getElementById('data').value;
+  const fromName=document.getElementById('selFrom').value, toName=document.getElementById('selTo').value;
   const desc=document.getElementById('descrizione').value.trim();
   const c1v=document.getElementById('selC1').value||'-', c2v=document.getElementById('selC2').value||'-', c3v=document.getElementById('selC3').value||'-';
   const importo=parseFloat(document.getElementById('importo').value);
-  if(!data||!from||!to||!desc||isNaN(importo)||importo<=0){alert('Compila tutto');return;}
-  if(from===to){alert('From=To non valido');return;}
-  rows.push({data,from,to,desc,c1:c1v,c2:c2v,c3:c3v,importo});
+  if(!data||!fromName||!toName||!desc||isNaN(importo)||importo<=0){alert('Compila tutti i campi');return;}
+  if(fromName===toName){alert('From = To non valido');return;}
+  const curFrom=getNomeValuta(fromName), curTo=getNomeValuta(toName);
+  const isEx = curFrom!==curTo;
+  const row = { data, from:fromName, to:toName, desc, c1:c1v, c2:c2v, c3:c3v, importo, valuta:curFrom };
+  if(isEx){
+    row.isExchange=true;
+    row.valutaTo=curTo;
+    row.importoTo=parseFloat(document.getElementById('importoTo').value)||0;
+    row.tassoFX=parseFloat(document.getElementById('tassoFX').value)||getRate(curFrom,curTo);
+  }
+  rows.push(row);
   rows.sort((a,b)=>a.data.localeCompare(b.data));
-  document.getElementById('descrizione').value=''; document.getElementById('importo').value='';
+  document.getElementById('descrizione').value='';
+  document.getElementById('importo').value='';
+  document.getElementById('importoTo').value='';
+  document.getElementById('tassoFX').value='';
+  delete document.getElementById('tassoFX').dataset.manual;
+  document.getElementById('fxRow').style.display='none';
   await saveToFirebase(); render();
 }
 function startEdit(i){editingIdx=i;render();}
 function cancelEdit(){editingIdx=null;render();}
 async function saveEdit(i){
-  const fi=getFiltered(),orig=rows.indexOf(fi[i]),r=rows[orig];
+  const fi=getFiltered(), orig=rows.indexOf(fi[i]), r=rows[orig];
   r.data=document.getElementById('ed-data').value||r.data;
   r.from=document.getElementById('ed-from').value||r.from;
   r.to=document.getElementById('ed-to').value||r.to;
   r.desc=document.getElementById('ed-desc').value||r.desc;
   r.c1=document.getElementById('ed-c1').value||r.c1;
-  r.c2=document.getElementById('ed-c2').value||r.c2;
-  r.c3=document.getElementById('ed-c3').value||r.c3;
   r.importo=parseFloat(document.getElementById('ed-imp').value)||r.importo;
+  r.valuta=getNomeValuta(r.from);
+  if(isExchangeRow(r)){
+    const el=document.getElementById('ed-impto');
+    if(el) r.importoTo=parseFloat(el.value)||r.importoTo;
+  }
   rows.sort((a,b)=>a.data.localeCompare(b.data)); editingIdx=null;
   await saveToFirebase(); render();
 }
 async function elimina(i){ if(!confirm('Eliminare?'))return; rows.splice(rows.indexOf(getFiltered()[i]),1); await saveToFirebase(); render(); }
 function edC1Change(v){ const s=document.getElementById('ed-c2'); const subs=c2Map[v]||[]; s.innerHTML='<option value="-">—</option>'+subs.map(x=>`<option value="${x}">${x}</option>`).join(''); document.getElementById('ed-c3').innerHTML='<option value="-">—</option>'; }
-function edC2Change(c1v,c2v){ const s=document.getElementById('ed-c3'); const subs=c3Map[c3k(c1v,c2v)]||[]; s.innerHTML='<option value="-">—</option>'+subs.map(x=>`<option value="${x}">${x}</option>`).join(''); }
 
-// ── NOMI ─────────────────────────────────────────────
-async function addNome(){ const i=document.getElementById('inputNome'),t=document.getElementById('inputNomeTipo'); const v=i.value.trim(),tipo=t.value.trim(); if(!v)return; if(nomi.find(x=>x.name===v)){alert('Già presente');return;} nomi.push({name:v,tipo}); i.value='';t.value=''; await saveToFirebase(); renderNomiPage();syncSelects();syncTipoSel();rebuildDD(); }
-async function delNome(n){ if(rows.some(r=>r.from===n||r.to===n))if(!confirm(`Eliminare "${n}"?`))return; nomi=nomi.filter(x=>x.name!==n); if(entityFilter===n)entityFilter=''; await saveToFirebase(); renderNomiPage();syncSelects();syncEntitySel();syncTipoSel();render(); }
+// ── NOMI ──────────────────────────────────────────────
+async function addNome(){
+  const ni=document.getElementById('inputNome'), ti=document.getElementById('inputNomeTipo'), vi=document.getElementById('inputNomeVal');
+  const v=ni.value.trim(), tipo=ti.value.trim(), valuta=vi.value||'EUR';
+  if(!v)return; if(nomi.find(x=>x.name===v)){alert('Già presente');return;}
+  nomi.push({name:v,tipo,valuta}); ni.value=''; ti.value='';
+  await saveToFirebase(); renderNomiPage();syncSelects();syncTipoSel();rebuildDD();
+}
+async function delNome(n){
+  if(rows.some(r=>r.from===n||r.to===n)) if(!confirm(`Eliminare "${n}"?`))return;
+  nomi=nomi.filter(x=>x.name!==n); if(entityFilter===n)entityFilter='';
+  await saveToFirebase(); renderNomiPage();syncSelects();syncEntitySel();syncTipoSel();render();
+}
 function startEditNome(idx){ editingNomeIdx=idx; renderNomiPage(); }
 function cancelEditNome(){ editingNomeIdx=null; renderNomiPage(); }
-async function saveEditNome(idx){ const nv=document.getElementById('en-name-'+idx).value.trim(),nt=document.getElementById('en-tipo-'+idx).value.trim(); if(!nv){alert('Nome vuoto');return;} const oldName=nomi[idx].name; rows.forEach(r=>{ if(r.from===oldName)r.from=nv; if(r.to===oldName)r.to=nv; }); if(entityFilter===oldName)entityFilter=nv; nomi[idx]={name:nv,tipo:nt}; editingNomeIdx=null; await saveToFirebase(); renderNomiPage();syncSelects();syncEntitySel();syncTipoSel();render(); }
+async function saveEditNome(idx){
+  const nv=document.getElementById('en-name-'+idx).value.trim();
+  const nt=document.getElementById('en-tipo-'+idx).value.trim();
+  const nval=document.getElementById('en-val-'+idx).value||'EUR';
+  if(!nv){alert('Nome vuoto');return;}
+  const oldName=nomi[idx].name;
+  rows.forEach(r=>{ if(r.from===oldName){r.from=nv;r.valuta=nval;} if(r.to===oldName){r.to=nv;if(r.isExchange)r.valutaTo=nval;} });
+  if(entityFilter===oldName)entityFilter=nv;
+  nomi[idx]={name:nv,tipo:nt,valuta:nval};
+  editingNomeIdx=null;
+  await saveToFirebase(); renderNomiPage();syncSelects();syncEntitySel();syncTipoSel();render();
+}
 function renderNomiPage(){
   const tbody=document.getElementById('nomiTbody');
-  const nomiSort=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
-  if(!nomiSort.length){ tbody.innerHTML=`<tr><td colspan="3" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`; return; }
-  tbody.innerHTML=nomiSort.map((n,i)=>{
+  const ns=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
+  if(!ns.length){ tbody.innerHTML=`<tr><td colspan="4" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`; return; }
+  tbody.innerHTML=ns.map(n=>{
     const origIdx=nomi.indexOf(n);
-    if(editingNomeIdx===origIdx) return `<tr><td><input class="nome-edit-input" id="en-name-${origIdx}" value="${n.name}"></td><td><input class="nome-edit-tipo" id="en-tipo-${origIdx}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td><td style="white-space:nowrap"><button class="btn-nome-save" onclick="saveEditNome(${origIdx})">✔</button><button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button></td></tr>`;
-    return `<tr><td><strong>${n.name}</strong></td><td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td><td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${origIdx})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;
+    if(editingNomeIdx===origIdx) return `<tr>
+      <td><input class="nome-edit-input" id="en-name-${origIdx}" value="${n.name}"></td>
+      <td><input class="nome-edit-tipo" id="en-tipo-${origIdx}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td>
+      <td><select class="nome-edit-val" id="en-val-${origIdx}">
+        <option value="EUR" ${(n.valuta||'EUR')==='EUR'?'selected':''}>€ Euro</option>
+        <option value="GBP" ${n.valuta==='GBP'?'selected':''}>£ Sterlina</option>
+        <option value="AED" ${n.valuta==='AED'?'selected':''}>AED Dirham</option>
+      </select></td>
+      <td style="white-space:nowrap"><button class="btn-nome-save" onclick="saveEditNome(${origIdx})">✔</button><button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button></td></tr>`;
+    return `<tr>
+      <td><strong>${n.name}</strong></td>
+      <td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td>
+      <td><span class="${curClass(n.valuta||'EUR')}">${curSymbol(n.valuta||'EUR')}</span></td>
+      <td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${origIdx})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;
   }).join('');
   document.getElementById('tipoSuggest').innerHTML=getTipi().map(t=>`<option value="${t}">`).join('');
 }
@@ -978,22 +1281,19 @@ function syncParentSelects(){ ['c1ForC2','c1ForC3'].forEach(id=>{ const sel=docu
 // ══════════════════════════════════════════════════════
 
 function syncReportSelects(){
-  // Entità
-  const re=document.getElementById('rptEntity'), prev=re.value;
-  re.innerHTML='<option value="">— Seleziona —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name}${n.tipo?' ['+n.tipo+']':''}</option>`).join('');
-  // Cat1
-  const rc=document.getElementById('rptC1'), prevc=rc.value;
+  const re=document.getElementById('rptEntity'),prev=re.value;
+  re.innerHTML='<option value="">— Seleziona —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name} (${curSymbol(n.valuta||'EUR')})${n.tipo?' ['+n.tipo+']':''}</option>`).join('');
+  const rc=document.getElementById('rptC1'),prevc=rc.value;
   rc.innerHTML='<option value="">— Tutte —</option>'+c1.map(c=>`<option value="${c}" ${c===prevc?'selected':''}>${c}</option>`).join('');
-  // Tipo
-  const rt=document.getElementById('rptTipoSel'), prevt=rt.value;
+  const rt=document.getElementById('rptTipoSel'),prevt=rt.value;
   rt.innerHTML='<option value="">— Tutti —</option>'+getTipi().map(t=>`<option value="${t}" ${t===prevt?'selected':''}>${t}</option>`).join('');
 }
 
 function onRptTypeChange(){
   const t=document.getElementById('rptType').value;
-  ['Estrato','Categoria','Tipo','Date','Saldo'].forEach(x=>{ document.getElementById('rptParam'+x).style.display='none'; });
-  const map={estratto:'Estrato',categoria:'Categoria',tipo:'Tipo',date:'Date',saldo:'Saldo'};
-  document.getElementById('rptParam'+map[t]).style.display='block';
+  ['Estrato','Categoria','Tipo','Date','Saldo','Fx'].forEach(x=>{ const el=document.getElementById('rptParam'+x); if(el)el.style.display='none'; });
+  const map={estratto:'Estrato',categoria:'Categoria',tipo:'Tipo',date:'Date',saldo:'Saldo',fx:'Fx'};
+  const el=document.getElementById('rptParam'+map[t]); if(el)el.style.display='block';
 }
 
 function newReport(){
@@ -1001,437 +1301,385 @@ function newReport(){
   document.getElementById('rptName').value='';
   document.getElementById('rptType').value='estratto';
   onRptTypeChange();
-  // Reset date
-  ['rptFrom','rptTo','rptFromCat','rptToCat','rptFromTipo','rptToTipo','rptFromDate','rptToDate','rptFromSaldo','rptToSaldo'].forEach(id=>{ document.getElementById(id).value=''; });
+  ['rptFrom','rptTo','rptFromCat','rptToCat','rptFromTipo','rptToTipo','rptFromDate','rptToDate','rptFromSaldo','rptToSaldo','rptFromFx','rptToFx'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; });
   document.getElementById('reportOutput').style.display='none';
   document.querySelectorAll('.report-saved-item').forEach(x=>x.classList.remove('active'));
 }
 
 function loadReport(idx){
-  activeReportIdx=idx;
-  const r=savedReports[idx];
+  activeReportIdx=idx; const r=savedReports[idx];
   document.getElementById('rptName').value=r.name;
   document.getElementById('rptType').value=r.type;
   onRptTypeChange();
-  // Carica parametri
   const p=r.params||{};
   if(r.type==='estratto'){ document.getElementById('rptEntity').value=p.entity||''; document.getElementById('rptFrom').value=p.from||''; document.getElementById('rptTo').value=p.to||''; }
   if(r.type==='categoria'){ document.getElementById('rptC1').value=p.c1v||''; document.getElementById('rptFromCat').value=p.from||''; document.getElementById('rptToCat').value=p.to||''; }
   if(r.type==='tipo'){ document.getElementById('rptTipoSel').value=p.tipo||''; document.getElementById('rptFromTipo').value=p.from||''; document.getElementById('rptToTipo').value=p.to||''; }
   if(r.type==='date'){ document.getElementById('rptFromDate').value=p.from||''; document.getElementById('rptToDate').value=p.to||''; }
   if(r.type==='saldo'){ document.getElementById('rptFromSaldo').value=p.from||''; document.getElementById('rptToSaldo').value=p.to||''; }
+  if(r.type==='fx'){ document.getElementById('rptFromFx').value=p.from||''; document.getElementById('rptToFx').value=p.to||''; }
   document.querySelectorAll('.report-saved-item').forEach((x,i)=>x.classList.toggle('active',i===idx));
   runReport();
 }
 
 function getReportConfig(){
-  const type=document.getElementById('rptType').value;
-  let params={};
+  const type=document.getElementById('rptType').value; let params={};
   if(type==='estratto') params={entity:document.getElementById('rptEntity').value, from:document.getElementById('rptFrom').value, to:document.getElementById('rptTo').value};
   if(type==='categoria') params={c1v:document.getElementById('rptC1').value, from:document.getElementById('rptFromCat').value, to:document.getElementById('rptToCat').value};
   if(type==='tipo') params={tipo:document.getElementById('rptTipoSel').value, from:document.getElementById('rptFromTipo').value, to:document.getElementById('rptToTipo').value};
   if(type==='date') params={from:document.getElementById('rptFromDate').value, to:document.getElementById('rptToDate').value};
   if(type==='saldo') params={from:document.getElementById('rptFromSaldo').value, to:document.getElementById('rptToSaldo').value};
-  return {type, params};
+  if(type==='fx') params={from:document.getElementById('rptFromFx').value, to:document.getElementById('rptToFx').value};
+  return {type,params};
 }
 
-function filterRows(from, to, extra){
-  return rows.filter(r=>{
-    if(from&&r.data<from)return false;
-    if(to&&r.data>to)return false;
-    if(extra&&!extra(r))return false;
-    return true;
-  }).sort((a,b)=>a.data.localeCompare(b.data));
+function filterRows(from,to,extra){
+  return rows.filter(r=>{ if(from&&r.data<from)return false; if(to&&r.data>to)return false; if(extra&&!extra(r))return false; return true; }).sort((a,b)=>a.data.localeCompare(b.data));
 }
 
 function runReport(){
-  const {type, params}=getReportConfig();
+  const {type,params}=getReportConfig();
   const out=document.getElementById('reportOutput');
   const outTitle=document.getElementById('rptOutTitle');
   const outMeta=document.getElementById('rptOutMeta');
   const outBody=document.getElementById('rptOutBody');
   out.style.display='block';
-
-  const typeLabels={estratto:'Estratto Conto',categoria:'Riepilogo per Categoria',tipo:'Riepilogo per Tipo',date:'Movimenti per Periodo',saldo:'Saldo per Entità'};
-  const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo'};
+  const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità',fx:'Exchange FX'};
+  const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};
   const name=document.getElementById('rptName').value||typeLabels[type];
   outTitle.innerHTML=`${name} <span class="report-type-badge ${typeBadge[type]}">${typeLabels[type]}</span>`;
-
-  if(type==='estratto') renderEstrattoReport(params, outMeta, outBody);
-  else if(type==='categoria') renderCategoriaReport(params, outMeta, outBody);
-  else if(type==='tipo') renderTipoReport(params, outMeta, outBody);
-  else if(type==='date') renderDateReport(params, outMeta, outBody);
-  else if(type==='saldo') renderSaldoReport(params, outMeta, outBody);
+  if(type==='estratto') renderEstrattoReport(params,outMeta,outBody);
+  else if(type==='categoria') renderCategoriaReport(params,outMeta,outBody);
+  else if(type==='tipo') renderTipoReport(params,outMeta,outBody);
+  else if(type==='date') renderDateReport(params,outMeta,outBody);
+  else if(type==='saldo') renderSaldoReport(params,outMeta,outBody);
+  else if(type==='fx') renderFxReport(params,outMeta,outBody);
 }
 
-function renderEstrattoReport(params, metaEl, bodyEl){
-  const {entity, from, to}=params;
-  if(!entity){ bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>'; metaEl.textContent=''; return; }
-  const data=filterRows(from, to, r=>r.from===entity||r.to===entity);
+// ── REPORT: ESTRATTO CONTO ────────────────────────────
+function renderEstrattoReport(params,metaEl,bodyEl){
+  const {entity,from,to}=params;
+  if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}
+  const data=filterRows(from,to,r=>r.from===entity||r.to===entity);
   const no=nomi.find(x=>x.name===entity);
-  const tipoStr=no&&no.tipo?` · Tipo: ${no.tipo}`:'';
-  const dateStr=(from||to)?` · ${fmtDate(from)||'inizio'} → ${fmtDate(to)||'oggi'}`:'';
-  metaEl.textContent=`${entity}${tipoStr}${dateStr} · ${data.length} movimenti`;
-  if(!data.length){ bodyEl.innerHTML='<div class="report-no-data">Nessun movimento trovato</div>'; return; }
-
-  let saldoProg=0, totEntrate=0, totUscite=0;
+  const entityCur=no?no.valuta||'EUR':'EUR';
+  metaEl.textContent=`${entity} (${curSymbol(entityCur)})${no&&no.tipo?' · '+no.tipo:''}${(from||to)?' · '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;
+  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
+  let saldoProg=0,totE=0,totU=0;
   let html=`<table class="report-table"><thead><tr>
-    <th>Data</th><th>Controparte</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th>
-    <th class="td-num">Entrata</th><th class="td-num">Uscita</th><th class="td-num">Saldo Progr.</th>
+    <th>Data</th><th>Controparte</th><th>Descrizione</th><th>Cat.1</th>
+    <th class="td-num">Entrata</th><th class="td-num">Uscita</th><th class="td-num">Saldo Prog.</th><th>Valuta</th>
   </tr></thead><tbody>`;
   data.forEach(r=>{
-    let entrata=0, uscita=0, controparte='';
-    if(r.to===entity){ entrata=r.importo; controparte=r.from; totEntrate+=entrata; }
-    else { uscita=r.importo; controparte=r.to; totUscite+=uscita; }
-    saldoProg+=entrata-uscita;
-    const sp=saldoProg>=0?'pos':'neg';
-    html+=`<tr>
-      <td>${fmtDate(r.data)}</td>
-      <td><strong>${controparte}</strong>${getTipoNome(controparte)?` <span class="tipo-tag">${getTipoNome(controparte)}</span>`:''}</td>
-      <td>${r.desc}</td>
-      <td><span class="c1-badge">${r.c1}</span></td>
-      <td><span class="c2-badge">${r.c2}</span></td>
-      <td class="td-num pos">${entrata>0?fmt(entrata):''}</td>
-      <td class="td-num neg">${uscita>0?fmt(uscita):''}</td>
-      <td class="td-num ${sp}">${fmt(saldoProg)}</td>
-    </tr>`;
+    let entrata=0,uscita=0,controparte='';
+    const cur=r.valuta||'EUR';
+    const isEx=isExchangeRow(r);
+    if(r.to===entity){
+      entrata=isEx?r.importoTo||r.importo:r.importo;
+      const ec=isEx?r.valutaTo||cur:cur;
+      controparte=r.from; totE+=entrata; saldoProg+=entrata;
+      const sp=saldoProg>=0?'pos':'neg';
+      html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${controparte}</strong></td><td>${r.desc}${isEx?` <span class="fx-tag">FX</span>`:''}</td><td><span class="c1-badge">${r.c1||'—'}</span></td><td class="td-num pos">${fmtAmt(entrata,ec)}</td><td></td><td class="td-num ${sp}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(ec)}">${curSymbol(ec)}</span></td></tr>`;
+    } else {
+      uscita=r.importo; controparte=r.to; totU+=uscita; saldoProg-=uscita;
+      const sp=saldoProg>=0?'pos':'neg';
+      html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${controparte}</strong></td><td>${r.desc}${isEx?` <span class="fx-tag">FX</span>`:''}</td><td><span class="c1-badge">${r.c1||'—'}</span></td><td></td><td class="td-num neg">${fmtAmt(uscita,cur)}</td><td class="td-num ${sp}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;
+    }
   });
-  html+=`</tbody><tfoot><tr>
-    <td colspan="5"><strong>TOTALE</strong></td>
-    <td class="td-num pos"><strong>${fmt(totEntrate)}</strong></td>
-    <td class="td-num neg"><strong>${fmt(totUscite)}</strong></td>
-    <td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmt(saldoProg)}</strong></td>
-  </tr></tfoot></table>`;
+  html+=`</tbody><tfoot><tr><td colspan="4"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;
   bodyEl.innerHTML=html;
 }
 
-function renderCategoriaReport(params, metaEl, bodyEl){
-  const {c1v, from, to}=params;
-  const data=filterRows(from, to, r=>!c1v||(r.c1===c1v));
-  const dateStr=(from||to)?`${fmtDate(from)||'inizio'} → ${fmtDate(to)||'oggi'}`:'Tutti i periodi';
-  metaEl.textContent=`${c1v||'Tutte le categorie'} · ${dateStr} · ${data.length} movimenti`;
-  if(!data.length){ bodyEl.innerHTML='<div class="report-no-data">Nessun movimento trovato</div>'; return; }
+// ── REPORT: CATEGORIA ────────────────────────────────
+function renderCategoriaReport(params,metaEl,bodyEl){
+  const {c1v,from,to}=params;
+  const data=filterRows(from,to,r=>!c1v||(r.c1===c1v));
+  metaEl.textContent=`${c1v||'Tutte le categorie'} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'} · ${data.length} mov.`;
+  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
 
-  // Determina segno rispetto a entità di tipo Bank:
-  // To=Bank → entrata per la Bank; From=Bank → uscita dalla Bank
-  function getSegno(r){
-    const fromTipo=getTipoNome(r.from), toTipo=getTipoNome(r.to);
-    if(toTipo==='Bank' && fromTipo!=='Bank') return 'entrata';
-    if(fromTipo==='Bank' && toTipo!=='Bank') return 'uscita';
-    // entrambi Bank o nessuno: trattalo come movimento neutro (entrata per default)
-    return 'entrata';
-  }
-
-  // Raggruppa per c1→c2→c3 con entrate/uscite separati
-  const groups={};
+  // Group by currency first, then c1→c2
+  const byCur={};
   data.forEach(r=>{
-    const k1=r.c1||'-', k2=r.c2||'-', k3=r.c3||'-';
-    const segno=getSegno(r);
-    const e=segno==='entrata'?r.importo:0, u=segno==='uscita'?r.importo:0;
-    if(!groups[k1])groups[k1]={e:0,u:0,subs:{}};
-    if(!groups[k1].subs[k2])groups[k1].subs[k2]={e:0,u:0,subs:{}};
-    if(!groups[k1].subs[k2].subs[k3])groups[k1].subs[k2].subs[k3]={e:0,u:0};
-    groups[k1].e+=e; groups[k1].u+=u;
-    groups[k1].subs[k2].e+=e; groups[k1].subs[k2].u+=u;
-    groups[k1].subs[k2].subs[k3].e+=e; groups[k1].subs[k2].subs[k3].u+=u;
+    const cur=r.valuta||'EUR', k1=r.c1||'—', k2=r.c2||'—';
+    if(!byCur[cur]) byCur[cur]={};
+    if(!byCur[cur][k1]) byCur[cur][k1]={tot:0,subs:{}};
+    if(!byCur[cur][k1].subs[k2]) byCur[cur][k1].subs[k2]=0;
+    byCur[cur][k1].tot+=r.importo;
+    byCur[cur][k1].subs[k2]+=r.importo;
   });
 
-  let gtE=0, gtU=0;
-  Object.keys(groups).forEach(k1=>{ gtE+=groups[k1].e; gtU+=groups[k1].u; });
-  const gtS=gtE-gtU;
-
-  let html=`<table class="report-table"><thead><tr>
-    <th>Cat.1</th><th>Cat.2</th><th>Cat.3</th>
-    <th class="td-num">Entrate</th><th class="td-num">Uscite</th>
-    <th class="td-num">Saldo</th><th class="td-num">% Entrate</th>
-  </tr></thead><tbody>`;
-
-  Object.keys(groups).sort().forEach(k1=>{
-    const g1=groups[k1];
-    // Intestazione Cat.1 (solo label, nessun subtotale)
-    html+=`<tr class="report-section-header">
-      <td colspan="7"><strong>🟣 ${k1}</strong></td>
-    </tr>`;
-    Object.keys(g1.subs).sort().forEach(k2=>{
-      const g2=g1.subs[k2], s2=g2.e-g2.u;
-      // Righe Cat.3
-      Object.keys(g2.subs).sort().forEach(k3=>{
-        const v=g2.subs[k3], s3=v.e-v.u;
-        const pct=gtE>0?(v.e/gtE*100).toFixed(1)+'%':'—';
-        html+=`<tr>
-          <td></td>
-          <td><span class="c2-badge">🟠 ${k2}</span></td>
-          <td><span class="c3-badge">🟢 ${k3}</span></td>
-          <td class="td-num pos">${v.e>0?fmt(v.e):''}</td>
-          <td class="td-num neg">${v.u>0?fmt(v.u):''}</td>
-          <td class="td-num ${s3>=0?'pos':'neg'}">${fmt(s3)}</td>
-          <td class="td-num" style="color:var(--text3)">${v.e>0?pct:''}</td>
-        </tr>`;
+  let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th class="td-num">Importo</th><th class="td-num">% su valuta</th></tr></thead><tbody>`;
+  Object.keys(byCur).sort().forEach(cur=>{
+    const totCur=Object.values(byCur[cur]).reduce((s,g)=>s+g.tot,0);
+    html+=`<tr class="cur-section-header"><td colspan="4">💱 ${curSymbol(cur)} ${cur} — Totale: <strong>${fmtAmt(totCur,cur)}</strong></td></tr>`;
+    Object.keys(byCur[cur]).sort().forEach(k1=>{
+      const g=byCur[cur][k1];
+      html+=`<tr class="report-section-header"><td colspan="4"><strong>🟣 ${k1}</strong></td></tr>`;
+      Object.keys(g.subs).sort().forEach(k2=>{
+        const v=g.subs[k2], pct=totCur>0?(v/totCur*100).toFixed(1):'0';
+        html+=`<tr><td></td><td><span class="c2-badge">${k2}</span></td><td class="td-num">${fmtAmt(v,cur)}</td><td class="td-num" style="color:var(--text3)">${pct}%</td></tr>`;
       });
-      // Subtotale Cat.2 in fondo al suo gruppo
-      html+=`<tr style="background:var(--surface2);border-top:1px solid var(--border);">
-        <td></td>
-        <td style="font-size:11px;font-weight:bold;color:var(--text2);">↳ Subtot. ${k2}</td>
-        <td></td>
-        <td class="td-num pos"><strong>${fmt(g2.e)}</strong></td>
-        <td class="td-num neg"><strong>${fmt(g2.u)}</strong></td>
-        <td class="td-num ${s2>=0?'pos':'neg'}"><strong>${fmt(s2)}</strong></td>
-        <td></td>
+      html+=`<tr style="background:var(--surface2);"><td></td><td style="font-size:11px;font-weight:bold;color:var(--text2);">↳ Subtot. ${k1}</td><td class="td-num"><strong>${fmtAmt(g.tot,cur)}</strong></td><td class="td-num" style="color:var(--text3)">${totCur>0?(g.tot/totCur*100).toFixed(1):0}%</td></tr>`;
+    });
+  });
+  html+=`</tbody></table>`;
+  bodyEl.innerHTML=html;
+}
+
+// ── REPORT: TIPO ──────────────────────────────────────
+function renderTipoReport(params,metaEl,bodyEl){
+  const {tipo,from,to}=params;
+  const data=filterRows(from,to);
+  metaEl.textContent=`${tipo||'Tutti i tipi'} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
+
+  // Group by tipo→entità→currency
+  const tipiMap={};
+  data.forEach(r=>{
+    [r.from,r.to].forEach((nome,idx)=>{
+      const tn=getTipoNome(nome)||'—';
+      if(tipo&&tn!==tipo)return;
+      const cur=getNomeValuta(nome);
+      if(!tipiMap[tn])tipiMap[tn]={};
+      if(!tipiMap[tn][nome])tipiMap[tn][nome]={entrate:{},uscite:{}};
+      if(idx===1){ tipiMap[tn][nome].entrate[cur]=(tipiMap[tn][nome].entrate[cur]||0)+r.importo; }
+      else { tipiMap[tn][nome].uscite[cur]=(tipiMap[tn][nome].uscite[cur]||0)+r.importo; }
+    });
+  });
+  if(!Object.keys(tipiMap).length){bodyEl.innerHTML='<div class="report-no-data">Nessun dato</div>';return;}
+
+  let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
+  Object.keys(tipiMap).sort().forEach(t=>{
+    html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;
+    Object.keys(tipiMap[t]).sort().forEach(nome=>{
+      const e=tipiMap[t][nome];
+      const allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];
+      allCurs.forEach(cur=>{
+        const ei=e.entrate[cur]||0, ui=e.uscite[cur]||0, si=ei-ui;
+        html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;
+      });
+    });
+  });
+  html+=`</tbody></table>`;
+  bodyEl.innerHTML=html;
+}
+
+// ── REPORT: DATE ──────────────────────────────────────
+function renderDateReport(params,metaEl,bodyEl){
+  const {from,to}=params;
+  const data=filterRows(from,to);
+  metaEl.textContent=`${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'} · ${data.length} mov.`;
+  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
+
+  // Group by currency
+  const byCur={};
+  data.forEach(r=>{
+    const cur=r.valuta||'EUR';
+    if(!byCur[cur])byCur[cur]=[];
+    byCur[cur].push(r);
+  });
+
+  let html=`<table class="report-table"><thead><tr><th>Data</th><th>From</th><th>To</th><th>Descrizione</th><th>Cat.1</th><th class="td-num">Importo</th><th>Val.</th></tr></thead><tbody>`;
+  Object.keys(byCur).sort().forEach(cur=>{
+    const arr=byCur[cur], tot=arr.reduce((s,r)=>s+r.importo,0);
+    html+=`<tr class="cur-section-header"><td colspan="7">💱 ${curSymbol(cur)} ${cur} — ${arr.length} mov. — Totale: <strong>${fmtAmt(tot,cur)}</strong></td></tr>`;
+    arr.forEach(r=>{
+      const isEx=isExchangeRow(r);
+      html+=`<tr>
+        <td>${fmtDate(r.data)}</td>
+        <td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span></td>
+        <td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span></td>
+        <td>${r.desc}${isEx?` <span class="fx-tag">FX</span>`:''}</td>
+        <td><span class="c1-badge">${r.c1||'—'}</span></td>
+        <td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td>
+        <td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td>
       </tr>`;
     });
   });
-
-  html+=`</tbody><tfoot><tr>
-    <td colspan="3"><strong>TOTALE GENERALE</strong></td>
-    <td class="td-num pos"><strong>${fmt(gtE)}</strong></td>
-    <td class="td-num neg"><strong>${fmt(gtU)}</strong></td>
-    <td class="td-num ${gtS>=0?'pos':'neg'}"><strong>${fmt(gtS)}</strong></td>
-    <td class="td-num">100%</td>
-  </tr></tfoot></table>`;
+  html+=`</tbody></table>`;
   bodyEl.innerHTML=html;
 }
 
-function renderTipoReport(params, metaEl, bodyEl){
-  const {tipo, from, to}=params;
-  const data=filterRows(from, to);
-  const dateStr=(from||to)?`${fmtDate(from)||'inizio'} → ${fmtDate(to)||'oggi'}`:'Tutti i periodi';
-  metaEl.textContent=`${tipo||'Tutti i tipi'} · ${dateStr}`;
-
-  // Raggruppa per tipo→entità
-  const tipiMap={};
-  data.forEach(r=>{
-    [r.from, r.to].forEach((nome,idx)=>{
-      const tn=getTipoNome(nome);
-      if(tipo&&tn!==tipo)return;
-      if(!tipiMap[tn||'—'])tipiMap[tn||'—']={};
-      if(!tipiMap[tn||'—'][nome])tipiMap[tn||'—'][nome]={entrate:0,uscite:0};
-      if(idx===1) tipiMap[tn||'—'][nome].entrate+=r.importo;
-      else tipiMap[tn||'—'][nome].uscite+=r.importo;
-    });
-  });
-  if(!Object.keys(tipiMap).length){ bodyEl.innerHTML='<div class="report-no-data">Nessun dato trovato</div>'; return; }
-
-  let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
-  let totE=0,totU=0;
-  Object.keys(tipiMap).sort().forEach(t=>{
-    const entita=tipiMap[t];
-    html+=`<tr class="report-section-header"><td colspan="2"><strong>${t}</strong></td><td colspan="3"></td></tr>`;
-    Object.keys(entita).sort().forEach(nome=>{
-      const e=entita[nome];
-      const s=e.entrate-e.uscite;
-      totE+=e.entrate; totU+=e.uscite;
-      html+=`<tr><td></td><td><strong>${nome}</strong></td><td class="td-num pos">${fmt(e.entrate)}</td><td class="td-num neg">${fmt(e.uscite)}</td><td class="td-num ${s>=0?'pos':'neg'}">${fmt(s)}</td></tr>`;
-    });
-  });
-  html+=`</tbody><tfoot><tr><td colspan="2"><strong>TOTALE</strong></td><td class="td-num pos"><strong>${fmt(totE)}</strong></td><td class="td-num neg"><strong>${fmt(totU)}</strong></td><td class="td-num ${totE-totU>=0?'pos':'neg'}"><strong>${fmt(totE-totU)}</strong></td></tr></tfoot></table>`;
-  bodyEl.innerHTML=html;
-}
-
-function renderDateReport(params, metaEl, bodyEl){
-  const {from, to}=params;
-  const data=filterRows(from, to);
-  const dateStr=(from||to)?`${fmtDate(from)||'inizio'} → ${fmtDate(to)||'oggi'}`:'Tutti i periodi';
-  metaEl.textContent=`${dateStr} · ${data.length} movimenti`;
-  if(!data.length){ bodyEl.innerHTML='<div class="report-no-data">Nessun movimento trovato</div>'; return; }
-
-  let totale=0;
-  let html=`<table class="report-table"><thead><tr>
-    <th>Data</th><th>From</th><th>To</th><th>Descrizione</th>
-    <th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th>
-  </tr></thead><tbody>`;
-  data.forEach(r=>{
-    totale+=r.importo;
-    html+=`<tr>
-      <td>${fmtDate(r.data)}</td>
-      <td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span></td>
-      <td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span></td>
-      <td>${r.desc}</td>
-      <td><span class="c1-badge">${r.c1}</span></td>
-      <td><span class="c2-badge">${r.c2}</span></td>
-      <td><span class="c3-badge">${r.c3}</span></td>
-      <td class="td-num amount-neu">${fmt(r.importo)}</td>
-    </tr>`;
-  });
-  html+=`</tbody><tfoot><tr><td colspan="7"><strong>TOTALE</strong></td><td class="td-num"><strong>${fmt(totale)}</strong></td></tr></tfoot></table>`;
-  bodyEl.innerHTML=html;
-}
-
-function renderSaldoReport(params, metaEl, bodyEl){
-  const {from, to}=params;
-  const data=filterRows(from, to);
-  const dateStr=(from||to)?`${fmtDate(from)||'inizio'} → ${fmtDate(to)||'oggi'}`:'Tutti i periodi';
-  metaEl.textContent=`Confronto saldi · ${dateStr}`;
-  if(!data.length){ bodyEl.innerHTML='<div class="report-no-data">Nessun movimento trovato</div>'; return; }
+// ── REPORT: SALDO ─────────────────────────────────────
+function renderSaldoReport(params,metaEl,bodyEl){
+  const {from,to}=params;
+  const data=filterRows(from,to);
+  metaEl.textContent=`Confronto saldi · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
+  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
 
   const saldi={};
-  nomi.forEach(n=>{ saldi[n.name]={entrate:0,uscite:0,tipo:n.tipo||'—'}; });
+  nomi.forEach(n=>{ saldi[n.name]={entrate:{},uscite:{},tipo:n.tipo||'—',valuta:n.valuta||'EUR'}; });
   data.forEach(r=>{
-    if(!saldi[r.from])saldi[r.from]={entrate:0,uscite:0,tipo:getTipoNome(r.from)||'—'};
-    if(!saldi[r.to])saldi[r.to]={entrate:0,uscite:0,tipo:getTipoNome(r.to)||'—'};
-    saldi[r.from].uscite+=r.importo;
-    saldi[r.to].entrate+=r.importo;
+    const cf=r.valuta||'EUR', ct=r.valutaTo||cf;
+    if(!saldi[r.from])saldi[r.from]={entrate:{},uscite:{},tipo:getTipoNome(r.from)||'—',valuta:cf};
+    if(!saldi[r.to])saldi[r.to]={entrate:{},uscite:{},tipo:getTipoNome(r.to)||'—',valuta:ct};
+    saldi[r.from].uscite[cf]=(saldi[r.from].uscite[cf]||0)+r.importo;
+    const toAmt=isExchangeRow(r)?r.importoTo||r.importo:r.importo;
+    saldi[r.to].entrate[ct]=(saldi[r.to].entrate[ct]||0)+toAmt;
   });
 
-  // Raggruppa per tipo
   const perTipo={};
-  Object.keys(saldi).forEach(nome=>{
-    const s=saldi[nome], t=s.tipo;
-    if(!perTipo[t])perTipo[t]=[];
-    perTipo[t].push({nome, ...s});
-  });
+  Object.keys(saldi).forEach(nome=>{ const s=saldi[nome],t=s.tipo; if(!perTipo[t])perTipo[t]=[]; perTipo[t].push({nome,...s}); });
 
-  let html=`<table class="report-table"><thead><tr>
-    <th>Tipo</th><th>Entità</th>
-    <th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th>
-  </tr></thead><tbody>`;
-  let gtE=0,gtU=0;
+  let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
   Object.keys(perTipo).sort().forEach(tipo=>{
-    const items=perTipo[tipo].filter(x=>x.entrate>0||x.uscite>0).sort((a,b)=>a.nome.localeCompare(b.nome));
+    const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));
     if(!items.length)return;
-    const tE=items.reduce((s,x)=>s+x.entrate,0), tU=items.reduce((s,x)=>s+x.uscite,0);
-    gtE+=tE; gtU+=tU;
-    html+=`<tr class="report-section-header"><td><strong>${tipo}</strong></td><td></td><td class="td-num"><strong>${fmt(tE)}</strong></td><td class="td-num"><strong>${fmt(tU)}</strong></td><td class="td-num ${tE-tU>=0?'pos':'neg'}"><strong>${fmt(tE-tU)}</strong></td></tr>`;
+    html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;
     items.forEach(x=>{
-      const s=x.entrate-x.uscite;
-      html+=`<tr><td></td><td><strong>${x.nome}</strong></td><td class="td-num pos">${fmt(x.entrate)}</td><td class="td-num neg">${fmt(x.uscite)}</td><td class="td-num ${s>=0?'pos':'neg'}">${fmt(s)}</td></tr>`;
+      const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];
+      // show native currency first
+      const sortedCurs=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];
+      sortedCurs.forEach(cur=>{
+        const ei=x.entrate[cur]||0, ui=x.uscite[cur]||0;
+        if(ei===0&&ui===0)return;
+        const si=ei-ui;
+        html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;
+      });
     });
   });
-  html+=`</tbody><tfoot><tr><td colspan="2"><strong>TOTALE GENERALE</strong></td><td class="td-num pos"><strong>${fmt(gtE)}</strong></td><td class="td-num neg"><strong>${fmt(gtU)}</strong></td><td class="td-num ${gtE-gtU>=0?'pos':'neg'}"><strong>${fmt(gtE-gtU)}</strong></td></tr></tfoot></table>`;
+  html+=`</tbody></table>`;
   bodyEl.innerHTML=html;
 }
 
+// ── REPORT: FX EXCHANGE ───────────────────────────────
+function renderFxReport(params,metaEl,bodyEl){
+  const {from,to}=params;
+  const data=filterRows(from,to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);
+  metaEl.textContent=`Exchange FX · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'} · ${data.length} operazioni`;
+  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessuna operazione FX trovata</div>';return;}
+
+  let html=`<table class="report-table"><thead><tr>
+    <th>Data</th><th>Da Conto</th><th>A Conto</th><th>Descrizione</th>
+    <th class="td-num">Importo ceduto</th><th class="td-num">Importo ricevuto</th>
+    <th class="td-num">Tasso applicato</th><th class="td-num">Tasso attuale*</th><th class="td-num">Δ%</th>
+  </tr></thead><tbody>`;
+
+  let totByCur={};
+  data.forEach(r=>{
+    const cf=r.valuta||'EUR', ct=r.valutaTo;
+    const tassoApplicato=r.tassoFX||( r.importoTo&&r.importo ? r.importoTo/r.importo : getRate(cf,ct) );
+    const tassoAttuale=getRate(cf,ct);
+    const delta=tassoApplicato>0?((tassoApplicato-tassoAttuale)/tassoApplicato*100):0;
+    const deltaClass=delta>=0?'pos':'neg';
+    if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{},valutaTo:ct};
+    totByCur[cf].ceduto+=r.importo;
+    totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);
+    html+=`<tr>
+      <td>${fmtDate(r.data)}</td>
+      <td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span> <span class="${curClass(cf)}">${curSymbol(cf)}</span></td>
+      <td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span> <span class="${curClass(ct)}">${curSymbol(ct)}</span></td>
+      <td>${r.desc}</td>
+      <td class="td-num neg">${fmtAmt(r.importo,cf)}</td>
+      <td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td>
+      <td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${tassoApplicato.toFixed(4)} ${curSymbol(ct)}</td>
+      <td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tassoAttuale.toFixed(4)} ${curSymbol(ct)}</td>
+      <td class="td-num ${deltaClass}">${delta>=0?'+':''}${delta.toFixed(2)}%</td>
+    </tr>`;
+  });
+
+  html+=`</tbody><tfoot>`;
+  Object.keys(totByCur).forEach(cf=>{
+    const t=totByCur[cf];
+    Object.keys(t.ricevuto).forEach(ct=>{
+      html+=`<tr><td colspan="4"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(t.ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(t.ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;
+    });
+  });
+  html+=`</tfoot></table>`;
+  bodyEl.innerHTML=html;
+}
+
+// ── SAVE/DELETE REPORT ────────────────────────────────
 async function saveReport(){
   const name=document.getElementById('rptName').value.trim();
   if(!name){alert('Inserisci un nome per il report');return;}
-  const {type, params}=getReportConfig();
-  const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità'};
-  const rpt={name, type, typeLabel:typeLabels[type], params, updatedAt:new Date().toISOString()};
-  if(activeReportIdx!==null){ savedReports[activeReportIdx]=rpt; }
-  else { savedReports.push(rpt); activeReportIdx=savedReports.length-1; }
-  await saveToFirebase();
-  renderSavedReports();
-  runReport();
-  alert(`Report "${name}" salvato!`);
+  const {type,params}=getReportConfig();
+  const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità',fx:'Exchange FX'};
+  const rpt={name,type,typeLabel:typeLabels[type],params,updatedAt:new Date().toISOString()};
+  if(activeReportIdx!==null)savedReports[activeReportIdx]=rpt; else{savedReports.push(rpt);activeReportIdx=savedReports.length-1;}
+  await saveToFirebase(); renderSavedReports(); runReport(); alert(`Report "${name}" salvato!`);
 }
-
 async function deleteReport(idx){
   if(!confirm(`Eliminare il report "${savedReports[idx].name}"?`))return;
   savedReports.splice(idx,1);
-  if(activeReportIdx===idx){ activeReportIdx=null; document.getElementById('reportOutput').style.display='none'; }
-  else if(activeReportIdx>idx) activeReportIdx--;
-  await saveToFirebase();
-  renderSavedReports();
+  if(activeReportIdx===idx){activeReportIdx=null;document.getElementById('reportOutput').style.display='none';}
+  else if(activeReportIdx>idx)activeReportIdx--;
+  await saveToFirebase(); renderSavedReports();
 }
-
 function renderSavedReports(){
   const container=document.getElementById('reportSavedList');
-  if(!savedReports.length){ container.innerHTML='<div class="report-empty-saved">Nessun report salvato</div>'; return; }
-  const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo'};
+  if(!savedReports.length){container.innerHTML='<div class="report-empty-saved">Nessun report salvato</div>';return;}
+  const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};
   container.innerHTML=savedReports.map((r,i)=>`
     <div class="report-saved-item ${activeReportIdx===i?'active':''}" onclick="loadReport(${i})">
-      <div>
-        <div class="report-saved-name">${r.name}</div>
-        <div class="report-saved-type"><span class="report-type-badge ${typeBadge[r.type]||''}">${r.typeLabel||r.type}</span></div>
-      </div>
+      <div><div class="report-saved-name">${r.name}</div><div class="report-saved-type"><span class="report-type-badge ${typeBadge[r.type]||''}">${r.typeLabel||r.type}</span></div></div>
       <button class="report-del-btn" onclick="event.stopPropagation();deleteReport(${i})">✕</button>
     </div>`).join('');
 }
-
 function printReport(){ window.print(); }
 
+// ── CATEGORIE STAMPA ──────────────────────────────────
 function stampaCategorie(){
   const w=window.open('','_blank','width=800,height:600');
-  const dark=document.body.classList.contains('dark');
-  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Archivio Categorie</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
-    body{background:white;padding:24px;color:#333;}
-    h1{font-size:18px;font-weight:900;margin-bottom:4px;}
-    .subtitle{font-size:11px;color:#888;margin-bottom:20px;letter-spacing:1px;}
-    .c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}
-    .c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;display:flex;align-items:center;gap:8px;}
-    .c2-block{border-top:1px solid #e0e0e0;}
-    .c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5e6d0;}
-    .c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;display:flex;align-items:center;gap:6px;}
-    .c3-row:last-child{border-bottom:none;}
-    .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
-    .dot-c1{background:#9c27b0;} .dot-c2{background:#e67e22;} .dot-c3{background:#16a085;}
-    .empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}
-    .footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}
-    .summary-box{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
-    .summary-card{background:#f5f5f5;border-radius:8px;padding:10px 18px;text-align:center;min-width:100px;}
-    .summary-card .num{font-size:22px;font-weight:900;}
-    .summary-card .lbl{font-size:10px;color:#888;margin-top:2px;}
-    .num-c1{color:#9c27b0;} .num-c2{color:#e67e22;} .num-c3{color:#16a085;}
-    @media print{body{padding:10px;}button{display:none!important;}}
-  </style></head><body>`;
-
   const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const totC2=Object.values(c2Map).reduce((s,a)=>s+a.length,0);
   const totC3=Object.values(c3Map).reduce((s,a)=>s+a.length,0);
-
-  html+=`<h1>🏷️ Archivio Categorie</h1>
-  <div class="subtitle">Stampato il ${now}</div>
+  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title>
+  <style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}
+  h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}
+  .c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}
+  .c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}
+  .c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}
+  .c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}
+  .empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}
+  .summary-box{display:flex;gap:16px;margin-bottom:20px;}.summary-card{background:#f5f5f5;border-radius:8px;padding:10px 18px;text-align:center;}
+  .summary-card .num{font-size:22px;font-weight:900;}.summary-card .lbl{font-size:10px;color:#888;}
+  .num-c1{color:#9c27b0;}.num-c2{color:#e67e22;}.num-c3{color:#16a085;}
+  .footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}
+  </style></head><body>`;
+  html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>
   <div class="summary-box">
     <div class="summary-card"><div class="num num-c1">${c1.length}</div><div class="lbl">Cat.1</div></div>
     <div class="summary-card"><div class="num num-c2">${totC2}</div><div class="lbl">Cat.2</div></div>
     <div class="summary-card"><div class="num num-c3">${totC3}</div><div class="lbl">Cat.3</div></div>
   </div>`;
-
-  if(!c1.length){ html+=`<div style="color:#aaa;font-style:italic;">Nessuna categoria presente.</div>`; }
-  else {
-    c1.forEach(cat1=>{
-      const subs2=c2Map[cat1]||[];
-      html+=`<div class="c1-block">
-        <div class="c1-header"><span class="dot dot-c1"></span>${cat1}</div>`;
-      if(!subs2.length){
-        html+=`<div class="empty">Nessuna Cat.2</div>`;
-      } else {
-        subs2.forEach(cat2=>{
-          const subs3=c3Map[c3k(cat1,cat2)]||[];
-          html+=`<div class="c2-block">
-            <div class="c2-header"><span class="dot dot-c2"></span>${cat2}</div>`;
-          if(!subs3.length){
-            html+=`<div class="empty">Nessuna Cat.3</div>`;
-          } else {
-            subs3.forEach(cat3=>{
-              html+=`<div class="c3-row"><span class="dot dot-c3"></span>${cat3}</div>`;
-            });
-          }
-          html+=`</div>`;
-        });
-      }
-      html+=`</div>`;
+  c1.forEach(cat1=>{
+    const subs2=c2Map[cat1]||[];
+    html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;
+    if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}
+    else subs2.forEach(cat2=>{
+      const subs3=c3Map[c3k(cat1,cat2)]||[];
+      html+=`<div class="c2-header">${cat2}</div>`;
+      if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;
+      else subs3.forEach(cat3=>{ html+=`<div class="c3-row">${cat3}</div>`; });
     });
-  }
-
-  html+=`<div class="footer">IlTuoCaveau · ${now}</div>
-  <script>window.onload=()=>window.print();<\/script>
-  </body></html>`;
-
-  w.document.write(html);
-  w.document.close();
+    html+=`</div>`;
+  });
+  html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;
+  w.document.write(html); w.document.close();
 }
 
 // ── BACKUP ────────────────────────────────────────────
 function salvaBackup(){
-  const json=JSON.stringify({version:'1.4-reports',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports},null,2);
+  const json=JSON.stringify({version:'2.0-multicur',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);
   const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url; a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url);
 }
-
 function stampaPDF(){ window.print(); }
 
 // ── GLOBAL EXPORTS ────────────────────────────────────
-window.goTo=goTo; window.aggiungi=aggiungi; window.startEdit=startEdit; window.saveEdit=saveEdit; window.cancelEdit=cancelEdit; window.elimina=elimina;
-window.addNome=addNome; window.delNome=delNome; window.startEditNome=startEditNome; window.saveEditNome=saveEditNome; window.cancelEditNome=cancelEditNome;
-window.addC1=addC1; window.delC1=delC1; window.addC2=addC2; window.delC2=delC2; window.addC3=addC3; window.delC3=delC3;
-window.renderC2Page=renderC2Page; window.renderC3Page=renderC3Page; window.syncC2ForC3=syncC2ForC3; window.onC1Change=onC1Change; window.onC2Change=onC2Change; window.edC1Change=edC1Change; window.edC2Change=edC2Change;
-window.setSort=setSort; window.toggleDD=toggleDD; window.toggleF=toggleF; window.clearFilters=clearFilters; window.clearDate=clearDate;
-window.onEntitySelChange=onEntitySelChange; window.clearEntityFilter=clearEntityFilter; window.filterByEntity=filterByEntity;
-window.onTipoSelChange=onTipoSelChange; window.clearTipoFilter=clearTipoFilter; window.toggleFilterPanel=toggleFilterPanel;
-window.stampaPDF=stampaPDF; window.salvaBackup=salvaBackup; window.openSettings=openSettings; window.closeSettings=closeSettings; window.closeSettingsOutside=closeSettingsOutside; window.toggleDark=toggleDark;
-window.stampaCategorie=stampaCategorie; window.onRptTypeChange=onRptTypeChange; window.runReport=runReport; window.saveReport=saveReport; window.deleteReport=deleteReport; window.loadReport=loadReport; window.newReport=newReport; window.printReport=printReport;
+Object.assign(window, {
+  goTo, aggiungi, startEdit, saveEdit, cancelEdit, elimina,
+  onFromChange, onToChange, onImportoChange, onImportoToChange, onTassoChange,
+  addNome, delNome, startEditNome, saveEditNome, cancelEditNome, renderNomiPage,
+  addC1, delC1, addC2, delC2, addC3, delC3,
+  renderC2Page, renderC3Page, syncC2ForC3, onC1Change, onC2Change, edC1Change,
+  setSort, toggleDD, toggleF, clearFilters, clearDate,
+  onEntitySelChange, clearEntityFilter, filterByEntity,
+  onTipoSelChange, clearTipoFilter, onValutaSelChange, clearValutaFilter,
+  toggleFilterPanel, stampaPDF, salvaBackup, stampaCategorie,
+  openSettings, closeSettings, closeSettingsOutside, toggleDark, setRefCurr,
+  onRptTypeChange, runReport, saveReport, deleteReport, loadReport, newReport, printReport
+});
 </script>
 </body>
 </html>
