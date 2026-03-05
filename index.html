@@ -22,7 +22,6 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
   body{background:var(--bg);padding:20px;color:var(--text);transition:background .3s,color .3s;}
-
   .login-wrapper{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
   .login-box{background:var(--surface);border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 8px 32px var(--shadow2);}
   .login-logo{text-align:center;margin-bottom:32px;}
@@ -37,7 +36,6 @@
   .login-error{background:#fce8e6;color:#ea4335;padding:12px;border-radius:8px;font-size:13px;text-align:center;}
   #app{display:none;}
   #app.loaded{display:block;}
-
   .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
   .logo-wrap{display:flex;align-items:center;gap:8px;}
   .header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
@@ -46,7 +44,6 @@
   .btn-logout:hover{background:#c5221f;}
   .btn-settings{background:var(--surface);border:1px solid var(--input-border);color:var(--text2);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;transition:all .2s;}
   .btn-settings:hover{background:var(--hover);}
-
   .settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
   .settings-overlay.open{display:flex;}
   .settings-panel{background:var(--surface);border-radius:14px;padding:24px;width:340px;box-shadow:0 8px 32px var(--shadow2);}
@@ -64,27 +61,23 @@
   .toggle input:checked+.toggle-slider:before{transform:translateX(20px);}
   .btn-close-settings{width:100%;margin-top:16px;padding:10px;background:#1a73e8;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
   .settings-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
-
   nav{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:6px;box-shadow:0 2px 8px var(--shadow);flex-wrap:wrap;}
   .nav-btn{flex:1;min-width:80px;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:bold;color:var(--text2);transition:all .15s;}
   .nav-btn:hover{background:var(--hover);}
   .nav-btn.active{background:#1a73e8;color:white;}
-  .page{display:none;} .page.active{display:block;}
+  .page{display:none;}.page.active{display:block;}
   h2{text-align:center;color:#1a73e8;margin-bottom:20px;font-size:20px;}
   h3{font-size:14px;color:var(--text2);margin-bottom:10px;}
-
   .summary{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
   .card{flex:1;min-width:130px;padding:12px 16px;border-radius:10px;color:white;text-align:center;}
-  .card.in{background:#34a853;} .card.out{background:#ea4335;}
-  .card.saldo-pos{background:#1a73e8;} .card.saldo-neg{background:#e65100;} .card.neutral{background:#607d8b;}
+  .card.in{background:#34a853;}.card.out{background:#ea4335;}
+  .card.saldo-pos{background:#1a73e8;}.card.saldo-neg{background:#e65100;}.card.neutral{background:#607d8b;}
   .card label{font-size:11px;opacity:.9;display:block;margin-bottom:3px;}
   .card span{font-size:16px;font-weight:bold;}
-
   .entity-banner{background:#1a73e8;color:white;border-radius:10px;padding:10px 16px;margin-bottom:10px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
   .entity-banner.active{display:flex;}
   .entity-banner span{font-size:13px;font-weight:bold;}
   .entity-banner button{background:rgba(255,255,255,.25);border:none;color:white;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;}
-
   .filter-toggle-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:10px;padding:10px 16px;margin-bottom:8px;box-shadow:0 2px 8px var(--shadow);cursor:pointer;user-select:none;}
   .filter-toggle-bar.open{border-radius:10px 10px 0 0;}
   .filter-toggle-bar:hover{background:var(--hover);}
@@ -110,7 +103,7 @@
   .dropdown-item{display:flex;align-items:center;gap:8px;padding:6px 13px;cursor:pointer;font-size:12px;color:var(--text);}
   .dropdown-item:hover{background:var(--hover);}
   .dropdown-item input[type="checkbox"]{cursor:pointer;width:14px;height:14px;accent-color:#1a73e8;}
-  .di-c1 input{accent-color:#9c27b0;} .di-c2 input{accent-color:#e67e22;} .di-c3 input{accent-color:#16a085;}
+  .di-c1 input{accent-color:#9c27b0;}.di-c2 input{accent-color:#e67e22;}.di-c3 input{accent-color:#16a085;}
   .dropdown-item.void-item{border-top:1px solid var(--border);margin-top:4px;padding-top:8px;font-style:italic;color:var(--text3);}
   .dropdown-item.void-item input{accent-color:#607d8b;}
   .dropdown-empty{padding:9px 13px;color:var(--text4);font-size:12px;font-style:italic;}
@@ -126,7 +119,6 @@
   .tipo-select.active-sel{border-color:#8e44ad;color:#8e44ad;font-weight:bold;}
   .val-select.active-sel{border-color:#e67e22;color:#e67e22;font-weight:bold;}
   .filter-reset-row{display:flex;justify-content:flex-end;margin-top:4px;}
-
   .insert-box{background:var(--insert-bg);border:2px solid var(--insert-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 10px var(--shadow);}
   .insert-box-title{font-size:13px;font-weight:bold;color:var(--insert-border);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
@@ -138,12 +130,10 @@
   .btn-add{padding:8px 16px;background:#1a73e8;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-add:hover{background:#1558b0;}
   .arrow-label{font-size:18px;color:#1a73e8;font-weight:bold;padding:0 2px;}
-
   .fx-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:8px 12px;background:rgba(230,126,34,.1);border:1px solid #e67e22;border-radius:8px;}
   .fx-label{font-size:12px;color:#e67e22;font-weight:bold;min-width:60px;}
   .fx-badge{background:#e67e22;color:white;border-radius:8px;padding:2px 8px;font-size:11px;font-weight:bold;white-space:nowrap;}
   .fx-loading{font-size:11px;color:#1a73e8;font-style:italic;}
-
   .cur-eur{background:#e8f0fe;color:#1a73e8;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
   .cur-gbp{background:#f3e5f5;color:#8e44ad;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
   .cur-aed{background:#fff3e0;color:#e67e22;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
@@ -152,7 +142,6 @@
   body.dark .cur-gbp{background:#3a1a4a;color:#ce93d8;}
   body.dark .cur-aed{background:#3a2a10;color:#ffb74d;}
   body.dark .cur-other{background:#0a2a25;color:#4db6ac;}
-
   table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);}
   thead{background:#1a73e8;color:white;}
   th{padding:9px 8px;text-align:left;font-size:11px;white-space:nowrap;}
@@ -179,19 +168,18 @@
   body.dark .c3-badge{background:#0a2a25;color:#4db6ac;}
   .void-badge{background:#f5f5f5;color:#9e9e9e;border-radius:10px;padding:2px 6px;font-size:10px;font-style:italic;}
   body.dark .void-badge{background:#2a2a2a;color:#666;}
-  .amount-pos{color:#34a853;font-weight:bold;} .amount-neg{color:#ea4335;font-weight:bold;} .amount-neu{color:var(--text2);font-weight:bold;}
+  .amount-pos{color:#34a853;font-weight:bold;}.amount-neg{color:#ea4335;font-weight:bold;}.amount-neu{color:var(--text2);font-weight:bold;}
   .fx-tag{background:#e67e22;color:white;border-radius:6px;padding:1px 5px;font-size:9px;font-weight:bold;display:inline-block;margin-left:2px;}
   .empty{text-align:center;color:var(--text4);padding:30px;font-style:italic;}
   .row-actions{display:flex;gap:3px;}
-  .btn-edit,.btn-del,.btn-save,.btn-cancel{border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:3px 6px;}
-  .btn-edit{background:#e8f0fe;color:#1a73e8;} .btn-del{background:#fce8e6;color:#ea4335;}
-  .btn-save{background:#e6f4ea;color:#34a853;font-weight:bold;} .btn-cancel{background:var(--hover);color:var(--text3);}
+  .btn-edit,.btn-del,.btn-save,.btn-cancel{border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:4px 8px;}
+  .btn-edit{background:#e8f0fe;color:#1a73e8;}.btn-del{background:#fce8e6;color:#ea4335;}
+  .btn-save{background:#e6f4ea;color:#34a853;font-weight:bold;}.btn-cancel{background:#fce8e6;color:#ea4335;font-weight:bold;}
   .edit-input{width:100%;padding:3px 5px;border:1px solid #1a73e8;border-radius:4px;font-size:11px;background:var(--input-bg);color:var(--text);}
   .edit-select{padding:3px 5px;border:1px solid #1a73e8;border-radius:4px;font-size:11px;width:100%;background:var(--input-bg);color:var(--text);}
   .btn-action{padding:8px 16px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;}
-  .btn-action.purple{background:#8e44ad;} .btn-action.purple:hover{background:#7d3c98;}
+  .btn-action.purple{background:#8e44ad;}.btn-action.purple:hover{background:#7d3c98;}
   .cat-cell{display:flex;flex-direction:column;gap:2px;}
-
   .archivio-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .nomi-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
   .nomi-table th{text-align:left;padding:7px 10px;font-size:12px;color:white;border-bottom:2px solid var(--border);font-weight:bold;}
@@ -210,32 +198,30 @@
   .tag-add{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center;}
   .tag-add input{flex:1;padding:8px 12px;border:1px solid var(--input-border);border-radius:6px;font-size:14px;min-width:120px;background:var(--input-bg);color:var(--text);}
   .btn-at{padding:8px 16px;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;}
-  .btn-at.nome{background:#1a73e8;} .btn-at.nome:hover{background:#1558b0;}
+  .btn-at.nome{background:#1a73e8;}.btn-at.nome:hover{background:#1558b0;}
   .empty-tag{color:var(--text4);font-size:13px;font-style:italic;}
   .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;min-height:36px;}
   .tag-item{display:flex;align-items:center;gap:6px;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:bold;}
-  .tag-item.c1{background:#f3e5f5;color:#9c27b0;} .tag-item.c2{background:#fff3e0;color:#e67e22;} .tag-item.c3{background:#e0f5f1;color:#16a085;}
+  .tag-item.c1{background:#f3e5f5;color:#9c27b0;}.tag-item.c2{background:#fff3e0;color:#e67e22;}.tag-item.c3{background:#e0f5f1;color:#16a085;}
   body.dark .tag-item.c1{background:#3a1a4a;color:#ce93d8;}
   body.dark .tag-item.c2{background:#3a2a10;color:#ffb74d;}
   body.dark .tag-item.c3{background:#0a2a25;color:#4db6ac;}
   .tag-item .del-tag{cursor:pointer;color:#ea4335;font-size:16px;}
-  .btn-at.c1{background:#9c27b0;} .btn-at.c1:hover{background:#7b1fa2;}
-  .btn-at.c2{background:#e67e22;} .btn-at.c2:hover{background:#ca6f1e;}
-  .btn-at.c3{background:#16a085;} .btn-at.c3:hover{background:#117a65;}
+  .btn-at.c1{background:#9c27b0;}.btn-at.c1:hover{background:#7b1fa2;}
+  .btn-at.c2{background:#e67e22;}.btn-at.c2:hover{background:#ca6f1e;}
+  .btn-at.c3{background:#16a085;}.btn-at.c3:hover{background:#117a65;}
   .sub-section{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;}
   .sub-title{font-size:13px;font-weight:bold;margin-bottom:8px;}
-  .sub-title.c1{color:#9c27b0;} .sub-title.c2{color:#e67e22;}
+  .sub-title.c1{color:#9c27b0;}.sub-title.c2{color:#e67e22;}
   .sel-parent{padding:7px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;min-width:160px;background:var(--input-bg);color:var(--text);}
-
   .backup-box{background:var(--surface);border-radius:10px;padding:20px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .backup-box h3{font-size:15px;margin-bottom:6px;color:var(--text);}
   .backup-box p{font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5;}
   .backup-actions{display:flex;gap:12px;flex-wrap:wrap;}
   .btn-backup{padding:10px 22px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
-  .btn-backup.save{background:#1a73e8;} .btn-backup.restore{background:#e67e22;}
+  .btn-backup.save{background:#1a73e8;}.btn-backup.restore{background:#e67e22;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
-
   .report-layout{display:flex;gap:16px;align-items:flex-start;}
   .report-sidebar{width:230px;flex-shrink:0;}
   .report-main{flex:1;min-width:0;}
@@ -272,7 +258,7 @@
   .report-table td{padding:7px 10px;font-size:clamp(9px,1.1vw,12px);border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
   .report-table tr:nth-child(even) td{background:var(--surface2);}
   .report-table tr:last-child td{border-bottom:none;}
-  .report-table .td-num{text-align:right;font-family:monospace;font-size:clamp(9px,1.05vw,12px);letter-spacing:0.01em;white-space:nowrap;}
+  .report-table .td-num{text-align:right;font-family:monospace;font-size:clamp(9px,1.05vw,12px);white-space:nowrap;}
   .report-table .pos{color:#34a853;font-weight:bold;}
   .report-table .neg{color:#ea4335;font-weight:bold;}
   .report-table tfoot td{background:#e8f0fe;color:#1a73e8;font-weight:bold;font-size:12px;border-top:2px solid #1a73e8;}
@@ -297,11 +283,7 @@
   body.dark .cur-section-header{background:rgba(74,144,217,.1);}
   .cur-section-header td{padding:8px 10px;font-weight:bold;color:#1a73e8;font-size:12px;}
   .rpt-cat-cell{display:flex;flex-direction:column;gap:2px;}
-
-  @media(max-width:700px){
-    .report-layout{flex-direction:column;}
-    .report-sidebar{width:100%;}
-  }
+  @media(max-width:700px){.report-layout{flex-direction:column;}.report-sidebar{width:100%;}}
   @media print{
     body{background:white!important;padding:10px;}
     nav,.filter-toggle-bar,.filter-panel,.insert-box,.row-actions,.entity-banner,.btn-settings,.settings-overlay,
@@ -333,7 +315,6 @@
       <div class="login-subtitle">Conoscenza, Azione, Libertà</div>
     </div>
     <div id="loginError" class="login-error" style="display:none"></div>
-    <!-- FIX: rimosso <form onsubmit=...> e sostituito con <div> per compatibilità ES module -->
     <div class="login-form" id="loginForm">
       <input type="email" class="login-input" id="loginEmail" placeholder="Email" autocomplete="email">
       <input type="password" class="login-input" id="loginPassword" placeholder="Password" autocomplete="current-password">
@@ -399,7 +380,6 @@
     <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
   </nav>
 
-  <!-- REGISTRO -->
   <div class="page active" id="page-registro">
     <h2>💸 Registro Movimenti</h2>
     <div class="entity-banner" id="entityBanner">
@@ -492,7 +472,6 @@
     </table>
   </div>
 
-  <!-- REPORT -->
   <div class="page" id="page-report">
     <h2>📊 Report</h2>
     <div class="report-layout">
@@ -523,100 +502,29 @@
           </div>
           <div id="rptParams">
             <div id="rptParamEstrato">
-              <div class="report-field-row">
-                <span class="report-field-label">Entità:</span>
-                <select class="report-select" id="rptEntity"><option value="">— Seleziona —</option></select>
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Dal:</span>
-                <input type="date" class="report-input" id="rptFrom">
-                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
-                <input type="date" class="report-input" id="rptTo">
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Cat.1:</span>
-                <select class="report-select" id="rptEstrC1" onchange="syncRptEstrC2()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.2:</span>
-                <select class="report-select" id="rptEstrC2" onchange="syncRptEstrC3()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.3:</span>
-                <select class="report-select" id="rptEstrC3"><option value="">— Tutte —</option></select>
-              </div>
+              <div class="report-field-row"><span class="report-field-label">Entità:</span><select class="report-select" id="rptEntity"><option value="">— Seleziona —</option></select></div>
+              <div class="report-field-row"><span class="report-field-label">Dal:</span><input type="date" class="report-input" id="rptFrom"><span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span><input type="date" class="report-input" id="rptTo"></div>
+              <div class="report-field-row"><span class="report-field-label">Cat.1:</span><select class="report-select" id="rptEstrC1" onchange="syncRptEstrC2()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.2:</span><select class="report-select" id="rptEstrC2" onchange="syncRptEstrC3()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.3:</span><select class="report-select" id="rptEstrC3"><option value="">— Tutte —</option></select></div>
             </div>
             <div id="rptParamCategoria" style="display:none">
-              <div class="report-field-row">
-                <span class="report-field-label">Cat.1:</span>
-                <select class="report-select" id="rptC1" onchange="syncRptCatC2()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.2:</span>
-                <select class="report-select" id="rptCatC2" onchange="syncRptCatC3()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.3:</span>
-                <select class="report-select" id="rptCatC3"><option value="">— Tutte —</option></select>
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Dal:</span>
-                <input type="date" class="report-input" id="rptFromCat">
-                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
-                <input type="date" class="report-input" id="rptToCat">
-              </div>
+              <div class="report-field-row"><span class="report-field-label">Cat.1:</span><select class="report-select" id="rptC1" onchange="syncRptCatC2()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.2:</span><select class="report-select" id="rptCatC2" onchange="syncRptCatC3()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.3:</span><select class="report-select" id="rptCatC3"><option value="">— Tutte —</option></select></div>
+              <div class="report-field-row"><span class="report-field-label">Dal:</span><input type="date" class="report-input" id="rptFromCat"><span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span><input type="date" class="report-input" id="rptToCat"></div>
             </div>
             <div id="rptParamTipo" style="display:none">
-              <div class="report-field-row">
-                <span class="report-field-label">Tipo:</span>
-                <select class="report-select" id="rptTipoSel"><option value="">— Tutti —</option></select>
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Cat.1:</span>
-                <select class="report-select" id="rptTipoC1" onchange="syncRptTipoC2()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.2:</span>
-                <select class="report-select" id="rptTipoC2" onchange="syncRptTipoC3()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.3:</span>
-                <select class="report-select" id="rptTipoC3"><option value="">— Tutte —</option></select>
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Dal:</span>
-                <input type="date" class="report-input" id="rptFromTipo">
-                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
-                <input type="date" class="report-input" id="rptToTipo">
-              </div>
+              <div class="report-field-row"><span class="report-field-label">Tipo:</span><select class="report-select" id="rptTipoSel"><option value="">— Tutti —</option></select></div>
+              <div class="report-field-row"><span class="report-field-label">Cat.1:</span><select class="report-select" id="rptTipoC1" onchange="syncRptTipoC2()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.2:</span><select class="report-select" id="rptTipoC2" onchange="syncRptTipoC3()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.3:</span><select class="report-select" id="rptTipoC3"><option value="">— Tutte —</option></select></div>
+              <div class="report-field-row"><span class="report-field-label">Dal:</span><input type="date" class="report-input" id="rptFromTipo"><span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span><input type="date" class="report-input" id="rptToTipo"></div>
             </div>
             <div id="rptParamDate" style="display:none">
-              <div class="report-field-row">
-                <span class="report-field-label">Cat.1:</span>
-                <select class="report-select" id="rptDateC1" onchange="syncRptDateC2()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.2:</span>
-                <select class="report-select" id="rptDateC2" onchange="syncRptDateC3()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.3:</span>
-                <select class="report-select" id="rptDateC3"><option value="">— Tutte —</option></select>
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Dal:</span>
-                <input type="date" class="report-input" id="rptFromDate">
-                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
-                <input type="date" class="report-input" id="rptToDate">
-              </div>
+              <div class="report-field-row"><span class="report-field-label">Cat.1:</span><select class="report-select" id="rptDateC1" onchange="syncRptDateC2()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.2:</span><select class="report-select" id="rptDateC2" onchange="syncRptDateC3()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.3:</span><select class="report-select" id="rptDateC3"><option value="">— Tutte —</option></select></div>
+              <div class="report-field-row"><span class="report-field-label">Dal:</span><input type="date" class="report-input" id="rptFromDate"><span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span><input type="date" class="report-input" id="rptToDate"></div>
             </div>
             <div id="rptParamSaldo" style="display:none">
-              <div class="report-field-row">
-                <span class="report-field-label">Cat.1:</span>
-                <select class="report-select" id="rptSaldoC1" onchange="syncRptSaldoC2()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.2:</span>
-                <select class="report-select" id="rptSaldoC2" onchange="syncRptSaldoC3()"><option value="">— Tutte —</option></select>
-                <span class="report-field-label" style="min-width:50px;">Cat.3:</span>
-                <select class="report-select" id="rptSaldoC3"><option value="">— Tutte —</option></select>
-              </div>
-              <div class="report-field-row">
-                <span class="report-field-label">Dal:</span>
-                <input type="date" class="report-input" id="rptFromSaldo">
-                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
-                <input type="date" class="report-input" id="rptToSaldo">
-              </div>
+              <div class="report-field-row"><span class="report-field-label">Cat.1:</span><select class="report-select" id="rptSaldoC1" onchange="syncRptSaldoC2()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.2:</span><select class="report-select" id="rptSaldoC2" onchange="syncRptSaldoC3()"><option value="">— Tutte —</option></select><span class="report-field-label" style="min-width:50px;">Cat.3:</span><select class="report-select" id="rptSaldoC3"><option value="">— Tutte —</option></select></div>
+              <div class="report-field-row"><span class="report-field-label">Dal:</span><input type="date" class="report-input" id="rptFromSaldo"><span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span><input type="date" class="report-input" id="rptToSaldo"></div>
             </div>
             <div id="rptParamFx" style="display:none">
-              <div class="report-field-row">
-                <span class="report-field-label">Dal:</span>
-                <input type="date" class="report-input" id="rptFromFx">
-                <span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span>
-                <input type="date" class="report-input" id="rptToFx">
-              </div>
+              <div class="report-field-row"><span class="report-field-label">Dal:</span><input type="date" class="report-input" id="rptFromFx"><span class="report-field-label" style="min-width:30px;text-align:center;">Al:</span><input type="date" class="report-input" id="rptToFx"></div>
             </div>
           </div>
           <div class="report-actions">
@@ -636,7 +544,6 @@
     </div>
   </div>
 
-  <!-- NOMI -->
   <div class="page" id="page-nomi">
     <h2>👤 Archivio Nomi</h2>
     <div class="archivio-box">
@@ -661,7 +568,6 @@
     </div>
   </div>
 
-  <!-- CATEGORIE -->
   <div class="page" id="page-categorie">
     <h2>🏷️ Archivio Categorie</h2>
     <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
@@ -670,10 +576,7 @@
     <div class="archivio-box">
       <h3>🟣 Categoria 1</h3>
       <div class="tag-list" id="c1List"></div>
-      <div class="tag-add">
-        <input type="text" id="inputC1" placeholder="Nuova cat.1..." onkeydown="if(event.key==='Enter')addC1()"/>
-        <button class="btn-at c1" onclick="addC1()">+ Aggiungi</button>
-      </div>
+      <div class="tag-add"><input type="text" id="inputC1" placeholder="Nuova cat.1..." onkeydown="if(event.key==='Enter')addC1()"/><button class="btn-at c1" onclick="addC1()">+ Aggiungi</button></div>
     </div>
     <div class="archivio-box">
       <h3>🟠 Categoria 2</h3>
@@ -682,10 +585,7 @@
         <select class="sel-parent" id="c1ForC2" onchange="renderC2Page()"><option value="">— Seleziona —</option></select>
       </div>
       <div id="c2Section" class="sub-section"><span class="empty-tag">Seleziona Cat.1</span></div>
-      <div class="tag-add" id="c2AddRow" style="display:none">
-        <input type="text" id="inputC2" placeholder="Nuova cat.2..." onkeydown="if(event.key==='Enter')addC2()"/>
-        <button class="btn-at c2" onclick="addC2()">+ Aggiungi</button>
-      </div>
+      <div class="tag-add" id="c2AddRow" style="display:none"><input type="text" id="inputC2" placeholder="Nuova cat.2..." onkeydown="if(event.key==='Enter')addC2()"/><button class="btn-at c2" onclick="addC2()">+ Aggiungi</button></div>
     </div>
     <div class="archivio-box">
       <h3>🟢 Categoria 3</h3>
@@ -696,14 +596,10 @@
         <select class="sel-parent" id="c2ForC3" onchange="renderC3Page()"><option value="">— Seleziona —</option></select>
       </div>
       <div id="c3Section" class="sub-section"><span class="empty-tag">Seleziona Cat.1 e Cat.2</span></div>
-      <div class="tag-add" id="c3AddRow" style="display:none">
-        <input type="text" id="inputC3" placeholder="Nuova cat.3..." onkeydown="if(event.key==='Enter')addC3()"/>
-        <button class="btn-at c3" onclick="addC3()">+ Aggiungi</button>
-      </div>
+      <div class="tag-add" id="c3AddRow" style="display:none"><input type="text" id="inputC3" placeholder="Nuova cat.3..." onkeydown="if(event.key==='Enter')addC3()"/><button class="btn-at c3" onclick="addC3()">+ Aggiungi</button></div>
     </div>
   </div>
 
-  <!-- BACKUP -->
   <div class="page" id="page-backup">
     <h2>💾 Backup</h2>
     <div class="backup-box">
@@ -730,10 +626,11 @@ const firebaseConfig = {
   projectId:"caveau-registro",storageBucket:"caveau-registro.firebasestorage.app",
   messagingSenderId:"361376077124",appId:"1:361376077124:web:411566edcc50463ce6b311"
 };
-const fbApp=initializeApp(firebaseConfig), auth=getAuth(fbApp), db=getDatabase(fbApp);
+const fbApp=initializeApp(firebaseConfig),auth=getAuth(fbApp),db=getDatabase(fbApp);
 
 let rows=[],nomi=[],c1=[],c2Map={},c3Map={},savedReports=[];
 let fC1=new Set(),fC2=new Set(),fC3=new Set();
+// ── FIX: filtri volatili reset su loadData ──
 let entityFilter='',tipoFilter='',valutaFilter='';
 let editingIdx=null,editingNomeIdx=null;
 let sortField='data',sortDir=1,filterOpen=false;
@@ -775,7 +672,6 @@ function getRate(from,to){if(from===to)return 1;return(fxRates[to]||1)/(fxRates[
 window.fetchFxRates=fetchFxRates;
 
 // ── AUTH ──────────────────────────────────────────────
-// FIX: handleLogin ora è collegato tramite addEventListener, non tramite onsubmit nell'HTML
 async function handleLogin(e){
   e.preventDefault();
   const email=document.getElementById('loginEmail').value.trim();
@@ -783,19 +679,12 @@ async function handleLogin(e){
   const btn=document.getElementById('loginBtn'),err=document.getElementById('loginError');
   if(!email||!pass){err.textContent='❌ Inserisci email e password';err.style.display='block';return;}
   btn.disabled=true;btn.textContent='⏳ Accesso...';err.style.display='none';
-  try{
-    await signInWithEmailAndPassword(auth,email,pass);
-  }catch(error){
-    err.textContent=error.code==='auth/invalid-credential'?'❌ Email o password errati':'❌ Errore: '+error.message;
-    err.style.display='block';btn.disabled=false;btn.textContent='🔒 Accedi';
-  }
+  try{await signInWithEmailAndPassword(auth,email,pass);}
+  catch(error){err.textContent=error.code==='auth/invalid-credential'?'❌ Email o password errati':'❌ Errore: '+error.message;err.style.display='block';btn.disabled=false;btn.textContent='🔒 Accedi';}
 }
-
-// Collegamento eventi login — dentro il modulo, non inline HTML
-document.getElementById('loginBtn').addEventListener('click', handleLogin);
-document.getElementById('loginPassword').addEventListener('keydown', e=>{if(e.key==='Enter')handleLogin(e);});
-document.getElementById('loginEmail').addEventListener('keydown', e=>{if(e.key==='Enter')document.getElementById('loginPassword').focus();});
-
+document.getElementById('loginBtn').addEventListener('click',handleLogin);
+document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')handleLogin(e);});
+document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPassword').focus();});
 window.handleLogout=async()=>{if(confirm('Uscire?'))await signOut(auth);};
 
 onAuthStateChanged(auth,async(user)=>{
@@ -808,29 +697,56 @@ onAuthStateChanged(auth,async(user)=>{
     const userRef=ref(db,'users/'+user.uid);
     const snap=await get(userRef);
     if(snap.exists())loadData(snap.val());
+    let firstLoad=true;
     onValue(userRef,snap2=>{
-      if(snap2.exists()){loadData(snap2.val());syncSelects();syncTipoSel();rebuildDD();render();
+      if(snap2.exists()){
+        loadData(snap2.val());
+        // reset filtri solo al primo caricamento, non ad ogni salvataggio
+        if(firstLoad){resetVolatileFilters();firstLoad=false;}
+        syncSelects();syncTipoSel();rebuildDD();render();
         if(document.getElementById('page-nomi').classList.contains('active'))renderNomiPage();
         if(document.getElementById('page-categorie').classList.contains('active')){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
         if(document.getElementById('page-report').classList.contains('active')){syncReportSelects();renderSavedReports();}
       }
     });
-    document.getElementById('app').classList.add('loaded');
-    document.getElementById('app').style.display='block';
+    document.getElementById('app').classList.add('loaded');document.getElementById('app').style.display='block';
+    document.getElementById('loginLoading').style.display='none';
     document.getElementById('data').valueAsDate=new Date();
     syncSelects();syncTipoSel();updateSortHeaders();render();
   }else{
     currentUser=null;
     document.getElementById('loginScreen').style.display='flex';
     document.getElementById('loginLoading').style.display='none';
-    document.getElementById('loginBtn').disabled=false;
-    document.getElementById('loginBtn').textContent='🔒 Accedi';
-    document.getElementById('app').classList.remove('loaded');
-    document.getElementById('app').style.display='none';
+    document.getElementById('loginBtn').disabled=false;document.getElementById('loginBtn').textContent='🔒 Accedi';
+    document.getElementById('app').classList.remove('loaded');document.getElementById('app').style.display='none';
   }
 });
 
-function loadData(d){rows=d.rows||[];nomi=d.nomi||[];c1=d.c1||[];c2Map=d.c2Map||{};c3Map=d.c3Map||{};savedReports=d.savedReports||[];refCurr=d.refCurr||'EUR';rows.forEach(r=>{if(!r.valuta)r.valuta=getNomeValuta(r.from);});}
+// ── FIX: funzione dedicata reset filtri volatili ──────
+function resetVolatileFilters(){
+  entityFilter='';tipoFilter='';valutaFilter='';
+  fC1.clear();fC2.clear();fC3.clear();
+  const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}
+  const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}
+  const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}
+  updateEntityBanner();
+  updateFilterBadge();
+}
+
+function loadData(d){
+  // ── FIX: Firebase può restituire null nei buchi degli array ──
+  rows=(d.rows||[]).filter(Boolean);
+  nomi=(d.nomi||[]).filter(Boolean);
+  c1=(d.c1||[]).filter(Boolean);
+  c2Map=d.c2Map||{};
+  c3Map=d.c3Map||{};
+  // Filtra null anche nelle mappe c2 e c3
+  Object.keys(c2Map).forEach(k=>{c2Map[k]=(c2Map[k]||[]).filter(Boolean);});
+  Object.keys(c3Map).forEach(k=>{c3Map[k]=(c3Map[k]||[]).filter(Boolean);});
+  savedReports=(d.savedReports||[]).filter(Boolean);
+  refCurr=d.refCurr||'EUR';
+  rows.forEach(r=>{if(!r.valuta)r.valuta=getNomeValuta(r.from);});
+}
 async function saveToFirebase(){if(!currentUser)return;await set(ref(db,'users/'+currentUser.uid),{rows,nomi,c1,c2Map,c3Map,savedReports,refCurr,lastModified:new Date().toISOString()});}
 
 // ── THEME ────────────────────────────────────────────
@@ -886,9 +802,15 @@ function matchesCatFilter(set,value){if(set.size===0)return true;const voidSel=s
 function getFiltered(){
   const from=document.getElementById('dateFrom').value,to=document.getElementById('dateTo').value;
   return rows.filter(r=>{
-    if(from&&r.data<from)return false;if(to&&r.data>to)return false;
+    if(from&&r.data<from)return false;
+    if(to&&r.data>to)return false;
     if(entityFilter&&r.from!==entityFilter&&r.to!==entityFilter)return false;
-    if(tipoFilter){const ftm=getTipoNome(r.from)===tipoFilter,ttm=getTipoNome(r.to)===tipoFilter;if(!ftm&&!ttm)return false;}
+    // ── FIX: tipoFilter applicato solo se il tipo esiste ancora nei nomi ──
+    if(tipoFilter){
+      const tipiValidi=getTipi();
+      if(!tipiValidi.includes(tipoFilter)){tipoFilter='';const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}}
+      else{const ftm=getTipoNome(r.from)===tipoFilter,ttm=getTipoNome(r.to)===tipoFilter;if(!ftm&&!ttm)return false;}
+    }
     if(valutaFilter&&r.valuta!==valutaFilter&&r.valutaTo!==valutaFilter)return false;
     if(!matchesCatFilter(fC1,r.c1))return false;
     if(!matchesCatFilter(fC2,r.c2))return false;
@@ -896,7 +818,12 @@ function getFiltered(){
     return true;
   });
 }
-function clearFilters(){fC1.clear();fC2.clear();fC3.clear();document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';clearEntityFilter();clearTipoFilter();clearValutaFilter();rebuildDD();updateFilterBadge();render();}
+function clearFilters(){
+  fC1.clear();fC2.clear();fC3.clear();
+  document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';
+  clearEntityFilter();clearTipoFilter();clearValutaFilter();
+  rebuildDD();updateFilterBadge();render();
+}
 function clearDate(){document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';updateFilterBadge();render();}
 
 // ── SELECTS SYNC ──────────────────────────────────────
@@ -958,9 +885,11 @@ function renderCatCell(r){
   if(r.c3&&r.c3!=='-')h+=`<span class="c3-badge">${r.c3}</span>`;
   h+='</div>';return h;
 }
+
 function render(){
   renderSummary();
-  const tbody=document.getElementById('tbody'),filtered=getSorted(getFiltered());
+  const tbody=document.getElementById('tbody');
+  const filtered=getSorted(getFiltered());
   if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9" class="empty">Nessun movimento</td></tr>`;return;}
   const nomeOpts=nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
   const c1Opts=c1.map(c=>`<option value="${c}">${c}</option>`).join('');
@@ -969,26 +898,34 @@ function render(){
     const isEx=isExchangeRow(r),cur=r.valuta||'EUR',curTo=r.valutaTo||cur;
     const fromTipo=getTipoNome(r.from),toTipo=getTipoNome(r.to);
     let signHtml='';
-    if(entityFilter){if(r.to===entityFilter)signHtml=`<span class="amount-pos">+ ${fmtAmt(isEx&&r.valutaTo?r.importoTo||r.importo:r.importo,isEx&&r.valutaTo?r.valutaTo:cur)}</span>`;else signHtml=`<span class="amount-neg">- ${fmtAmt(r.importo,cur)}</span>`;}
+    if(entityFilter){
+      if(r.to===entityFilter)signHtml=`<span class="amount-pos">+ ${fmtAmt(isEx&&r.valutaTo?r.importoTo||r.importo:r.importo,isEx&&r.valutaTo?r.valutaTo:cur)}</span>`;
+      else signHtml=`<span class="amount-neg">- ${fmtAmt(r.importo,cur)}</span>`;
+    }
     const valHtml=isEx?`<span class="${curClass(cur)}">${curSymbol(cur)}</span> <span style="color:var(--text3);font-size:10px;">→</span> <span class="${curClass(curTo)}">${curSymbol(curTo)}</span> <span class="fx-tag">FX</span>`:`<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
-    if(editingRowId&&getRowId(r)===editingRowId){
+
+    if(editingIdx===i){
       const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
       const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
       html+=`<tr class="editing">
         <td><input class="edit-input" id="ed-data" type="date" value="${r.data}"></td>
         <td><select class="edit-select" id="ed-from">${nomeOpts}</select></td>
         <td><select class="edit-select" id="ed-to">${nomeOpts}</select></td>
-        <td><input class="edit-input" id="ed-desc" type="text" value="${r.desc}"></td>
+        <td><input class="edit-input" id="ed-desc" type="text" value="${r.desc||''}"></td>
         <td><div class="cat-cell">
           <select class="edit-select" id="ed-c1" onchange="edC1Change(this.value)">${c1Opts}</select>
           <select class="edit-select" id="ed-c2" style="margin-top:2px" onchange="edC2Change(document.getElementById('ed-c1').value,this.value)">${rc2}</select>
           <select class="edit-select" id="ed-c3" style="margin-top:2px">${rc3}</select>
         </div></td>
-        <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}">${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}</td>
-        <td>${valHtml}</td><td>—</td>
+        <td>
+          <input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
+          ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}
+        </td>
+        <td>${valHtml}</td>
+        <td>—</td>
         <td><div class="row-actions">
-          <button class="btn-save" onclick="saveEdit()" title="Salva">💾 Salva</button>
-          <button class="btn-cancel" onclick="cancelEdit()" title="Annulla">✕ Annulla</button>
+          <button class="btn-save" onclick="saveEdit()">💾 Salva</button>
+          <button class="btn-cancel" onclick="cancelEdit()">✕ Annulla</button>
         </div></td>
       </tr>`;
       setTimeout(()=>{
@@ -998,7 +935,20 @@ function render(){
       },0);
     }else{
       const importoDisplay=isEx?`${fmtAmt(r.importo,cur)}<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,curTo)}</small>`:fmtAmt(r.importo,cur);
-      html+=`<tr ${isEx?'class="exchange-row"':''}><td>${fmtDate(r.data)}</td><td><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')">${r.from}</span>${fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:''}</td><td><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')">${r.to}</span>${toTipo?`<span class="tipo-tag">${toTipo}</span>`:''}</td><td>${r.desc}</td><td>${renderCatCell(r)}</td><td class="amount-neu">${importoDisplay}</td><td>${valHtml}</td><td>${signHtml}</td><td><div class="row-actions"><button class="btn-edit" onclick="startEdit(${i})">✏️</button><button class="btn-del" onclick="elimina(${i})">🗑</button></div></td></tr>`;
+      html+=`<tr ${isEx?'class="exchange-row"':''}>
+        <td>${fmtDate(r.data)}</td>
+        <td><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')">${r.from}</span>${fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:''}</td>
+        <td><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')">${r.to}</span>${toTipo?`<span class="tipo-tag">${toTipo}</span>`:''}</td>
+        <td>${r.desc||''}</td>
+        <td>${renderCatCell(r)}</td>
+        <td class="amount-neu">${importoDisplay}</td>
+        <td>${valHtml}</td>
+        <td>${signHtml}</td>
+        <td><div class="row-actions">
+          <button class="btn-edit" onclick="startEdit(${i})">✏️</button>
+          <button class="btn-del" onclick="elimina(${i})">🗑</button>
+        </div></td>
+      </tr>`;
     }
   });
   tbody.innerHTML=html;
@@ -1019,22 +969,16 @@ async function aggiungi(){
   document.getElementById('descrizione').value='';document.getElementById('importo').value='';document.getElementById('importoTo').value='';document.getElementById('tassoFX').value='';delete document.getElementById('tassoFX').dataset.manual;document.getElementById('fxRow').style.display='none';
   await saveToFirebase();render();
 }
-// Usa un ID stabile per il record in editing, non l'indice
-let editingRowId=null;
-function getRowId(r){return r._id||(r._id=Math.random().toString(36).slice(2));}
 
-function startEdit(i){
-  const fi=getSorted(getFiltered());
-  if(i<0||i>=fi.length)return;
-  editingRowId=getRowId(fi[i]);
-  editingIdx=i;
-  render();
-}
-function cancelEdit(){editingIdx=null;editingRowId=null;render();}
+function startEdit(i){editingIdx=i;render();}
+function cancelEdit(){editingIdx=null;render();}
 
 async function saveEdit(){
-  if(!editingRowId){cancelEdit();return;}
-  const orig=rows.findIndex(r=>getRowId(r)===editingRowId);
+  if(editingIdx===null){cancelEdit();return;}
+  const fi=getSorted(getFiltered());
+  if(editingIdx<0||editingIdx>=fi.length){cancelEdit();return;}
+  const target=fi[editingIdx];
+  const orig=rows.indexOf(target);
   if(orig===-1){cancelEdit();return;}
   const r=rows[orig];
   r.data=document.getElementById('ed-data').value||r.data;
@@ -1048,7 +992,7 @@ async function saveEdit(){
   r.valuta=getNomeValuta(r.from);
   if(isExchangeRow(r)){const el=document.getElementById('ed-impto');if(el)r.importoTo=parseFloat(el.value)||r.importoTo;}
   rows.sort((a,b)=>a.data.localeCompare(b.data));
-  editingIdx=null;editingRowId=null;
+  editingIdx=null;
   await saveToFirebase();render();
 }
 
@@ -1056,8 +1000,7 @@ async function elimina(i){
   if(!confirm('Eliminare?'))return;
   const fi=getSorted(getFiltered());
   if(i<0||i>=fi.length)return;
-  const id=getRowId(fi[i]);
-  const orig=rows.findIndex(r=>getRowId(r)===id);
+  const orig=rows.indexOf(fi[i]);
   if(orig===-1)return;
   rows.splice(orig,1);
   await saveToFirebase();render();
@@ -1094,11 +1037,9 @@ async function delC3(c1v,c2v,c){const k=c3k(c1v,c2v);c3Map[k]=(c3Map[k]||[]).fil
 function renderC3Page(){const c1v=document.getElementById('c1ForC3').value,c2v=document.getElementById('c2ForC3').value,sec=document.getElementById('c3Section'),row=document.getElementById('c3AddRow');if(!c1v||!c2v){sec.innerHTML='<span class="empty-tag">Seleziona Cat.1 e Cat.2</span>';row.style.display='none';return;}row.style.display='flex';const subs=c3Map[c3k(c1v,c2v)]||[];sec.innerHTML=`<div class="sub-title c2">Sottocategorie: ${c1v} › ${c2v}</div>`+(subs.length===0?'<span class="empty-tag">Nessuna</span>':`<div class="tag-list">${subs.map(s=>`<div class="tag-item c3">${s}<span class="del-tag" onclick="delC3('${c1v}','${c2v}','${s}')">×</span></div>`).join('')}</div>`);}
 function syncParentSelects(){['c1ForC2','c1ForC3'].forEach(id=>{const sel=document.getElementById(id),prev=sel.value;sel.innerHTML='<option value="">— Seleziona —</option>'+c1.map(c=>`<option value="${c}" ${c===prev?'selected':''}>${c}</option>`).join('');});}
 
-// ═══════════════════════════════════════════════════════
 // ── REPORT ────────────────────────────────────────────
-// ═══════════════════════════════════════════════════════
-function syncDepC2(c1selId,c2selId,prevVal=''){const v=document.getElementById(c1selId).value;const sel=document.getElementById(c2selId);sel.innerHTML='<option value="">— Tutte —</option>'+(c2Map[v]||[]).map(s=>`<option value="${s}" ${s===prevVal?'selected':''}>${s}</option>`).join('');}
-function syncDepC3(c1selId,c2selId,c3selId,prevVal=''){const v1=document.getElementById(c1selId).value,v2=document.getElementById(c2selId).value;const sel=document.getElementById(c3selId);sel.innerHTML='<option value="">— Tutte —</option>'+(c3Map[c3k(v1,v2)]||[]).map(s=>`<option value="${s}" ${s===prevVal?'selected':''}>${s}</option>`).join('');}
+function syncDepC2(c1selId,c2selId){const v=document.getElementById(c1selId).value;const sel=document.getElementById(c2selId);sel.innerHTML='<option value="">— Tutte —</option>'+(c2Map[v]||[]).map(s=>`<option value="${s}">${s}</option>`).join('');}
+function syncDepC3(c1selId,c2selId,c3selId){const v1=document.getElementById(c1selId).value,v2=document.getElementById(c2selId).value;const sel=document.getElementById(c3selId);sel.innerHTML='<option value="">— Tutte —</option>'+(c3Map[c3k(v1,v2)]||[]).map(s=>`<option value="${s}">${s}</option>`).join('');}
 function syncRptEstrC2(){syncDepC2('rptEstrC1','rptEstrC2');syncRptEstrC3();}
 function syncRptEstrC3(){syncDepC3('rptEstrC1','rptEstrC2','rptEstrC3');}
 function syncRptCatC2(){syncDepC2('rptC1','rptCatC2');syncRptCatC3();}
@@ -1113,7 +1054,7 @@ function syncReportSelects(){
   const re=document.getElementById('rptEntity'),prev=re.value;
   re.innerHTML='<option value="">— Seleziona —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name} (${curSymbol(n.valuta||'EUR')})${n.tipo?' ['+n.tipo+']':''}</option>`).join('');
   const c1opts='<option value="">— Tutte —</option>'+c1.map(c=>`<option value="${c}">${c}</option>`).join('');
-  ['rptEstrC1','rptC1','rptTipoC1','rptDateC1','rptSaldoC1'].forEach(id=>{const el=document.getElementById(id);if(el){const prev=el.value;el.innerHTML=c1opts;if(prev)el.value=prev;}});
+  ['rptEstrC1','rptC1','rptTipoC1','rptDateC1','rptSaldoC1'].forEach(id=>{const el=document.getElementById(id);if(el){const p=el.value;el.innerHTML=c1opts;if(p)el.value=p;}});
   const rt=document.getElementById('rptTipoSel'),prevt=rt.value;
   rt.innerHTML='<option value="">— Tutti —</option>'+getTipi().map(t=>`<option value="${t}" ${t===prevt?'selected':''}>${t}</option>`).join('');
 }
@@ -1123,12 +1064,7 @@ function onRptTypeChange(){
   const map={estratto:'Estrato',categoria:'Categoria',tipo:'Tipo',date:'Date',saldo:'Saldo',fx:'Fx'};
   const el=document.getElementById('rptParam'+map[t]);if(el)el.style.display='block';
 }
-function newReport(){
-  activeReportIdx=null;document.getElementById('rptName').value='';document.getElementById('rptType').value='estratto';onRptTypeChange();
-  ['rptFrom','rptTo','rptFromCat','rptToCat','rptFromTipo','rptToTipo','rptFromDate','rptToDate','rptFromSaldo','rptToSaldo','rptFromFx','rptToFx'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('reportOutput').style.display='none';
-  document.querySelectorAll('.report-saved-item').forEach(x=>x.classList.remove('active'));
-}
+function newReport(){activeReportIdx=null;document.getElementById('rptName').value='';document.getElementById('rptType').value='estratto';onRptTypeChange();['rptFrom','rptTo','rptFromCat','rptToCat','rptFromTipo','rptToTipo','rptFromDate','rptToDate','rptFromSaldo','rptToSaldo','rptFromFx','rptToFx'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('reportOutput').style.display='none';document.querySelectorAll('.report-saved-item').forEach(x=>x.classList.remove('active'));}
 function loadReport(idx){
   activeReportIdx=idx;const r=savedReports[idx];
   document.getElementById('rptName').value=r.name;document.getElementById('rptType').value=r.type;onRptTypeChange();
@@ -1152,24 +1088,9 @@ function getReportConfig(){
   if(type==='fx')params={from:document.getElementById('rptFromFx').value,to:document.getElementById('rptToFx').value};
   return{type,params};
 }
-function catMatch(r,p){
-  if(p.c1v&&r.c1!==p.c1v)return false;
-  if(p.c2v&&r.c2!==p.c2v)return false;
-  if(p.c3v&&r.c3!==p.c3v)return false;
-  return true;
-}
-function filterRows(from,to,extra){
-  return rows.filter(r=>{if(from&&r.data<from)return false;if(to&&r.data>to)return false;if(extra&&!extra(r))return false;return true;}).sort((a,b)=>a.data.localeCompare(b.data));
-}
+function catMatch(r,p){if(p.c1v&&r.c1!==p.c1v)return false;if(p.c2v&&r.c2!==p.c2v)return false;if(p.c3v&&r.c3!==p.c3v)return false;return true;}
+function filterRows(from,to,extra){return rows.filter(r=>{if(from&&r.data<from)return false;if(to&&r.data>to)return false;if(extra&&!extra(r))return false;return true;}).sort((a,b)=>a.data.localeCompare(b.data));}
 function catLabel(p){const parts=[];if(p.c1v)parts.push(p.c1v);if(p.c2v)parts.push(p.c2v);if(p.c3v)parts.push(p.c3v);return parts.length?parts.join(' › '):'Tutte cat.';}
-function rptCatCell(r){
-  let h='<div class="rpt-cat-cell">';
-  if(r.c1&&r.c1!=='-')h+=`<span class="c1-badge">${r.c1}</span>`;
-  if(r.c2&&r.c2!=='-')h+=`<span class="c2-badge">${r.c2}</span>`;
-  if(r.c3&&r.c3!=='-')h+=`<span class="c3-badge">${r.c3}</span>`;
-  if((!r.c1||r.c1==='-')&&(!r.c2||r.c2==='-')&&(!r.c3||r.c3==='-'))h+='<span class="void-badge">—</span>';
-  h+='</div>';return h;
-}
 function runReport(){
   const{type,params}=getReportConfig();
   const out=document.getElementById('reportOutput');out.style.display='block';
@@ -1186,12 +1107,10 @@ function runReport(){
   else if(type==='fx')renderFxReport(params,metaEl,bodyEl);
 }
 function renderEstrattoReport(p,metaEl,bodyEl){
-  const{entity,from,to}=p;
-  if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}
+  const{entity,from,to}=p;if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}
   const data=filterRows(from,to,r=>(r.from===entity||r.to===entity)&&catMatch(r,p));
   const no=nomi.find(x=>x.name===entity),entityCur=no?no.valuta||'EUR':'EUR';
-  const cl=catLabel(p);
-  metaEl.textContent=`${entity} (${curSymbol(entityCur)})${no&&no.tipo?' · '+no.tipo:''}${cl!=='Tutte cat.'?' · '+cl:''} ${(from||to)?'· '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;
+  const cl=catLabel(p);metaEl.textContent=`${entity} (${curSymbol(entityCur)})${no&&no.tipo?' · '+no.tipo:''}${cl!=='Tutte cat.'?' · '+cl:''} ${(from||to)?'· '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
   let saldoProg=0,totE=0,totU=0;
   let html=`<table class="report-table"><thead><tr><th>Data</th><th>Controparte</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrata</th><th class="td-num">Uscita</th><th class="td-num">Saldo Prog.</th><th>Val.</th></tr></thead><tbody>`;
@@ -1200,148 +1119,79 @@ function renderEstrattoReport(p,metaEl,bodyEl){
     const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';
     const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';
     const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';
-    if(r.to===entity){
-      const entrata=isEx?r.importoTo||r.importo:r.importo,ec=isEx?r.valutaTo||cur:cur;
-      totE+=entrata;saldoProg+=entrata;
-      html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.from}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num pos">${fmtAmt(entrata,ec)}</td><td></td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(ec)}">${curSymbol(ec)}</span></td></tr>`;
-    }else{
-      totU+=r.importo;saldoProg-=r.importo;
-      html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.to}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td></td><td class="td-num neg">${fmtAmt(r.importo,cur)}</td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;
-    }
+    if(r.to===entity){const entrata=isEx?r.importoTo||r.importo:r.importo,ec=isEx?r.valutaTo||cur:cur;totE+=entrata;saldoProg+=entrata;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.from}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num pos">${fmtAmt(entrata,ec)}</td><td></td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(ec)}">${curSymbol(ec)}</span></td></tr>`;}
+    else{totU+=r.importo;saldoProg-=r.importo;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.to}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td></td><td class="td-num neg">${fmtAmt(r.importo,cur)}</td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;}
   });
   html+=`</tbody><tfoot><tr><td colspan="6"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;
   bodyEl.innerHTML=html;
 }
 function renderCategoriaReport(p,metaEl,bodyEl){
-  const{c1v,c2v,c3v,from,to}=p;
-  const data=filterRows(from,to,r=>catMatch(r,p));
-  const cl=catLabel(p);
-  metaEl.textContent=`${cl} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'} · ${data.length} mov.`;
+  const data=filterRows(p.from,p.to,r=>catMatch(r,p));
+  const cl=catLabel(p);metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
   const byCur={};
-  data.forEach(r=>{
-    const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';
-    if(!byCur[cur])byCur[cur]={};
-    if(!byCur[cur][k1])byCur[cur][k1]={tot:0,subs:{}};
-    if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={tot:0,subs:{}};
-    if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]=0;
-    byCur[cur][k1].tot+=r.importo;
-    byCur[cur][k1].subs[k2].tot+=r.importo;
-    byCur[cur][k1].subs[k2].subs[k3]+=r.importo;
-  });
+  data.forEach(r=>{const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';if(!byCur[cur])byCur[cur]={};if(!byCur[cur][k1])byCur[cur][k1]={tot:0,subs:{}};if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={tot:0,subs:{}};if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]=0;byCur[cur][k1].tot+=r.importo;byCur[cur][k1].subs[k2].tot+=r.importo;byCur[cur][k1].subs[k2].subs[k3]+=r.importo;});
   let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th><th class="td-num">% tot.</th></tr></thead><tbody>`;
   Object.keys(byCur).sort().forEach(cur=>{
     const totCur=Object.values(byCur[cur]).reduce((s,g)=>s+g.tot,0);
     html+=`<tr class="cur-section-header"><td colspan="5">💱 ${curSymbol(cur)} ${cur} — Totale: <strong>${fmtAmt(totCur,cur)}</strong></td></tr>`;
     Object.keys(byCur[cur]).sort().forEach(k1=>{
       const g1=byCur[cur][k1],pct1=totCur>0?(g1.tot/totCur*100).toFixed(1):'0';
-      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge" style="font-size:11px;">${k1}</span></td><td class="td-num"><strong>${fmtAmt(g1.tot,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;
+      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num"><strong>${fmtAmt(g1.tot,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;
       Object.keys(g1.subs).sort().forEach(k2=>{
         const g2=g1.subs[k2],pct2=totCur>0?(g2.tot/totCur*100).toFixed(1):'0';
         const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');
         html+=`<tr style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num">${fmtAmt(g2.tot,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;
-        if(hasRealC3){Object.keys(g2.subs).sort().forEach(k3=>{const v=g2.subs[k3],pct3=totCur>0?(v/totCur*100).toFixed(1):'0';html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num">${fmtAmt(v,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});}
-        html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num" style="color:#9c27b0;"><strong>${fmtAmt(g1.tot,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;
+        if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const v=g2.subs[k3],pct3=totCur>0?(v/totCur*100).toFixed(1):'0';html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num">${fmtAmt(v,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});
       });
-      html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num" style="color:#1a73e8;font-weight:bold;">${fmtAmt(totCur,cur)}</td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;
+      html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num" style="color:#9c27b0;"><strong>${fmtAmt(g1.tot,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;
     });
+    html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num" style="color:#1a73e8;font-weight:bold;">${fmtAmt(totCur,cur)}</td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;
   });
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
 function renderTipoReport(p,metaEl,bodyEl){
-  const{tipo,c1v,c2v,c3v,from,to}=p;
-  const data=filterRows(from,to,r=>catMatch(r,p));
-  const cl=catLabel(p);
-  metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
+  const{tipo,from,to}=p;const data=filterRows(from,to,r=>catMatch(r,p));
+  const cl=catLabel(p);metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
   const tipiMap={};
-  data.forEach(r=>{
-    [r.from,r.to].forEach((nome,idx)=>{
-      const tn=getTipoNome(nome)||'—';if(tipo&&tn!==tipo)return;
-      const cur=getNomeValuta(nome);if(!tipiMap[tn])tipiMap[tn]={};if(!tipiMap[tn][nome])tipiMap[tn][nome]={entrate:{},uscite:{}};
-      if(idx===1)tipiMap[tn][nome].entrate[cur]=(tipiMap[tn][nome].entrate[cur]||0)+r.importo;
-      else tipiMap[tn][nome].uscite[cur]=(tipiMap[tn][nome].uscite[cur]||0)+r.importo;
-    });
-  });
+  data.forEach(r=>{[r.from,r.to].forEach((nome,idx)=>{const tn=getTipoNome(nome)||'—';if(tipo&&tn!==tipo)return;const cur=getNomeValuta(nome);if(!tipiMap[tn])tipiMap[tn]={};if(!tipiMap[tn][nome])tipiMap[tn][nome]={entrate:{},uscite:{}};if(idx===1)tipiMap[tn][nome].entrate[cur]=(tipiMap[tn][nome].entrate[cur]||0)+r.importo;else tipiMap[tn][nome].uscite[cur]=(tipiMap[tn][nome].uscite[cur]||0)+r.importo;});});
   if(!Object.keys(tipiMap).length){bodyEl.innerHTML='<div class="report-no-data">Nessun dato</div>';return;}
   let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
-  Object.keys(tipiMap).sort().forEach(t=>{
-    html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;
-    Object.keys(tipiMap[t]).sort().forEach(nome=>{
-      const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];
-      allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});
-    });
-  });
+  Object.keys(tipiMap).sort().forEach(t=>{html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;Object.keys(tipiMap[t]).sort().forEach(nome=>{const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
 function renderDateReport(p,metaEl,bodyEl){
-  const{c1v,c2v,c3v,from,to}=p;
-  const data=filterRows(from,to,r=>catMatch(r,p));
-  const cl=catLabel(p);
-  metaEl.textContent=`${cl}${(from||to)?' · '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;
+  const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
+  metaEl.textContent=`${cl}${(p.from||p.to)?' · '+fmtDate(p.from)+'→'+fmtDate(p.to):''} · ${data.length} mov.`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-  const byCur={};
-  data.forEach(r=>{const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]=[];byCur[cur].push(r);});
+  const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]=[];byCur[cur].push(r);});
   let html=`<table class="report-table"><thead><tr><th>Data</th><th>From</th><th>To</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th><th>Val.</th></tr></thead><tbody>`;
   Object.keys(byCur).sort().forEach(cur=>{
     const arr=byCur[cur],tot=arr.reduce((s,r)=>s+r.importo,0);
     html+=`<tr class="cur-section-header"><td colspan="9">💱 ${curSymbol(cur)} ${cur} — ${arr.length} mov. — Totale: <strong>${fmtAmt(tot,cur)}</strong></td></tr>`;
-    arr.forEach(r=>{
-      const isEx=isExchangeRow(r);
-      const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';
-      const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';
-      const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';
-      html+=`<tr><td>${fmtDate(r.data)}</td><td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span></td><td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;
-    });
+    arr.forEach(r=>{const isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span></td><td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;});
   });
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
 function renderSaldoReport(p,metaEl,bodyEl){
-  const{c1v,c2v,c3v,from,to}=p;
-  const data=filterRows(from,to,r=>catMatch(r,p));
-  const cl=catLabel(p);
-  metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
+  const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
+  metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'}`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-  const saldi={};
-  nomi.forEach(n=>{saldi[n.name]={entrate:{},uscite:{},tipo:n.tipo||'—',valuta:n.valuta||'EUR'};});
-  data.forEach(r=>{
-    const cf=r.valuta||'EUR',ct=r.valutaTo||cf;
-    if(!saldi[r.from])saldi[r.from]={entrate:{},uscite:{},tipo:getTipoNome(r.from)||'—',valuta:cf};
-    if(!saldi[r.to])saldi[r.to]={entrate:{},uscite:{},tipo:getTipoNome(r.to)||'—',valuta:ct};
-    saldi[r.from].uscite[cf]=(saldi[r.from].uscite[cf]||0)+r.importo;
-    const toAmt=isExchangeRow(r)?r.importoTo||r.importo:r.importo;
-    saldi[r.to].entrate[ct]=(saldi[r.to].entrate[ct]||0)+toAmt;
-  });
-  const perTipo={};
-  Object.keys(saldi).forEach(nome=>{const s=saldi[nome],t=s.tipo;if(!perTipo[t])perTipo[t]=[];perTipo[t].push({nome,...s});});
+  const saldi={};nomi.forEach(n=>{saldi[n.name]={entrate:{},uscite:{},tipo:n.tipo||'—',valuta:n.valuta||'EUR'};});
+  data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo||cf;if(!saldi[r.from])saldi[r.from]={entrate:{},uscite:{},tipo:getTipoNome(r.from)||'—',valuta:cf};if(!saldi[r.to])saldi[r.to]={entrate:{},uscite:{},tipo:getTipoNome(r.to)||'—',valuta:ct};saldi[r.from].uscite[cf]=(saldi[r.from].uscite[cf]||0)+r.importo;const toAmt=isExchangeRow(r)?r.importoTo||r.importo:r.importo;saldi[r.to].entrate[ct]=(saldi[r.to].entrate[ct]||0)+toAmt;});
+  const perTipo={};Object.keys(saldi).forEach(nome=>{const s=saldi[nome],t=s.tipo;if(!perTipo[t])perTipo[t]=[];perTipo[t].push({nome,...s});});
   let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
-  Object.keys(perTipo).sort().forEach(tipo=>{
-    const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));
-    if(!items.length)return;
-    html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;
-    items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});
-  });
+  Object.keys(perTipo).sort().forEach(tipo=>{const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));if(!items.length)return;html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
 function renderFxReport(p,metaEl,bodyEl){
-  const{from,to}=p;
-  const data=filterRows(from,to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);
-  metaEl.textContent=`Exchange FX · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'} · ${data.length} operazioni`;
+  const data=filterRows(p.from,p.to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);
+  metaEl.textContent=`Exchange FX · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} operazioni`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessuna operazione FX trovata</div>';return;}
   let html=`<table class="report-table"><thead><tr><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Ceduto</th><th class="td-num">Ricevuto</th><th class="td-num">Tasso appl.</th><th class="td-num">Tasso att.*</th><th class="td-num">Δ%</th></tr></thead><tbody>`;
   let totByCur={};
-  data.forEach(r=>{
-    const cf=r.valuta||'EUR',ct=r.valutaTo;
-    const ta=r.tassoFX||(r.importoTo&&r.importo?r.importoTo/r.importo:getRate(cf,ct));
-    const tatt=getRate(cf,ct),delta=ta>0?((ta-tatt)/ta*100):0;
-    if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{}};
-    totByCur[cf].ceduto+=r.importo;totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);
-    const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';
-    const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';
-    const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';
-    html+=`<tr><td>${fmtDate(r.data)}</td><td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span> <span class="${curClass(cf)}">${curSymbol(cf)}</span></td><td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span> <span class="${curClass(ct)}">${curSymbol(ct)}</span></td><td>${r.desc}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num neg">${fmtAmt(r.importo,cf)}</td><td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td><td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${ta.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tatt.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta.toFixed(2)}%</td></tr>`;
-  });
-  html+=`</tbody><tfoot>`;
-  Object.keys(totByCur).forEach(cf=>{Object.keys(totByCur[cf].ricevuto).forEach(ct=>{html+=`<tr><td colspan="7"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totByCur[cf].ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(totByCur[cf].ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;});});
+  data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo;const ta=r.tassoFX||(r.importoTo&&r.importo?r.importoTo/r.importo:getRate(cf,ct));const tatt=getRate(cf,ct),delta=ta>0?((ta-tatt)/ta*100):0;if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{}};totByCur[cf].ceduto+=r.importo;totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span> <span class="${curClass(cf)}">${curSymbol(cf)}</span></td><td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span> <span class="${curClass(ct)}">${curSymbol(ct)}</span></td><td>${r.desc}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num neg">${fmtAmt(r.importo,cf)}</td><td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td><td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${ta.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tatt.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta.toFixed(2)}%</td></tr>`;});
+  html+=`</tbody><tfoot>`;Object.keys(totByCur).forEach(cf=>{Object.keys(totByCur[cf].ricevuto).forEach(ct=>{html+=`<tr><td colspan="7"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totByCur[cf].ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(totByCur[cf].ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;});});
   html+=`</tfoot></table>`;bodyEl.innerHTML=html;
 }
 async function saveReport(){
@@ -1355,6 +1205,7 @@ async function saveReport(){
 async function deleteReport(idx){if(!confirm(`Eliminare "${savedReports[idx].name}"?`))return;savedReports.splice(idx,1);if(activeReportIdx===idx){activeReportIdx=null;document.getElementById('reportOutput').style.display='none';}else if(activeReportIdx>idx)activeReportIdx--;await saveToFirebase();renderSavedReports();}
 function renderSavedReports(){const container=document.getElementById('reportSavedList');if(!savedReports.length){container.innerHTML='<div class="report-empty-saved">Nessun report salvato</div>';return;}const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};container.innerHTML=savedReports.map((r,i)=>`<div class="report-saved-item ${activeReportIdx===i?'active':''}" onclick="loadReport(${i})"><div><div class="report-saved-name">${r.name}</div><div class="report-saved-type"><span class="report-type-badge ${typeBadge[r.type]||''}">${r.typeLabel||r.type}</span></div></div><button class="report-del-btn" onclick="event.stopPropagation();deleteReport(${i})">✕</button></div>`).join('');}
 function printReport(){window.print();}
+
 function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});const totC2=Object.values(c2Map).reduce((s,a)=>s+a.length,0),totC3=Object.values(c3Map).reduce((s,a)=>s+a.length,0);let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.summary-box{display:flex;gap:16px;margin-bottom:20px;}.summary-card{background:#f5f5f5;border-radius:8px;padding:10px 18px;text-align:center;}.summary-card .num{font-size:22px;font-weight:900;}.summary-card .lbl{font-size:10px;color:#888;}.num-c1{color:#9c27b0;}.num-c2{color:#e67e22;}.num-c3{color:#16a085;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div><div class="summary-box"><div class="summary-card"><div class="num num-c1">${c1.length}</div><div class="lbl">Cat.1</div></div><div class="summary-card"><div class="num num-c2">${totC2}</div><div class="lbl">Cat.2</div></div><div class="summary-card"><div class="num num-c3">${totC3}</div><div class="lbl">Cat.3</div></div></div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
 function salvaBackup(){const json=JSON.stringify({version:'2.0-multicur',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
 function stampaPDF(){window.print();}
