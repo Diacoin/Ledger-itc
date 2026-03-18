@@ -46,7 +46,7 @@
   .btn-settings:hover{background:var(--hover);}
   .settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
   .settings-overlay.open{display:flex;}
-  .settings-panel{background:var(--surface);border-radius:14px;padding:24px;width:340px;box-shadow:0 8px 32px var(--shadow2);}
+  .settings-panel{background:var(--surface);border-radius:14px;padding:24px;width:340px;box-shadow:0 8px 32px var(--shadow2);max-height:90vh;overflow-y:auto;}
   .settings-panel h3{font-size:16px;color:var(--text);margin-bottom:18px;}
   .settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
   .settings-row:last-child{border-bottom:none;padding-bottom:0;}
@@ -61,6 +61,14 @@
   .toggle input:checked+.toggle-slider:before{transform:translateX(20px);}
   .btn-close-settings{width:100%;margin-top:16px;padding:10px;background:#1a73e8;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
   .settings-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
+  /* Storage meter */
+  .storage-meter{margin-top:8px;}
+  .storage-bar-wrap{background:var(--border);border-radius:8px;height:10px;overflow:hidden;margin:6px 0;}
+  .storage-bar{height:100%;border-radius:8px;transition:width .5s;}
+  .storage-bar.green{background:#34a853;}
+  .storage-bar.yellow{background:#fbbc04;}
+  .storage-bar.red{background:#ea4335;}
+  .storage-text{font-size:11px;color:var(--text3);}
   nav{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:6px;box-shadow:0 2px 8px var(--shadow);flex-wrap:wrap;}
   .nav-btn{flex:1;min-width:80px;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:bold;color:var(--text2);transition:all .15s;}
   .nav-btn:hover{background:var(--hover);}
@@ -133,7 +141,6 @@
   .fx-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:8px 12px;background:rgba(230,126,34,.1);border:1px solid #e67e22;border-radius:8px;}
   .fx-label{font-size:12px;color:#e67e22;font-weight:bold;min-width:60px;}
   .fx-badge{background:#e67e22;color:white;border-radius:8px;padding:2px 8px;font-size:11px;font-weight:bold;white-space:nowrap;}
-  .fx-loading{font-size:11px;color:#1a73e8;font-style:italic;}
   .cur-eur{background:#e8f0fe;color:#1a73e8;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
   .cur-gbp{background:#f3e5f5;color:#8e44ad;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
   .cur-aed{background:#fff3e0;color:#e67e22;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:bold;}
@@ -171,7 +178,7 @@
   .amount-pos{color:#34a853;font-weight:bold;}.amount-neg{color:#ea4335;font-weight:bold;}.amount-neu{color:var(--text2);font-weight:bold;}
   .fx-tag{background:#e67e22;color:white;border-radius:6px;padding:1px 5px;font-size:9px;font-weight:bold;display:inline-block;margin-left:2px;}
   .empty{text-align:center;color:var(--text4);padding:30px;font-style:italic;}
-  .row-actions{display:flex;gap:3px;}
+  .row-actions{display:flex;gap:3px;align-items:center;}
   .btn-edit,.btn-del,.btn-save,.btn-cancel{border:none;border-radius:5px;cursor:pointer;font-size:11px;padding:4px 8px;}
   .btn-edit{background:#e8f0fe;color:#1a73e8;}.btn-del{background:#fce8e6;color:#ea4335;}
   .btn-save{background:#e6f4ea;color:#34a853;font-weight:bold;}.btn-cancel{background:#fce8e6;color:#ea4335;font-weight:bold;}
@@ -180,6 +187,20 @@
   .btn-action{padding:8px 16px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-action.purple{background:#8e44ad;}.btn-action.purple:hover{background:#7d3c98;}
   .cat-cell{display:flex;flex-direction:column;gap:2px;}
+  /* Doc link */
+  .doc-link{display:inline-flex;align-items:center;gap:3px;background:#e8f0fe;color:#1a73e8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:bold;text-decoration:none;white-space:nowrap;}
+  .doc-link:hover{background:#d2e3fc;}
+  body.dark .doc-link{background:#1e3a6e;color:#7ec0f5;}
+  /* Drop area */
+  .drop-area{border:2px dashed var(--input-border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;margin-top:10px;background:var(--surface2);}
+  .drop-area.drag-over{border-color:#1a73e8;background:#e8f0fe;}
+  body.dark .drop-area.drag-over{background:#1e3a6e;}
+  .drop-area p{font-size:12px;color:var(--text3);margin-top:4px;}
+  .drop-area .drop-icon{font-size:24px;}
+  .upload-progress{display:none;margin-top:8px;background:var(--border);border-radius:6px;height:8px;overflow:hidden;}
+  .upload-progress-bar{height:100%;background:#1a73e8;border-radius:6px;transition:width .3s;width:0%;}
+  .upload-status{font-size:11px;color:var(--text3);margin-top:4px;text-align:center;}
+  /* archivio */
   .archivio-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .nomi-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
   .nomi-table th{text-align:left;padding:7px 10px;font-size:12px;color:white;border-bottom:2px solid var(--border);font-weight:bold;}
@@ -219,9 +240,25 @@
   .backup-box p{font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5;}
   .backup-actions{display:flex;gap:12px;flex-wrap:wrap;}
   .btn-backup{padding:10px 22px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
-  .btn-backup.save{background:#1a73e8;}.btn-backup.restore{background:#e67e22;}
+  .btn-backup.save{background:#1a73e8;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
+  /* storage page */
+  .storage-big-bar-wrap{background:var(--border);border-radius:12px;height:22px;overflow:hidden;margin:12px 0;}
+  .storage-big-bar{height:100%;border-radius:12px;transition:width .6s;}
+  .storage-big-bar.green{background:linear-gradient(90deg,#34a853,#1a73e8);}
+  .storage-big-bar.yellow{background:linear-gradient(90deg,#fbbc04,#e67e22);}
+  .storage-big-bar.red{background:linear-gradient(90deg,#ea4335,#c0392b);}
+  .storage-grid{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+  .storage-card{flex:1;min-width:140px;background:var(--surface);border-radius:10px;padding:14px;box-shadow:0 2px 8px var(--shadow);text-align:center;}
+  .storage-card .sc-num{font-size:22px;font-weight:900;color:#1a73e8;}
+  .storage-card .sc-lbl{font-size:11px;color:var(--text3);margin-top:2px;}
+  .docs-table{width:100%;border-collapse:collapse;}
+  .docs-table th{background:#1a73e8;color:white;padding:8px 10px;font-size:11px;text-align:left;}
+  .docs-table td{padding:7px 10px;font-size:11px;border-bottom:1px solid var(--border);color:var(--text);}
+  .docs-table tr:hover td{background:var(--row-hover);}
+  .btn-doc-del{background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:2px 6px;}
+  /* report */
   .report-layout{display:flex;gap:16px;align-items:flex-start;}
   .report-sidebar{width:230px;flex-shrink:0;}
   .report-main{flex:1;min-width:0;}
@@ -237,16 +274,14 @@
   .report-del-btn{background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:2px 6px;flex-shrink:0;}
   .report-empty-saved{padding:16px;text-align:center;color:var(--text4);font-size:12px;font-style:italic;}
   .report-config-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:14px;}
-  .report-config-title{font-size:14px;font-weight:bold;color:#1a73e8;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .report-config-title{font-size:14px;font-weight:bold;color:#1a73e8;margin-bottom:14px;}
   .report-field-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
   .report-field-label{font-size:12px;font-weight:bold;color:var(--text2);min-width:80px;}
   .report-select,.report-input{padding:7px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);flex:1;min-width:140px;}
   .report-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
   .btn-report{padding:9px 18px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;transition:opacity .2s;}
   .btn-report:hover{opacity:.85;}
-  .btn-report.run{background:#1a73e8;}
-  .btn-report.save{background:#34a853;}
-  .btn-report.print{background:#607d8b;}
+  .btn-report.run{background:#1a73e8;}.btn-report.save{background:#34a853;}.btn-report.print{background:#607d8b;}
   .report-name-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
   .report-name-input{flex:1;padding:7px 10px;border:2px solid #34a853;border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);min-width:160px;}
   .report-output{background:var(--surface);border-radius:10px;box-shadow:0 2px 8px var(--shadow);overflow:hidden;}
@@ -265,12 +300,9 @@
   body.dark .report-table tfoot td{background:#1e3a6e;color:#7ec0f5;}
   .report-no-data{text-align:center;padding:30px;color:var(--text4);font-style:italic;}
   .report-type-badge{display:inline-block;border-radius:8px;padding:2px 8px;font-size:10px;font-weight:bold;}
-  .rtb-estratto{background:#e8f0fe;color:#1a73e8;}
-  .rtb-categoria{background:#f3e5f5;color:#9c27b0;}
-  .rtb-tipo{background:#fff3e0;color:#e67e22;}
-  .rtb-date{background:#e0f5f1;color:#16a085;}
-  .rtb-saldo{background:#fce8e6;color:#c0392b;}
-  .rtb-fx{background:#fff8e1;color:#f57f17;}
+  .rtb-estratto{background:#e8f0fe;color:#1a73e8;}.rtb-categoria{background:#f3e5f5;color:#9c27b0;}
+  .rtb-tipo{background:#fff3e0;color:#e67e22;}.rtb-date{background:#e0f5f1;color:#16a085;}
+  .rtb-saldo{background:#fce8e6;color:#c0392b;}.rtb-fx{background:#fff8e1;color:#f57f17;}
   body.dark .rtb-estratto{background:#1e3a6e;color:#7ec0f5;}
   body.dark .rtb-categoria{background:#3a1a4a;color:#ce93d8;}
   body.dark .rtb-tipo{background:#3a2a10;color:#ffb74d;}
@@ -282,14 +314,13 @@
   .cur-section-header{background:rgba(26,115,232,.08);border-top:3px solid #1a73e8;}
   body.dark .cur-section-header{background:rgba(74,144,217,.1);}
   .cur-section-header td{padding:8px 10px;font-weight:bold;color:#1a73e8;font-size:12px;}
-  .rpt-cat-cell{display:flex;flex-direction:column;gap:2px;}
   @media(max-width:700px){.report-layout{flex-direction:column;}.report-sidebar{width:100%;}}
   @media print{
     body{background:white!important;padding:10px;}
     nav,.filter-toggle-bar,.filter-panel,.insert-box,.row-actions,.entity-banner,.btn-settings,.settings-overlay,
     .report-sidebar,.report-config-box,.report-actions,.fx-row{display:none!important;}
     .page{display:block!important;}
-    #page-nomi,#page-categorie,#page-backup,#page-registro{display:none!important;}
+    #page-nomi,#page-categorie,#page-backup,#page-storage,#page-registro{display:none!important;}
     #page-report{display:block!important;}
     .report-layout{display:block!important;}
     .report-output{box-shadow:none!important;}
@@ -315,7 +346,7 @@
       <div class="login-subtitle">Conoscenza, Azione, Libertà</div>
     </div>
     <div id="loginError" class="login-error" style="display:none"></div>
-    <div class="login-form" id="loginForm">
+    <div class="login-form">
       <input type="email" class="login-input" id="loginEmail" placeholder="Email" autocomplete="email">
       <input type="password" class="login-input" id="loginPassword" placeholder="Password" autocomplete="current-password">
       <button class="login-btn" id="loginBtn">🔒 Accedi</button>
@@ -342,9 +373,16 @@
         </select>
       </div>
       <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
-        <label>📡 Tassi FX (aggiornati)</label>
+        <label>📡 Tassi FX</label>
         <div id="fxRateDisplay" style="font-size:11px;color:var(--text3);line-height:1.7;"></div>
         <button onclick="fetchFxRates(true)" style="background:#e8f0fe;color:#1a73e8;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:bold;">🔄 Aggiorna tassi</button>
+      </div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <label>☁️ Storage Firebase</label>
+        <div class="storage-meter" style="width:100%;">
+          <div class="storage-bar-wrap"><div class="storage-bar green" id="settingsStorageBar" style="width:0%"></div></div>
+          <div class="storage-text" id="settingsStorageText">Calcolo in corso...</div>
+        </div>
       </div>
       <button class="btn-close-settings" onclick="closeSettings()">Chiudi</button>
     </div>
@@ -377,9 +415,11 @@
     <button class="nav-btn" onclick="goTo('report')">📊 Report</button>
     <button class="nav-btn" onclick="goTo('nomi')">👤 Nomi</button>
     <button class="nav-btn" onclick="goTo('categorie')">🏷️ Categorie</button>
+    <button class="nav-btn" onclick="goTo('storage')">☁️ Storage</button>
     <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
   </nav>
 
+  <!-- REGISTRO -->
   <div class="page active" id="page-registro">
     <h2>💸 Registro Movimenti</h2>
     <div class="entity-banner" id="entityBanner">
@@ -454,8 +494,23 @@
         <input type="number" id="importoTo" placeholder="Importo ricevuto" min="0" step="0.01" style="flex:1;min-width:100px;padding:5px 8px;border:1px solid #e67e22;border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);" oninput="onImportoToChange()">
         <span id="curToBadge" style="font-size:13px;font-weight:bold;color:#e67e22;min-width:30px;"></span>
         <span class="fx-badge" id="fxRateBadge">Tasso: —</span>
-        <span class="fx-loading" id="fxLoading" style="display:none">⏳ Recupero tasso...</span>
         <input type="number" id="tassoFX" placeholder="Tasso (auto)" step="0.0001" style="flex:1;min-width:80px;padding:5px 8px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);" oninput="onTassoChange()">
+      </div>
+      <!-- Drop area documento -->
+      <div style="margin-top:10px;">
+        <div style="font-size:12px;font-weight:bold;color:var(--text2);margin-bottom:4px;">📎 Allega documento (opzionale)</div>
+        <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <div class="drop-icon">📄</div>
+          <div style="font-size:13px;font-weight:bold;color:var(--text2);">Trascina qui o clicca per selezionare</div>
+          <p>PDF, immagini, Word, Excel — max 10MB</p>
+        </div>
+        <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onFileSelected(this)">
+        <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>
+        <div class="upload-status" id="uploadStatus"></div>
+        <div id="pendingDocPreview" style="display:none;margin-top:6px;padding:6px 10px;background:var(--surface2);border-radius:6px;font-size:11px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span id="pendingDocName"></span>
+          <button onclick="clearPendingDoc()" style="background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:2px 6px;">✕ Rimuovi</button>
+        </div>
       </div>
     </div>
     <table>
@@ -466,12 +521,13 @@
         <th class="sortable" onclick="setSort('desc')">Descrizione <span id="sh-desc">⇅</span></th>
         <th class="sortable" onclick="setSort('c1')">Categorie <span id="sh-c1">⇅</span></th>
         <th class="sortable" onclick="setSort('importo')">Importo <span id="sh-importo">⇅</span></th>
-        <th>Valuta</th><th>Segno</th><th></th>
+        <th>Valuta</th><th>Segno</th><th>Doc</th><th></th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 
+  <!-- REPORT -->
   <div class="page" id="page-report">
     <h2>📊 Report</h2>
     <div class="report-layout">
@@ -483,7 +539,7 @@
         <button class="btn-report run" style="width:100%;margin-top:4px;" onclick="newReport()">+ Nuovo Report</button>
       </div>
       <div class="report-main">
-        <div class="report-config-box" id="reportConfigBox">
+        <div class="report-config-box">
           <div class="report-config-title">⚙️ Configurazione Report</div>
           <div class="report-name-row">
             <span class="report-field-label" style="min-width:80px;font-size:12px;font-weight:bold;color:var(--text2);">Nome:</span>
@@ -530,7 +586,7 @@
           <div class="report-actions">
             <button class="btn-report run" onclick="runReport()">▶ Genera</button>
             <button class="btn-report save" onclick="saveReport()">💾 Salva</button>
-            <button class="btn-report print" onclick="printReport()">🖨️ Stampa / PDF</button>
+            <button class="btn-report print" onclick="printReport()">🖨️ Stampa</button>
           </div>
         </div>
         <div class="report-output" id="reportOutput" style="display:none">
@@ -544,6 +600,7 @@
     </div>
   </div>
 
+  <!-- NOMI -->
   <div class="page" id="page-nomi">
     <h2>👤 Archivio Nomi</h2>
     <div class="archivio-box">
@@ -560,7 +617,7 @@
     </div>
     <div class="archivio-box">
       <h3>Nomi / Entità salvati</h3>
-      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Valuta</strong> determina la valuta nativa del conto/entità. Il campo <strong>Tipo</strong> raggruppa i nomi nei report.</p>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Il campo <strong>Tipo = Bank</strong> identifica i tuoi conti per il calcolo entrate/uscite nel report Categoria.</p>
       <table class="nomi-table">
         <thead style="background:#1a73e8;"><tr><th style="background:#1a73e8;">Nome</th><th style="background:#1a73e8;">Tipo</th><th style="background:#1a73e8;">Valuta</th><th style="background:#1a73e8;">Azioni</th></tr></thead>
         <tbody id="nomiTbody"></tbody>
@@ -568,6 +625,7 @@
     </div>
   </div>
 
+  <!-- CATEGORIE -->
   <div class="page" id="page-categorie">
     <h2>🏷️ Archivio Categorie</h2>
     <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
@@ -600,6 +658,24 @@
     </div>
   </div>
 
+  <!-- STORAGE -->
+  <div class="page" id="page-storage">
+    <h2>☁️ Storage Documenti</h2>
+    <div class="archivio-box">
+      <h3>📊 Spazio utilizzato</h3>
+      <div id="storageSummary" style="color:var(--text3);font-size:13px;">Calcolo in corso...</div>
+      <div class="storage-big-bar-wrap"><div class="storage-big-bar green" id="storageBigBar" style="width:0%"></div></div>
+      <div class="storage-grid" id="storageGrid"></div>
+    </div>
+    <div class="archivio-box">
+      <h3>📁 Documenti archiviati</h3>
+      <div id="docsListWrap">
+        <div style="color:var(--text4);font-style:italic;font-size:13px;">Caricamento...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKUP -->
   <div class="page" id="page-backup">
     <h2>💾 Backup</h2>
     <div class="backup-box">
@@ -619,6 +695,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, set, get, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL, deleteObject, listAll, getMetadata } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
 
 const firebaseConfig = {
   apiKey:"AIzaSyDbCbpwgdlPbRUlppCFX-dsbNEuyzBpVV4",authDomain:"caveau-registro.firebaseapp.com",
@@ -626,7 +703,8 @@ const firebaseConfig = {
   projectId:"caveau-registro",storageBucket:"caveau-registro.firebasestorage.app",
   messagingSenderId:"361376077124",appId:"1:361376077124:web:411566edcc50463ce6b311"
 };
-const fbApp=initializeApp(firebaseConfig),auth=getAuth(fbApp),db=getDatabase(fbApp);
+const fbApp=initializeApp(firebaseConfig);
+const auth=getAuth(fbApp),db=getDatabase(fbApp),storage=getStorage(fbApp);
 
 let rows=[],nomi=[],c1=[],c2Map={},c3Map={},savedReports=[];
 let fC1=new Set(),fC2=new Set(),fC3=new Set();
@@ -635,7 +713,9 @@ let editingIdx=null,editingNomeIdx=null;
 let sortField='data',sortDir=1,filterOpen=false;
 let currentUser=null,activeReportIdx=null,refCurr='EUR';
 let fxRates={EUR:1,GBP:0.853,AED:3.972};
+let pendingDocFile=null,pendingDocUrl=null,pendingDocName=null,pendingDocSize=0;
 const VOID='__VOID__';
+const STORAGE_LIMIT_GB=5;
 
 const CUR_SYMBOLS={EUR:'€',GBP:'£',AED:'AED','':'?'};
 const CUR_CLASSES={EUR:'cur-eur',GBP:'cur-gbp',AED:'cur-aed'};
@@ -643,17 +723,13 @@ function curSymbol(c){return CUR_SYMBOLS[c]||c;}
 function curClass(c){return CUR_CLASSES[c]||'cur-other';}
 function getNomeValuta(name){const n=nomi.find(x=>x.name===name);return n?n.valuta||'EUR':'EUR';}
 function getTipoNome(name){const n=nomi.find(x=>x.name===name);return n?n.tipo||'':'';}
-
-// ── CHIAVE: Bank = tipo che identifica i tuoi conti ───
-// To=Bank → entrata (incasso); From=Bank → uscita (pagamento)
 function isBankTipo(name){return getTipoNome(name)==='Bank';}
 function getMovSign(r){
-  const toBank=isBankTipo(r.to),fromBank=isBankTipo(r.from);
-  if(toBank&&!fromBank)return'entrata';   // es. Inquilino → Banca
-  if(fromBank&&!toBank)return'uscita';    // es. Banca → Landlord
-  return'neutro';                          // Bank→Bank o nessuno
+  const toB=isBankTipo(r.to),fromB=isBankTipo(r.from);
+  if(toB&&!fromB)return'entrata';
+  if(fromB&&!toB)return'uscita';
+  return'neutro';
 }
-
 function fmtAmt(amount,cur){
   const sym=curSymbol(cur||'EUR');
   const parts=Math.abs(amount).toFixed(2).split('.');
@@ -662,13 +738,14 @@ function fmtAmt(amount,cur){
   if(cur==='AED')return`${neg}${parts[0]},${parts[1]} ${sym}`;
   return`${neg}${sym}\u00a0${parts[0]},${parts[1]}`;
 }
+function fmtBytes(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';if(b<1073741824)return(b/1048576).toFixed(2)+' MB';return(b/1073741824).toFixed(3)+' GB';}
 function isExchangeRow(r){return !!(r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);}
 function c3k(a,b){return a+'|'+b;}
 function getTipi(){return[...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort();}
 function fmtDate(s){return s?s.split('-').reverse().join('/'):''}
 function isVoid(v){return !v||v==='-'||v.trim()==='';}
 
-// ── FX ───────────────────────────────────────────────
+// ── FX ────────────────────────────────────────────────
 async function fetchFxRates(force=false){
   try{
     const ck='fxRates_v2',ct='fxRatesTime',now=Date.now();
@@ -722,6 +799,7 @@ onAuthStateChanged(auth,async(user)=>{
     document.getElementById('loginLoading').style.display='none';
     document.getElementById('data').valueAsDate=new Date();
     syncSelects();syncTipoSel();updateSortHeaders();render();
+    calcStorageUsage();
   }else{
     currentUser=null;
     document.getElementById('loginScreen').style.display='flex';
@@ -732,32 +810,143 @@ onAuthStateChanged(auth,async(user)=>{
 });
 
 function resetVolatileFilters(){
-  entityFilter='';tipoFilter='';valutaFilter='';
-  fC1.clear();fC2.clear();fC3.clear();
+  entityFilter='';tipoFilter='';valutaFilter='';fC1.clear();fC2.clear();fC3.clear();
   const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}
   const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}
   const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}
   updateEntityBanner();updateFilterBadge();
 }
-
 function loadData(d){
-  rows=(d.rows||[]).filter(Boolean);
-  nomi=(d.nomi||[]).filter(Boolean);
-  c1=(d.c1||[]).filter(Boolean);
-  c2Map=d.c2Map||{};
-  c3Map=d.c3Map||{};
+  rows=(d.rows||[]).filter(Boolean);nomi=(d.nomi||[]).filter(Boolean);
+  c1=(d.c1||[]).filter(Boolean);c2Map=d.c2Map||{};c3Map=d.c3Map||{};
   Object.keys(c2Map).forEach(k=>{c2Map[k]=(c2Map[k]||[]).filter(Boolean);});
   Object.keys(c3Map).forEach(k=>{c3Map[k]=(c3Map[k]||[]).filter(Boolean);});
-  savedReports=(d.savedReports||[]).filter(Boolean);
-  refCurr=d.refCurr||'EUR';
+  savedReports=(d.savedReports||[]).filter(Boolean);refCurr=d.refCurr||'EUR';
   rows.forEach(r=>{if(!r.valuta)r.valuta=getNomeValuta(r.from);});
 }
 async function saveToFirebase(){if(!currentUser)return;await set(ref(db,'users/'+currentUser.uid),{rows,nomi,c1,c2Map,c3Map,savedReports,refCurr,lastModified:new Date().toISOString()});}
 
+// ── STORAGE ───────────────────────────────────────────
+async function calcStorageUsage(){
+  if(!currentUser)return;
+  try{
+    const listRef=sRef(storage,`docs/${currentUser.uid}`);
+    const res=await listAll(listRef);
+    let totalBytes=0,fileCount=res.items.length;
+    const fileMetas=await Promise.all(res.items.map(item=>getMetadata(item).catch(()=>null)));
+    fileMetas.forEach(m=>{if(m)totalBytes+=m.size||0;});
+    const limitBytes=STORAGE_LIMIT_GB*1024*1024*1024;
+    const pct=Math.min((totalBytes/limitBytes)*100,100);
+    const cls=pct<70?'green':pct<90?'yellow':'red';
+    // settings bar
+    const sb=document.getElementById('settingsStorageBar');
+    const st=document.getElementById('settingsStorageText');
+    if(sb){sb.className='storage-bar '+cls;sb.style.width=pct.toFixed(1)+'%';}
+    if(st)st.textContent=`${fmtBytes(totalBytes)} / ${STORAGE_LIMIT_GB} GB (${pct.toFixed(1)}%) — ${fileCount} file`;
+    // storage page
+    const bb=document.getElementById('storageBigBar');
+    const ss=document.getElementById('storageSummary');
+    if(bb){bb.className='storage-big-bar '+cls;bb.style.width=pct.toFixed(1)+'%';}
+    if(ss)ss.innerHTML=`<strong>${fmtBytes(totalBytes)}</strong> utilizzati su <strong>${STORAGE_LIMIT_GB} GB</strong> (${pct.toFixed(1)}%) &nbsp;·&nbsp; <strong>${fileCount}</strong> documenti`;
+    const grid=document.getElementById('storageGrid');
+    if(grid)grid.innerHTML=`
+      <div class="storage-card"><div class="sc-num">${fileCount}</div><div class="sc-lbl">Documenti</div></div>
+      <div class="storage-card"><div class="sc-num">${fmtBytes(totalBytes)}</div><div class="sc-lbl">Spazio usato</div></div>
+      <div class="storage-card"><div class="sc-num">${fmtBytes(limitBytes-totalBytes)}</div><div class="sc-lbl">Spazio libero</div></div>
+      <div class="storage-card"><div class="sc-num" style="color:${cls==='green'?'#34a853':cls==='yellow'?'#fbbc04':'#ea4335'}">${pct.toFixed(1)}%</div><div class="sc-lbl">Saturazione</div></div>`;
+    // docs list
+    renderDocsList(res.items,fileMetas);
+  }catch(e){
+    console.warn('Storage calc error',e);
+    const ss=document.getElementById('storageSummary');
+    if(ss)ss.textContent='Impossibile calcolare lo spazio (Firebase Storage potrebbe richiedere configurazione CORS).';
+  }
+}
+
+function renderDocsList(items,metas){
+  const wrap=document.getElementById('docsListWrap');if(!wrap)return;
+  if(!items.length){wrap.innerHTML='<div style="color:var(--text4);font-style:italic;font-size:13px;">Nessun documento archiviato.</div>';return;}
+  // Map storagePath → row desc
+  const pathToRow={};
+  rows.forEach(r=>{if(r.docPath)pathToRow[r.docPath]={desc:r.desc,data:r.data};});
+  let html=`<table class="docs-table"><thead><tr><th>Nome file</th><th>Collegato a</th><th>Data</th><th>Dimensione</th><th>Azioni</th></tr></thead><tbody>`;
+  items.forEach((item,i)=>{
+    const m=metas[i];const size=m?fmtBytes(m.size):'—';
+    const name=item.name;const path=item.fullPath;
+    const linked=pathToRow[path];
+    html+=`<tr>
+      <td style="font-weight:bold;">${name}</td>
+      <td>${linked?linked.desc:'<span style="color:var(--text4);font-style:italic;">—</span>'}</td>
+      <td>${linked?fmtDate(linked.data):'—'}</td>
+      <td>${size}</td>
+      <td><button class="btn-doc-del" onclick="deleteDoc('${path}','${name}')">🗑 Elimina</button></td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;wrap.innerHTML=html;
+}
+
+async function deleteDoc(path,name){
+  if(!confirm(`Eliminare "${name}"?\nIl collegamento nel movimento verrà rimosso.`))return;
+  try{
+    await deleteObject(sRef(storage,path));
+    // rimuovi riferimento dal movimento
+    rows.forEach(r=>{if(r.docPath===path){delete r.docUrl;delete r.docPath;delete r.docName;}});
+    await saveToFirebase();
+    render();
+    calcStorageUsage();
+  }catch(e){alert('Errore eliminazione: '+e.message);}
+}
+window.deleteDoc=deleteDoc;
+
+// ── UPLOAD DOC ────────────────────────────────────────
+function onDragOver(e){e.preventDefault();document.getElementById('dropArea').classList.add('drag-over');}
+function onDragLeave(){document.getElementById('dropArea').classList.remove('drag-over');}
+function onDrop(e){e.preventDefault();document.getElementById('dropArea').classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)prepareFile(f);}
+function onFileSelected(input){if(input.files[0])prepareFile(input.files[0]);}
+function prepareFile(file){
+  if(file.size>10*1024*1024){alert('File troppo grande (max 10MB)');return;}
+  pendingDocFile=file;pendingDocName=file.name;pendingDocSize=file.size;
+  const prev=document.getElementById('pendingDocPreview');
+  document.getElementById('pendingDocName').textContent=`📄 ${file.name} (${fmtBytes(file.size)})`;
+  prev.style.display='flex';
+  document.getElementById('uploadStatus').textContent='';
+}
+function clearPendingDoc(){
+  pendingDocFile=null;pendingDocUrl=null;pendingDocName=null;pendingDocSize=0;
+  document.getElementById('pendingDocPreview').style.display='none';
+  document.getElementById('fileInput').value='';
+  document.getElementById('uploadStatus').textContent='';
+  document.getElementById('uploadProgress').style.display='none';
+  document.getElementById('uploadBar').style.width='0%';
+}
+async function uploadPendingDoc(){
+  if(!pendingDocFile||!currentUser)return null;
+  return new Promise((resolve,reject)=>{
+    const ts=Date.now();
+    const safeName=pendingDocFile.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`docs/${currentUser.uid}/${ts}_${safeName}`;
+    const storageRef=sRef(storage,path);
+    const task=uploadBytesResumable(storageRef,pendingDocFile);
+    document.getElementById('uploadProgress').style.display='block';
+    document.getElementById('uploadStatus').textContent='⏳ Caricamento...';
+    task.on('state_changed',snap=>{
+      const pct=(snap.bytesTransferred/snap.totalBytes*100).toFixed(0);
+      document.getElementById('uploadBar').style.width=pct+'%';
+    },err=>{
+      document.getElementById('uploadStatus').textContent='❌ Errore: '+err.message;
+      reject(err);
+    },async()=>{
+      const url=await getDownloadURL(task.snapshot.ref);
+      document.getElementById('uploadStatus').textContent='✅ Caricato!';
+      resolve({url,path,name:pendingDocFile.name});
+    });
+  });
+}
+
 // ── THEME ─────────────────────────────────────────────
 function toggleDark(on){document.body.classList.toggle('dark',on);document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro';try{localStorage.setItem('theme',on?'dark':'light');}catch(e){}}
 try{if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.getElementById('darkToggle').checked=true;document.getElementById('themeLabel').textContent='Scuro';}}catch(e){}
-function openSettings(){updateFxDisplay();document.getElementById('refCurrSel').value=refCurr;document.getElementById('settingsOverlay').classList.add('open');}
+function openSettings(){updateFxDisplay();document.getElementById('refCurrSel').value=refCurr;calcStorageUsage();document.getElementById('settingsOverlay').classList.add('open');}
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');}
 function closeSettingsOutside(e){if(e.target===document.getElementById('settingsOverlay'))closeSettings();}
 async function setRefCurr(v){refCurr=v;await saveToFirebase();renderSummary();}
@@ -767,11 +956,12 @@ function goTo(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  document.querySelectorAll('.nav-btn')[['registro','report','nomi','categorie','backup'].indexOf(p)].classList.add('active');
+  document.querySelectorAll('.nav-btn')[['registro','report','nomi','categorie','storage','backup'].indexOf(p)].classList.add('active');
   if(p==='registro'){rebuildDD();render();}
   if(p==='nomi')renderNomiPage();
   if(p==='categorie'){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
   if(p==='report'){syncReportSelects();renderSavedReports();}
+  if(p==='storage')calcStorageUsage();
 }
 
 // ── SUMMARY ───────────────────────────────────────────
@@ -807,30 +997,18 @@ function matchesCatFilter(set,value){if(set.size===0)return true;const voidSel=s
 function getFiltered(){
   const from=document.getElementById('dateFrom').value,to=document.getElementById('dateTo').value;
   return rows.filter(r=>{
-    if(from&&r.data<from)return false;
-    if(to&&r.data>to)return false;
+    if(from&&r.data<from)return false;if(to&&r.data>to)return false;
     if(entityFilter&&r.from!==entityFilter&&r.to!==entityFilter)return false;
-    if(tipoFilter){
-      const tipiValidi=getTipi();
-      if(!tipiValidi.includes(tipoFilter)){tipoFilter='';const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}}
-      else{const ftm=getTipoNome(r.from)===tipoFilter,ttm=getTipoNome(r.to)===tipoFilter;if(!ftm&&!ttm)return false;}
-    }
+    if(tipoFilter){const tv=getTipi();if(!tv.includes(tipoFilter)){tipoFilter='';const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}}else{if(getTipoNome(r.from)!==tipoFilter&&getTipoNome(r.to)!==tipoFilter)return false;}}
     if(valutaFilter&&r.valuta!==valutaFilter&&r.valutaTo!==valutaFilter)return false;
-    if(!matchesCatFilter(fC1,r.c1))return false;
-    if(!matchesCatFilter(fC2,r.c2))return false;
-    if(!matchesCatFilter(fC3,r.c3))return false;
+    if(!matchesCatFilter(fC1,r.c1))return false;if(!matchesCatFilter(fC2,r.c2))return false;if(!matchesCatFilter(fC3,r.c3))return false;
     return true;
   });
 }
-function clearFilters(){
-  fC1.clear();fC2.clear();fC3.clear();
-  document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';
-  clearEntityFilter();clearTipoFilter();clearValutaFilter();
-  rebuildDD();updateFilterBadge();render();
-}
+function clearFilters(){fC1.clear();fC2.clear();fC3.clear();document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';clearEntityFilter();clearTipoFilter();clearValutaFilter();rebuildDD();updateFilterBadge();render();}
 function clearDate(){document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';updateFilterBadge();render();}
 
-// ── SELECTS SYNC ──────────────────────────────────────
+// ── SELECTS ───────────────────────────────────────────
 function syncSelects(){
   const ns=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));
   const opts='<option value="">—</option>'+ns.map(n=>`<option value="${n.name}">${n.name} (${curSymbol(n.valuta||'EUR')})</option>`).join('');
@@ -848,10 +1026,9 @@ function filterByEntity(name){entityFilter=name;document.getElementById('entityS
 function updateEntityBanner(){const b=document.getElementById('entityBanner');if(entityFilter){b.classList.add('active');const no=nomi.find(x=>x.name===entityFilter);document.getElementById('entityBannerLabel').textContent=`Movimenti: ${entityFilter}${no&&no.tipo?' ['+no.tipo+']':''}${no?' ('+curSymbol(no.valuta||'EUR')+')':''}`;}else b.classList.remove('active');}
 
 // ── FX FORM ───────────────────────────────────────────
-function onFromChange(){updateFxRow();}
-function onToChange(){updateFxRow();}
-function updateFxRow(){const fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;if(!fn||!tn){document.getElementById('fxRow').style.display='none';document.getElementById('curFromBadge').textContent='';return;}const cf=getNomeValuta(fn),ct=getNomeValuta(tn);document.getElementById('curFromBadge').textContent=curSymbol(cf);if(cf!==ct){document.getElementById('fxRow').style.display='flex';document.getElementById('fxFromLabel').textContent=`${fmtAmt(parseFloat(document.getElementById('importo').value)||0,cf)}`;document.getElementById('curToBadge').textContent=curSymbol(ct);const te=document.getElementById('tassoFX');if(!te.dataset.manual){const rate=getRate(cf,ct);te.value=rate.toFixed(4);document.getElementById('fxRateBadge').textContent=`1 ${cf} = ${rate.toFixed(4)} ${ct}`;const imp=parseFloat(document.getElementById('importo').value)||0;if(imp>0)document.getElementById('importoTo').value=(imp*rate).toFixed(2);}}else document.getElementById('fxRow').style.display='none';}
-function onImportoChange(){const fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;if(!fn||!tn)return;const cf=getNomeValuta(fn),ct=getNomeValuta(tn);if(cf===ct)return;const imp=parseFloat(document.getElementById('importo').value)||0;document.getElementById('fxFromLabel').textContent=`${fmtAmt(imp,cf)}`;const tasso=parseFloat(document.getElementById('tassoFX').value)||getRate(cf,ct);document.getElementById('importoTo').value=(imp*tasso).toFixed(2);}
+function onFromChange(){updateFxRow();}function onToChange(){updateFxRow();}
+function updateFxRow(){const fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;if(!fn||!tn){document.getElementById('fxRow').style.display='none';document.getElementById('curFromBadge').textContent='';return;}const cf=getNomeValuta(fn),ct=getNomeValuta(tn);document.getElementById('curFromBadge').textContent=curSymbol(cf);if(cf!==ct){document.getElementById('fxRow').style.display='flex';document.getElementById('fxFromLabel').textContent=fmtAmt(parseFloat(document.getElementById('importo').value)||0,cf);document.getElementById('curToBadge').textContent=curSymbol(ct);const te=document.getElementById('tassoFX');if(!te.dataset.manual){const rate=getRate(cf,ct);te.value=rate.toFixed(4);document.getElementById('fxRateBadge').textContent=`1 ${cf} = ${rate.toFixed(4)} ${ct}`;const imp=parseFloat(document.getElementById('importo').value)||0;if(imp>0)document.getElementById('importoTo').value=(imp*rate).toFixed(2);}}else document.getElementById('fxRow').style.display='none';}
+function onImportoChange(){const fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;if(!fn||!tn)return;const cf=getNomeValuta(fn),ct=getNomeValuta(tn);if(cf===ct)return;const imp=parseFloat(document.getElementById('importo').value)||0;document.getElementById('fxFromLabel').textContent=fmtAmt(imp,cf);const tasso=parseFloat(document.getElementById('tassoFX').value)||getRate(cf,ct);document.getElementById('importoTo').value=(imp*tasso).toFixed(2);}
 function onImportoToChange(){const imp=parseFloat(document.getElementById('importo').value)||0,impTo=parseFloat(document.getElementById('importoTo').value)||0;if(imp>0&&impTo>0){const rate=impTo/imp;document.getElementById('tassoFX').value=rate.toFixed(4);document.getElementById('fxRateBadge').textContent=`1 ${getNomeValuta(document.getElementById('selFrom').value)} = ${rate.toFixed(4)} ${getNomeValuta(document.getElementById('selTo').value)}`;}}
 function onTassoChange(){const te=document.getElementById('tassoFX');te.dataset.manual='1';const imp=parseFloat(document.getElementById('importo').value)||0,tasso=parseFloat(te.value)||0;if(imp>0&&tasso>0)document.getElementById('importoTo').value=(imp*tasso).toFixed(2);const fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;document.getElementById('fxRateBadge').textContent=`1 ${getNomeValuta(fn)} = ${tasso.toFixed(4)} ${getNomeValuta(tn)}`;}
 
@@ -859,19 +1036,16 @@ function onTassoChange(){const te=document.getElementById('tassoFX');te.dataset.
 function rebuildDD(){
   const vc1=fC1.size>0?[...fC1].filter(v=>v!==VOID):c1;
   const c1Items=c1.map(c=>`<label class="dropdown-item di-c1"><input type="checkbox" ${fC1.has(c)?'checked':''} onchange="toggleF('c1','${c}',this.checked)">${c}</label>`).join('');
-  const c1Void=`<label class="dropdown-item di-c1 void-item"><input type="checkbox" ${fC1.has(VOID)?'checked':''} onchange="toggleF('c1','${VOID}',this.checked)">⬜ Void (vuoto)</label>`;
-  document.getElementById('ddC1').innerHTML=(c1.length===0?'<div class="dropdown-empty">Nessuna</div>':c1Items)+c1Void;
-  updTr('trC1',fC1,'Tutte cat.1','af-c1');
+  const c1Void=`<label class="dropdown-item di-c1 void-item"><input type="checkbox" ${fC1.has(VOID)?'checked':''} onchange="toggleF('c1','${VOID}',this.checked)">⬜ Void</label>`;
+  document.getElementById('ddC1').innerHTML=(c1.length===0?'<div class="dropdown-empty">Nessuna</div>':c1Items)+c1Void;updTr('trC1',fC1,'Tutte cat.1','af-c1');
   const ac2=[...new Set(vc1.flatMap(c=>c2Map[c]||[]))];
   const c2Items=ac2.map(s=>`<label class="dropdown-item di-c2"><input type="checkbox" ${fC2.has(s)?'checked':''} onchange="toggleF('c2','${s}',this.checked)">${s}</label>`).join('');
-  const c2Void=`<label class="dropdown-item di-c2 void-item"><input type="checkbox" ${fC2.has(VOID)?'checked':''} onchange="toggleF('c2','${VOID}',this.checked)">⬜ Void (vuoto)</label>`;
-  document.getElementById('ddC2').innerHTML=(ac2.length===0?'<div class="dropdown-empty">Nessuna</div>':c2Items)+c2Void;
-  updTr('trC2',fC2,'Tutte cat.2','af-c2');
+  const c2Void=`<label class="dropdown-item di-c2 void-item"><input type="checkbox" ${fC2.has(VOID)?'checked':''} onchange="toggleF('c2','${VOID}',this.checked)">⬜ Void</label>`;
+  document.getElementById('ddC2').innerHTML=(ac2.length===0?'<div class="dropdown-empty">Nessuna</div>':c2Items)+c2Void;updTr('trC2',fC2,'Tutte cat.2','af-c2');
   const vc2=fC2.size>0?[...fC2].filter(v=>v!==VOID):ac2,ac3=[...new Set(vc1.flatMap(a=>vc2.flatMap(b=>c3Map[c3k(a,b)]||[])))];
   const c3Items=ac3.map(s=>`<label class="dropdown-item di-c3"><input type="checkbox" ${fC3.has(s)?'checked':''} onchange="toggleF('c3','${s}',this.checked)">${s}</label>`).join('');
-  const c3Void=`<label class="dropdown-item di-c3 void-item"><input type="checkbox" ${fC3.has(VOID)?'checked':''} onchange="toggleF('c3','${VOID}',this.checked)">⬜ Void (vuoto)</label>`;
-  document.getElementById('ddC3').innerHTML=(ac3.length===0?'<div class="dropdown-empty">Nessuna</div>':c3Items)+c3Void;
-  updTr('trC3',fC3,'Tutte cat.3','af-c3');
+  const c3Void=`<label class="dropdown-item di-c3 void-item"><input type="checkbox" ${fC3.has(VOID)?'checked':''} onchange="toggleF('c3','${VOID}',this.checked)">⬜ Void</label>`;
+  document.getElementById('ddC3').innerHTML=(ac3.length===0?'<div class="dropdown-empty">Nessuna</div>':c3Items)+c3Void;updTr('trC3',fC3,'Tutte cat.3','af-c3');
 }
 function updTr(id,set,def,cls){const el=document.getElementById(id);el.className='mst';if(set.size>0){el.textContent=[...set].map(v=>v===VOID?'⬜ Void':v).join(', ');el.classList.add(cls);}else el.textContent=def;}
 function toggleF(type,val,checked){
@@ -881,7 +1055,7 @@ function toggleF(type,val,checked){
   rebuildDD();updateFilterBadge();render();
 }
 
-// ── RENDER REGISTRO ───────────────────────────────────
+// ── RENDER ────────────────────────────────────────────
 function renderCatCell(r){
   let h='<div class="cat-cell">';
   h+=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';
@@ -889,12 +1063,11 @@ function renderCatCell(r){
   if(r.c3&&r.c3!=='-')h+=`<span class="c3-badge">${r.c3}</span>`;
   h+='</div>';return h;
 }
-
 function render(){
   renderSummary();
   const tbody=document.getElementById('tbody');
   const filtered=getSorted(getFiltered());
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9" class="empty">Nessun movimento</td></tr>`;return;}
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="10" class="empty">Nessun movimento</td></tr>`;return;}
   const nomeOpts=nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
   const c1Opts=c1.map(c=>`<option value="${c}">${c}</option>`).join('');
   let html='';
@@ -907,6 +1080,7 @@ function render(){
       else signHtml=`<span class="amount-neg">- ${fmtAmt(r.importo,cur)}</span>`;
     }
     const valHtml=isEx?`<span class="${curClass(cur)}">${curSymbol(cur)}</span> <span style="color:var(--text3);font-size:10px;">→</span> <span class="${curClass(curTo)}">${curSymbol(curTo)}</span> <span class="fx-tag">FX</span>`:`<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
+    const docHtml=r.docUrl?`<a class="doc-link" href="${r.docUrl}" target="_blank">📎 ${r.docName||'Doc'}</a>`:'';
     if(editingIdx===i){
       const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
       const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
@@ -920,15 +1094,12 @@ function render(){
           <select class="edit-select" id="ed-c2" style="margin-top:2px" onchange="edC2Change(document.getElementById('ed-c1').value,this.value)">${rc2}</select>
           <select class="edit-select" id="ed-c3" style="margin-top:2px">${rc3}</select>
         </div></td>
-        <td>
-          <input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
-          ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}
-        </td>
-        <td>${valHtml}</td>
-        <td>—</td>
+        <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
+        ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}</td>
+        <td>${valHtml}</td><td>—</td><td>${docHtml}</td>
         <td><div class="row-actions">
-          <button class="btn-save" onclick="saveEdit()">💾 Salva</button>
-          <button class="btn-cancel" onclick="cancelEdit()">✕ Annulla</button>
+          <button class="btn-save" onclick="saveEdit()">💾</button>
+          <button class="btn-cancel" onclick="cancelEdit()">✕</button>
         </div></td>
       </tr>`;
       setTimeout(()=>{
@@ -947,6 +1118,7 @@ function render(){
         <td class="amount-neu">${importoDisplay}</td>
         <td>${valHtml}</td>
         <td>${signHtml}</td>
+        <td>${docHtml}</td>
         <td><div class="row-actions">
           <button class="btn-edit" onclick="startEdit(${i})">✏️</button>
           <button class="btn-del" onclick="elimina(${i})">🗑</button>
@@ -968,19 +1140,26 @@ async function aggiungi(){
   const cf=getNomeValuta(fn),ct=getNomeValuta(tn),isEx=cf!==ct;
   const row={data,from:fn,to:tn,desc,c1:c1v,c2:c2v,c3:c3v,importo,valuta:cf};
   if(isEx){row.isExchange=true;row.valutaTo=ct;row.importoTo=parseFloat(document.getElementById('importoTo').value)||0;row.tassoFX=parseFloat(document.getElementById('tassoFX').value)||getRate(cf,ct);}
+  // Upload documento se presente
+  if(pendingDocFile){
+    try{
+      const docInfo=await uploadPendingDoc();
+      if(docInfo){row.docUrl=docInfo.url;row.docPath=docInfo.path;row.docName=docInfo.name;}
+    }catch(e){if(!confirm('Errore upload documento. Salvare il movimento lo stesso?'))return;}
+  }
   rows.push(row);rows.sort((a,b)=>a.data.localeCompare(b.data));
-  document.getElementById('descrizione').value='';document.getElementById('importo').value='';document.getElementById('importoTo').value='';document.getElementById('tassoFX').value='';delete document.getElementById('tassoFX').dataset.manual;document.getElementById('fxRow').style.display='none';
-  await saveToFirebase();render();
+  document.getElementById('descrizione').value='';document.getElementById('importo').value='';
+  document.getElementById('importoTo').value='';document.getElementById('tassoFX').value='';
+  delete document.getElementById('tassoFX').dataset.manual;document.getElementById('fxRow').style.display='none';
+  clearPendingDoc();
+  await saveToFirebase();render();calcStorageUsage();
 }
 function startEdit(i){editingIdx=i;render();}
 function cancelEdit(){editingIdx=null;render();}
 async function saveEdit(){
   if(editingIdx===null){cancelEdit();return;}
-  const fi=getSorted(getFiltered());
-  if(editingIdx<0||editingIdx>=fi.length){cancelEdit();return;}
-  const target=fi[editingIdx];
-  const orig=rows.indexOf(target);
-  if(orig===-1){cancelEdit();return;}
+  const fi=getSorted(getFiltered());if(editingIdx<0||editingIdx>=fi.length){cancelEdit();return;}
+  const target=fi[editingIdx],orig=rows.indexOf(target);if(orig===-1){cancelEdit();return;}
   const r=rows[orig];
   r.data=document.getElementById('ed-data').value||r.data;
   r.from=document.getElementById('ed-from').value||r.from;
@@ -993,27 +1172,19 @@ async function saveEdit(){
   r.valuta=getNomeValuta(r.from);
   if(isExchangeRow(r)){const el=document.getElementById('ed-impto');if(el)r.importoTo=parseFloat(el.value)||r.importoTo;}
   rows.sort((a,b)=>a.data.localeCompare(b.data));
-  editingIdx=null;
-  await saveToFirebase();render();
+  editingIdx=null;await saveToFirebase();render();
 }
 async function elimina(i){
   if(!confirm('Eliminare?'))return;
-  const fi=getSorted(getFiltered());
-  if(i<0||i>=fi.length)return;
-  const orig=rows.indexOf(fi[i]);
-  if(orig===-1)return;
-  rows.splice(orig,1);
-  await saveToFirebase();render();
+  const fi=getSorted(getFiltered());if(i<0||i>=fi.length)return;
+  const orig=rows.indexOf(fi[i]);if(orig===-1)return;
+  const r=rows[orig];
+  // elimina file storage se collegato
+  if(r.docPath){try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Storage delete skip',e);}calcStorageUsage();}
+  rows.splice(orig,1);await saveToFirebase();render();
 }
-function edC1Change(v){
-  const s2=document.getElementById('ed-c2'),s3=document.getElementById('ed-c3');
-  s2.innerHTML='<option value="-">—</option>'+(c2Map[v]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');
-  s3.innerHTML='<option value="-">—</option>';
-}
-function edC2Change(c1v,v){
-  const s3=document.getElementById('ed-c3');
-  s3.innerHTML='<option value="-">—</option>'+(c3Map[c3k(c1v,v)]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');
-}
+function edC1Change(v){const s2=document.getElementById('ed-c2'),s3=document.getElementById('ed-c3');s2.innerHTML='<option value="-">—</option>'+(c2Map[v]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');s3.innerHTML='<option value="-">—</option>';}
+function edC2Change(c1v,v){const s3=document.getElementById('ed-c3');s3.innerHTML='<option value="-">—</option>'+(c3Map[c3k(c1v,v)]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');}
 
 // ── NOMI ──────────────────────────────────────────────
 async function addNome(){const ni=document.getElementById('inputNome'),ti=document.getElementById('inputNomeTipo'),vi=document.getElementById('inputNomeVal');const v=ni.value.trim(),tipo=ti.value.trim(),valuta=vi.value||'EUR';if(!v)return;if(nomi.find(x=>x.name===v)){alert('Già presente');return;}nomi.push({name:v,tipo,valuta});ni.value='';ti.value='';await saveToFirebase();renderNomiPage();syncSelects();syncTipoSel();rebuildDD();}
@@ -1037,18 +1208,13 @@ function renderC3Page(){const c1v=document.getElementById('c1ForC3').value,c2v=d
 function syncParentSelects(){['c1ForC2','c1ForC3'].forEach(id=>{const sel=document.getElementById(id),prev=sel.value;sel.innerHTML='<option value="">— Seleziona —</option>'+c1.map(c=>`<option value="${c}" ${c===prev?'selected':''}>${c}</option>`).join('');});}
 
 // ── REPORT ────────────────────────────────────────────
-function syncDepC2(c1selId,c2selId){const v=document.getElementById(c1selId).value;const sel=document.getElementById(c2selId);sel.innerHTML='<option value="">— Tutte —</option>'+(c2Map[v]||[]).map(s=>`<option value="${s}">${s}</option>`).join('');}
-function syncDepC3(c1selId,c2selId,c3selId){const v1=document.getElementById(c1selId).value,v2=document.getElementById(c2selId).value;const sel=document.getElementById(c3selId);sel.innerHTML='<option value="">— Tutte —</option>'+(c3Map[c3k(v1,v2)]||[]).map(s=>`<option value="${s}">${s}</option>`).join('');}
-function syncRptEstrC2(){syncDepC2('rptEstrC1','rptEstrC2');syncRptEstrC3();}
-function syncRptEstrC3(){syncDepC3('rptEstrC1','rptEstrC2','rptEstrC3');}
-function syncRptCatC2(){syncDepC2('rptC1','rptCatC2');syncRptCatC3();}
-function syncRptCatC3(){syncDepC3('rptC1','rptCatC2','rptCatC3');}
-function syncRptTipoC2(){syncDepC2('rptTipoC1','rptTipoC2');syncRptTipoC3();}
-function syncRptTipoC3(){syncDepC3('rptTipoC1','rptTipoC2','rptTipoC3');}
-function syncRptDateC2(){syncDepC2('rptDateC1','rptDateC2');syncRptDateC3();}
-function syncRptDateC3(){syncDepC3('rptDateC1','rptDateC2','rptDateC3');}
-function syncRptSaldoC2(){syncDepC2('rptSaldoC1','rptSaldoC2');syncRptSaldoC3();}
-function syncRptSaldoC3(){syncDepC3('rptSaldoC1','rptSaldoC2','rptSaldoC3');}
+function syncDepC2(a,b){const v=document.getElementById(a).value;document.getElementById(b).innerHTML='<option value="">— Tutte —</option>'+(c2Map[v]||[]).map(s=>`<option value="${s}">${s}</option>`).join('');}
+function syncDepC3(a,b,c){const v1=document.getElementById(a).value,v2=document.getElementById(b).value;document.getElementById(c).innerHTML='<option value="">— Tutte —</option>'+(c3Map[c3k(v1,v2)]||[]).map(s=>`<option value="${s}">${s}</option>`).join('');}
+function syncRptEstrC2(){syncDepC2('rptEstrC1','rptEstrC2');syncRptEstrC3();}function syncRptEstrC3(){syncDepC3('rptEstrC1','rptEstrC2','rptEstrC3');}
+function syncRptCatC2(){syncDepC2('rptC1','rptCatC2');syncRptCatC3();}function syncRptCatC3(){syncDepC3('rptC1','rptCatC2','rptCatC3');}
+function syncRptTipoC2(){syncDepC2('rptTipoC1','rptTipoC2');syncRptTipoC3();}function syncRptTipoC3(){syncDepC3('rptTipoC1','rptTipoC2','rptTipoC3');}
+function syncRptDateC2(){syncDepC2('rptDateC1','rptDateC2');syncRptDateC3();}function syncRptDateC3(){syncDepC3('rptDateC1','rptDateC2','rptDateC3');}
+function syncRptSaldoC2(){syncDepC2('rptSaldoC1','rptSaldoC2');syncRptSaldoC3();}function syncRptSaldoC3(){syncDepC3('rptSaldoC1','rptSaldoC2','rptSaldoC3');}
 function syncReportSelects(){
   const re=document.getElementById('rptEntity'),prev=re.value;
   re.innerHTML='<option value="">— Seleziona —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name} (${curSymbol(n.valuta||'EUR')})${n.tipo?' ['+n.tipo+']':''}</option>`).join('');
@@ -1074,7 +1240,7 @@ function loadReport(idx){
   if(r.type==='date'){document.getElementById('rptDateC1').value=p.c1v||'';syncRptDateC2();document.getElementById('rptDateC2').value=p.c2v||'';syncRptDateC3();document.getElementById('rptDateC3').value=p.c3v||'';document.getElementById('rptFromDate').value=p.from||'';document.getElementById('rptToDate').value=p.to||'';}
   if(r.type==='saldo'){document.getElementById('rptSaldoC1').value=p.c1v||'';syncRptSaldoC2();document.getElementById('rptSaldoC2').value=p.c2v||'';syncRptSaldoC3();document.getElementById('rptSaldoC3').value=p.c3v||'';document.getElementById('rptFromSaldo').value=p.from||'';document.getElementById('rptToSaldo').value=p.to||'';}
   if(r.type==='fx'){document.getElementById('rptFromFx').value=p.from||'';document.getElementById('rptToFx').value=p.to||'';}
-  document.querySelectorAll('.report-saved-item').forEach((x,i)=>x.classList.toggle('active',i===idx));
+  document.querySelectorAll('.report-saved-item').forEach((x,i2)=>x.classList.toggle('active',i2===idx));
   runReport();
 }
 function getReportConfig(){
@@ -1090,7 +1256,6 @@ function getReportConfig(){
 function catMatch(r,p){if(p.c1v&&r.c1!==p.c1v)return false;if(p.c2v&&r.c2!==p.c2v)return false;if(p.c3v&&r.c3!==p.c3v)return false;return true;}
 function filterRows(from,to,extra){return rows.filter(r=>{if(from&&r.data<from)return false;if(to&&r.data>to)return false;if(extra&&!extra(r))return false;return true;}).sort((a,b)=>a.data.localeCompare(b.data));}
 function catLabel(p){const parts=[];if(p.c1v)parts.push(p.c1v);if(p.c2v)parts.push(p.c2v);if(p.c3v)parts.push(p.c3v);return parts.length?parts.join(' › '):'Tutte cat.';}
-
 function runReport(){
   const{type,params}=getReportConfig();
   const out=document.getElementById('reportOutput');out.style.display='block';
@@ -1106,7 +1271,6 @@ function runReport(){
   else if(type==='saldo')renderSaldoReport(params,metaEl,bodyEl);
   else if(type==='fx')renderFxReport(params,metaEl,bodyEl);
 }
-
 function renderEstrattoReport(p,metaEl,bodyEl){
   const{entity,from,to}=p;if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}
   const data=filterRows(from,to,r=>(r.from===entity||r.to===entity)&&catMatch(r,p));
@@ -1126,128 +1290,43 @@ function renderEstrattoReport(p,metaEl,bodyEl){
   html+=`</tbody><tfoot><tr><td colspan="6"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;
   bodyEl.innerHTML=html;
 }
-
-// ── REPORT CATEGORIA — logica Tipo=Bank ───────────────
-// To=Bank → entrata (ricavo); From=Bank → uscita (costo)
-// Nessuno Bank → neutro (trasferimento tra terzi, non classificato)
 function renderCategoriaReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>catMatch(r,p));
   const cl=catLabel(p);
   metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-
-  // byCur[cur][k1][k2][k3] = { entrate, uscite }
   const byCur={};
   data.forEach(r=>{
-    const cur=r.valuta||'EUR';
-    const k1=r.c1&&r.c1!=='-'?r.c1:'—';
-    const k2=r.c2&&r.c2!=='-'?r.c2:'—';
-    const k3=r.c3&&r.c3!=='-'?r.c3:'—';
-    const sign=getMovSign(r); // 'entrata' | 'uscita' | 'neutro'
-    const amt=r.importo;
+    const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';
+    const sign=getMovSign(r),amt=r.importo;
     if(!byCur[cur])byCur[cur]={};
     if(!byCur[cur][k1])byCur[cur][k1]={entrate:0,uscite:0,subs:{}};
     if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={entrate:0,uscite:0,subs:{}};
     if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]={entrate:0,uscite:0};
-    if(sign==='entrata'){
-      byCur[cur][k1].entrate+=amt;
-      byCur[cur][k1].subs[k2].entrate+=amt;
-      byCur[cur][k1].subs[k2].subs[k3].entrate+=amt;
-    } else {
-      // sia 'uscita' che 'neutro' vanno in uscite
-      byCur[cur][k1].uscite+=amt;
-      byCur[cur][k1].subs[k2].uscite+=amt;
-      byCur[cur][k1].subs[k2].subs[k3].uscite+=amt;
-    }
+    const field=sign==='entrata'?'entrate':'uscite';
+    byCur[cur][k1][field]+=amt;byCur[cur][k1].subs[k2][field]+=amt;byCur[cur][k1].subs[k2].subs[k3][field]+=amt;
   });
-
-  let html=`<table class="report-table"><thead><tr>
-    <th>Cat.1</th><th>Cat.2</th><th>Cat.3</th>
-    <th class="td-num">Entrate (+)</th>
-    <th class="td-num">Uscite (−)</th>
-    <th class="td-num">Saldo netto</th>
-    <th class="td-num">% totale</th>
-  </tr></thead><tbody>`;
-
+  let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrate (+)</th><th class="td-num">Uscite (−)</th><th class="td-num">Saldo netto</th><th class="td-num">% totale</th></tr></thead><tbody>`;
   Object.keys(byCur).sort().forEach(cur=>{
     const totE=Object.values(byCur[cur]).reduce((s,g)=>s+g.entrate,0);
     const totU=Object.values(byCur[cur]).reduce((s,g)=>s+g.uscite,0);
-    const totSaldo=totE-totU;
-    const totBase=totE+totU||1;
-
-    html+=`<tr class="cur-section-header"><td colspan="7">
-      💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp;
-      Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp;
-      Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp;
-      Saldo: <strong class="${totSaldo>=0?'pos':'neg'}">${fmtAmt(totSaldo,cur)}</strong>
-    </td></tr>`;
-
+    const totS=totE-totU,totBase=totE+totU||1;
+    html+=`<tr class="cur-section-header"><td colspan="7">💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp; Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp; Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp; Saldo: <strong class="${totS>=0?'pos':'neg'}">${fmtAmt(totS,cur)}</strong></td></tr>`;
     Object.keys(byCur[cur]).sort().forEach(k1=>{
-      const g1=byCur[cur][k1];
-      const s1=g1.entrate-g1.uscite;
-      const pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);
-
-      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;">
-        <td colspan="3"><span class="c1-badge">${k1}</span></td>
-        <td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td>
-        <td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td>
-        <td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td>
-        <td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td>
-      </tr>`;
-
+      const g1=byCur[cur][k1],s1=g1.entrate-g1.uscite,pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);
+      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td><td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;
       Object.keys(g1.subs).sort().forEach(k2=>{
-        const g2=g1.subs[k2];
-        const s2=g2.entrate-g2.uscite;
-        const pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);
+        const g2=g1.subs[k2],s2=g2.entrate-g2.uscite,pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);
         const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');
-
-        html+=`<tr style="background:rgba(230,126,34,.05);">
-          <td></td><td colspan="2"><span class="c2-badge">${k2}</span></td>
-          <td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td>
-          <td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td>
-          <td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td>
-          <td class="td-num" style="color:#e67e22;">${pct2}%</td>
-        </tr>`;
-
-        if(hasRealC3){
-          Object.keys(g2.subs).sort().forEach(k3=>{
-            const g3=g2.subs[k3];
-            const s3=g3.entrate-g3.uscite;
-            const pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);
-            html+=`<tr>
-              <td></td><td></td>
-              <td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td>
-              <td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td>
-              <td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td>
-              <td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td>
-              <td class="td-num" style="color:var(--text3)">${pct3}%</td>
-            </tr>`;
-          });
-        }
+        html+=`<tr style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td><td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td><td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;
+        if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const g3=g2.subs[k3],s3=g3.entrate-g3.uscite,pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td><td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td><td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});
       });
-
-      html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;">
-        <td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td>
-        <td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td>
-        <td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td>
-        <td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td>
-        <td class="td-num" style="color:#9c27b0;">${pct1}%</td>
-      </tr>`;
+      html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td><td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;
     });
-
-    html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;">
-      <td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td>
-      <td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td>
-      <td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td>
-      <td class="td-num ${totSaldo>=0?'pos':'neg'}"><strong>${fmtAmt(totSaldo,cur)}</strong></td>
-      <td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td>
-    </tr>`;
+    html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td><td class="td-num ${totS>=0?'pos':'neg'}"><strong>${fmtAmt(totS,cur)}</strong></td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;
   });
-
-  html+=`</tbody></table>`;
-  bodyEl.innerHTML=html;
+  html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
-
 function renderTipoReport(p,metaEl,bodyEl){
   const{tipo,from,to}=p;const data=filterRows(from,to,r=>catMatch(r,p));
   const cl=catLabel(p);metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
@@ -1258,7 +1337,6 @@ function renderTipoReport(p,metaEl,bodyEl){
   Object.keys(tipiMap).sort().forEach(t=>{html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;Object.keys(tipiMap[t]).sort().forEach(nome=>{const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
-
 function renderDateReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
   metaEl.textContent=`${cl}${(p.from||p.to)?' · '+fmtDate(p.from)+'→'+fmtDate(p.to):''} · ${data.length} mov.`;
@@ -1268,11 +1346,10 @@ function renderDateReport(p,metaEl,bodyEl){
   Object.keys(byCur).sort().forEach(cur=>{
     const arr=byCur[cur],tot=arr.reduce((s,r)=>s+r.importo,0);
     html+=`<tr class="cur-section-header"><td colspan="9">💱 ${curSymbol(cur)} ${cur} — ${arr.length} mov. — Totale: <strong>${fmtAmt(tot,cur)}</strong></td></tr>`;
-    arr.forEach(r=>{const isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span></td><td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;});
+    arr.forEach(r=>{const isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from}</td><td>${r.to}</td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;});
   });
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
-
 function renderSaldoReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
   metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'}`;
@@ -1284,18 +1361,16 @@ function renderSaldoReport(p,metaEl,bodyEl){
   Object.keys(perTipo).sort().forEach(tipo=>{const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));if(!items.length)return;html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
-
 function renderFxReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);
   metaEl.textContent=`Exchange FX · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} operazioni`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessuna operazione FX trovata</div>';return;}
   let html=`<table class="report-table"><thead><tr><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Ceduto</th><th class="td-num">Ricevuto</th><th class="td-num">Tasso appl.</th><th class="td-num">Tasso att.*</th><th class="td-num">Δ%</th></tr></thead><tbody>`;
   let totByCur={};
-  data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo;const ta=r.tassoFX||(r.importoTo&&r.importo?r.importoTo/r.importo:getRate(cf,ct));const tatt=getRate(cf,ct),delta=ta>0?((ta-tatt)/ta*100):0;if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{}};totByCur[cf].ceduto+=r.importo;totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td><span class="badge-from" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.from}</span> <span class="${curClass(cf)}">${curSymbol(cf)}</span></td><td><span class="badge-to" style="border-radius:8px;padding:2px 7px;font-size:10px;font-weight:bold;">${r.to}</span> <span class="${curClass(ct)}">${curSymbol(ct)}</span></td><td>${r.desc}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num neg">${fmtAmt(r.importo,cf)}</td><td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td><td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${ta.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tatt.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta.toFixed(2)}%</td></tr>`;});
+  data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo;const ta=r.tassoFX||(r.importoTo&&r.importo?r.importoTo/r.importo:getRate(cf,ct));const tatt=getRate(cf,ct),delta=ta>0?((ta-tatt)/ta*100):0;if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{}};totByCur[cf].ceduto+=r.importo;totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from} <span class="${curClass(cf)}">${curSymbol(cf)}</span></td><td>${r.to} <span class="${curClass(ct)}">${curSymbol(ct)}</span></td><td>${r.desc}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num neg">${fmtAmt(r.importo,cf)}</td><td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td><td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${ta.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tatt.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta.toFixed(2)}%</td></tr>`;});
   html+=`</tbody><tfoot>`;Object.keys(totByCur).forEach(cf=>{Object.keys(totByCur[cf].ricevuto).forEach(ct=>{html+=`<tr><td colspan="7"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totByCur[cf].ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(totByCur[cf].ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;});});
   html+=`</tfoot></table>`;bodyEl.innerHTML=html;
 }
-
 async function saveReport(){
   const name=document.getElementById('rptName').value.trim();if(!name){alert('Inserisci un nome');return;}
   const{type,params}=getReportConfig();
@@ -1308,13 +1383,14 @@ async function deleteReport(idx){if(!confirm(`Eliminare "${savedReports[idx].nam
 function renderSavedReports(){const container=document.getElementById('reportSavedList');if(!savedReports.length){container.innerHTML='<div class="report-empty-saved">Nessun report salvato</div>';return;}const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};container.innerHTML=savedReports.map((r,i)=>`<div class="report-saved-item ${activeReportIdx===i?'active':''}" onclick="loadReport(${i})"><div><div class="report-saved-name">${r.name}</div><div class="report-saved-type"><span class="report-type-badge ${typeBadge[r.type]||''}">${r.typeLabel||r.type}</span></div></div><button class="report-del-btn" onclick="event.stopPropagation();deleteReport(${i})">✕</button></div>`).join('');}
 function printReport(){window.print();}
 
-function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});const totC2=Object.values(c2Map).reduce((s,a)=>s+a.length,0),totC3=Object.values(c3Map).reduce((s,a)=>s+a.length,0);let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.summary-box{display:flex;gap:16px;margin-bottom:20px;}.summary-card{background:#f5f5f5;border-radius:8px;padding:10px 18px;text-align:center;}.summary-card .num{font-size:22px;font-weight:900;}.summary-card .lbl{font-size:10px;color:#888;}.num-c1{color:#9c27b0;}.num-c2{color:#e67e22;}.num-c3{color:#16a085;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div><div class="summary-box"><div class="summary-card"><div class="num num-c1">${c1.length}</div><div class="lbl">Cat.1</div></div><div class="summary-card"><div class="num num-c2">${totC2}</div><div class="lbl">Cat.2</div></div><div class="summary-card"><div class="num num-c3">${totC3}</div><div class="lbl">Cat.3</div></div></div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
+function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});const totC2=Object.values(c2Map).reduce((s,a)=>s+a.length,0),totC3=Object.values(c3Map).reduce((s,a)=>s+a.length,0);let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
 function salvaBackup(){const json=JSON.stringify({version:'2.0-multicur',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
 function stampaPDF(){window.print();}
 
 Object.assign(window,{
   goTo,aggiungi,startEdit,saveEdit,cancelEdit,elimina,
   onFromChange,onToChange,onImportoChange,onImportoToChange,onTassoChange,
+  onDragOver,onDragLeave,onDrop,onFileSelected,clearPendingDoc,
   addNome,delNome,startEditNome,saveEditNome,cancelEditNome,renderNomiPage,
   addC1,delC1,addC2,delC2,addC3,delC3,
   renderC2Page,renderC3Page,syncC2ForC3,onC1Change,onC2Change,edC1Change,edC2Change,
