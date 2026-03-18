@@ -630,7 +630,6 @@ const fbApp=initializeApp(firebaseConfig),auth=getAuth(fbApp),db=getDatabase(fbA
 
 let rows=[],nomi=[],c1=[],c2Map={},c3Map={},savedReports=[];
 let fC1=new Set(),fC2=new Set(),fC3=new Set();
-// ── FIX: filtri volatili reset su loadData ──
 let entityFilter='',tipoFilter='',valutaFilter='';
 let editingIdx=null,editingNomeIdx=null;
 let sortField='data',sortDir=1,filterOpen=false;
@@ -643,6 +642,18 @@ const CUR_CLASSES={EUR:'cur-eur',GBP:'cur-gbp',AED:'cur-aed'};
 function curSymbol(c){return CUR_SYMBOLS[c]||c;}
 function curClass(c){return CUR_CLASSES[c]||'cur-other';}
 function getNomeValuta(name){const n=nomi.find(x=>x.name===name);return n?n.valuta||'EUR':'EUR';}
+function getTipoNome(name){const n=nomi.find(x=>x.name===name);return n?n.tipo||'':'';}
+
+// ── CHIAVE: Bank = tipo che identifica i tuoi conti ───
+// To=Bank → entrata (incasso); From=Bank → uscita (pagamento)
+function isBankTipo(name){return getTipoNome(name)==='Bank';}
+function getMovSign(r){
+  const toBank=isBankTipo(r.to),fromBank=isBankTipo(r.from);
+  if(toBank&&!fromBank)return'entrata';   // es. Inquilino → Banca
+  if(fromBank&&!toBank)return'uscita';    // es. Banca → Landlord
+  return'neutro';                          // Bank→Bank o nessuno
+}
+
 function fmtAmt(amount,cur){
   const sym=curSymbol(cur||'EUR');
   const parts=Math.abs(amount).toFixed(2).split('.');
@@ -654,7 +665,6 @@ function fmtAmt(amount,cur){
 function isExchangeRow(r){return !!(r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);}
 function c3k(a,b){return a+'|'+b;}
 function getTipi(){return[...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort();}
-function getTipoNome(name){const n=nomi.find(x=>x.name===name);return n?n.tipo||'':'';}
 function fmtDate(s){return s?s.split('-').reverse().join('/'):''}
 function isVoid(v){return !v||v==='-'||v.trim()==='';}
 
@@ -701,7 +711,6 @@ onAuthStateChanged(auth,async(user)=>{
     onValue(userRef,snap2=>{
       if(snap2.exists()){
         loadData(snap2.val());
-        // reset filtri solo al primo caricamento, non ad ogni salvataggio
         if(firstLoad){resetVolatileFilters();firstLoad=false;}
         syncSelects();syncTipoSel();rebuildDD();render();
         if(document.getElementById('page-nomi').classList.contains('active'))renderNomiPage();
@@ -722,25 +731,21 @@ onAuthStateChanged(auth,async(user)=>{
   }
 });
 
-// ── FIX: funzione dedicata reset filtri volatili ──────
 function resetVolatileFilters(){
   entityFilter='';tipoFilter='';valutaFilter='';
   fC1.clear();fC2.clear();fC3.clear();
   const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}
   const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}
   const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}
-  updateEntityBanner();
-  updateFilterBadge();
+  updateEntityBanner();updateFilterBadge();
 }
 
 function loadData(d){
-  // ── FIX: Firebase può restituire null nei buchi degli array ──
   rows=(d.rows||[]).filter(Boolean);
   nomi=(d.nomi||[]).filter(Boolean);
   c1=(d.c1||[]).filter(Boolean);
   c2Map=d.c2Map||{};
   c3Map=d.c3Map||{};
-  // Filtra null anche nelle mappe c2 e c3
   Object.keys(c2Map).forEach(k=>{c2Map[k]=(c2Map[k]||[]).filter(Boolean);});
   Object.keys(c3Map).forEach(k=>{c3Map[k]=(c3Map[k]||[]).filter(Boolean);});
   savedReports=(d.savedReports||[]).filter(Boolean);
@@ -749,7 +754,7 @@ function loadData(d){
 }
 async function saveToFirebase(){if(!currentUser)return;await set(ref(db,'users/'+currentUser.uid),{rows,nomi,c1,c2Map,c3Map,savedReports,refCurr,lastModified:new Date().toISOString()});}
 
-// ── THEME ────────────────────────────────────────────
+// ── THEME ─────────────────────────────────────────────
 function toggleDark(on){document.body.classList.toggle('dark',on);document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro';try{localStorage.setItem('theme',on?'dark':'light');}catch(e){}}
 try{if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.getElementById('darkToggle').checked=true;document.getElementById('themeLabel').textContent='Scuro';}}catch(e){}
 function openSettings(){updateFxDisplay();document.getElementById('refCurrSel').value=refCurr;document.getElementById('settingsOverlay').classList.add('open');}
@@ -769,7 +774,7 @@ function goTo(p){
   if(p==='report'){syncReportSelects();renderSavedReports();}
 }
 
-// ── SUMMARY ──────────────────────────────────────────
+// ── SUMMARY ───────────────────────────────────────────
 function renderSummary(){
   const filtered=getFiltered(),byCur={};
   filtered.forEach(r=>{
@@ -805,7 +810,6 @@ function getFiltered(){
     if(from&&r.data<from)return false;
     if(to&&r.data>to)return false;
     if(entityFilter&&r.from!==entityFilter&&r.to!==entityFilter)return false;
-    // ── FIX: tipoFilter applicato solo se il tipo esiste ancora nei nomi ──
     if(tipoFilter){
       const tipiValidi=getTipi();
       if(!tipiValidi.includes(tipoFilter)){tipoFilter='';const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}}
@@ -851,7 +855,7 @@ function onImportoChange(){const fn=document.getElementById('selFrom').value,tn=
 function onImportoToChange(){const imp=parseFloat(document.getElementById('importo').value)||0,impTo=parseFloat(document.getElementById('importoTo').value)||0;if(imp>0&&impTo>0){const rate=impTo/imp;document.getElementById('tassoFX').value=rate.toFixed(4);document.getElementById('fxRateBadge').textContent=`1 ${getNomeValuta(document.getElementById('selFrom').value)} = ${rate.toFixed(4)} ${getNomeValuta(document.getElementById('selTo').value)}`;}}
 function onTassoChange(){const te=document.getElementById('tassoFX');te.dataset.manual='1';const imp=parseFloat(document.getElementById('importo').value)||0,tasso=parseFloat(te.value)||0;if(imp>0&&tasso>0)document.getElementById('importoTo').value=(imp*tasso).toFixed(2);const fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;document.getElementById('fxRateBadge').textContent=`1 ${getNomeValuta(fn)} = ${tasso.toFixed(4)} ${getNomeValuta(tn)}`;}
 
-// ── DROPDOWN ─────────────────────────────────────────
+// ── DROPDOWN ──────────────────────────────────────────
 function rebuildDD(){
   const vc1=fC1.size>0?[...fC1].filter(v=>v!==VOID):c1;
   const c1Items=c1.map(c=>`<label class="dropdown-item di-c1"><input type="checkbox" ${fC1.has(c)?'checked':''} onchange="toggleF('c1','${c}',this.checked)">${c}</label>`).join('');
@@ -903,7 +907,6 @@ function render(){
       else signHtml=`<span class="amount-neg">- ${fmtAmt(r.importo,cur)}</span>`;
     }
     const valHtml=isEx?`<span class="${curClass(cur)}">${curSymbol(cur)}</span> <span style="color:var(--text3);font-size:10px;">→</span> <span class="${curClass(curTo)}">${curSymbol(curTo)}</span> <span class="fx-tag">FX</span>`:`<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
-
     if(editingIdx===i){
       const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
       const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
@@ -954,7 +957,7 @@ function render(){
   tbody.innerHTML=html;
 }
 
-// ── CRUD ─────────────────────────────────────────────
+// ── CRUD ──────────────────────────────────────────────
 async function aggiungi(){
   const data=document.getElementById('data').value,fn=document.getElementById('selFrom').value,tn=document.getElementById('selTo').value;
   const desc=document.getElementById('descrizione').value.trim();
@@ -969,10 +972,8 @@ async function aggiungi(){
   document.getElementById('descrizione').value='';document.getElementById('importo').value='';document.getElementById('importoTo').value='';document.getElementById('tassoFX').value='';delete document.getElementById('tassoFX').dataset.manual;document.getElementById('fxRow').style.display='none';
   await saveToFirebase();render();
 }
-
 function startEdit(i){editingIdx=i;render();}
 function cancelEdit(){editingIdx=null;render();}
-
 async function saveEdit(){
   if(editingIdx===null){cancelEdit();return;}
   const fi=getSorted(getFiltered());
@@ -995,7 +996,6 @@ async function saveEdit(){
   editingIdx=null;
   await saveToFirebase();render();
 }
-
 async function elimina(i){
   if(!confirm('Eliminare?'))return;
   const fi=getSorted(getFiltered());
@@ -1005,7 +1005,6 @@ async function elimina(i){
   rows.splice(orig,1);
   await saveToFirebase();render();
 }
-
 function edC1Change(v){
   const s2=document.getElementById('ed-c2'),s3=document.getElementById('ed-c3');
   s2.innerHTML='<option value="-">—</option>'+(c2Map[v]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');
@@ -1024,7 +1023,7 @@ function cancelEditNome(){editingNomeIdx=null;renderNomiPage();}
 async function saveEditNome(idx){const nv=document.getElementById('en-name-'+idx).value.trim(),nt=document.getElementById('en-tipo-'+idx).value.trim(),nval=document.getElementById('en-val-'+idx).value||'EUR';if(!nv){alert('Nome vuoto');return;}const oldName=nomi[idx].name;rows.forEach(r=>{if(r.from===oldName){r.from=nv;r.valuta=nval;}if(r.to===oldName){r.to=nv;if(r.isExchange)r.valutaTo=nval;}});if(entityFilter===oldName)entityFilter=nv;nomi[idx]={name:nv,tipo:nt,valuta:nval};editingNomeIdx=null;await saveToFirebase();renderNomiPage();syncSelects();syncEntitySel();syncTipoSel();render();}
 function renderNomiPage(){const tbody=document.getElementById('nomiTbody');const ns=[...nomi].sort((a,b)=>a.name.localeCompare(b.name,'it'));if(!ns.length){tbody.innerHTML=`<tr><td colspan="4" class="empty-tag" style="padding:14px 10px;">Nessun nome.</td></tr>`;return;}tbody.innerHTML=ns.map(n=>{const origIdx=nomi.indexOf(n);if(editingNomeIdx===origIdx)return`<tr><td><input class="nome-edit-input" id="en-name-${origIdx}" value="${n.name}"></td><td><input class="nome-edit-tipo" id="en-tipo-${origIdx}" value="${n.tipo||''}" placeholder="Tipo..." list="tipoSuggest"></td><td><select class="nome-edit-val" id="en-val-${origIdx}"><option value="EUR" ${(n.valuta||'EUR')==='EUR'?'selected':''}>€ Euro</option><option value="GBP" ${n.valuta==='GBP'?'selected':''}>£ Sterlina</option><option value="AED" ${n.valuta==='AED'?'selected':''}>AED Dirham</option></select></td><td style="white-space:nowrap"><button class="btn-nome-save" onclick="saveEditNome(${origIdx})">✔</button><button class="btn-nome-cancel" onclick="cancelEditNome()">✕</button></td></tr>`;return`<tr><td><strong>${n.name}</strong></td><td>${n.tipo?`<span class="nome-tipo-badge">${n.tipo}</span>`:'<span class="nome-tipo-empty">—</span>'}</td><td><span class="${curClass(n.valuta||'EUR')}">${curSymbol(n.valuta||'EUR')}</span></td><td style="white-space:nowrap"><button class="btn-nome-edit" onclick="startEditNome(${origIdx})">✏️</button><button class="btn-nome-del" onclick="delNome('${n.name}')">🗑</button></td></tr>`;}).join('');document.getElementById('tipoSuggest').innerHTML=getTipi().map(t=>`<option value="${t}">`).join('');}
 
-// ── CATEGORIE ────────────────────────────────────────
+// ── CATEGORIE ─────────────────────────────────────────
 async function addC1(){const i=document.getElementById('inputC1'),v=i.value.trim();if(!v)return;if(c1.includes(v)){alert('Presente');return;}c1.push(v);if(!c2Map[v])c2Map[v]=[];i.value='';await saveToFirebase();renderC1Page();syncSelects();syncParentSelects();rebuildDD();}
 async function delC1(c){if(rows.some(r=>r.c1===c))if(!confirm(`Eliminare "${c}"?`))return;c1=c1.filter(x=>x!==c);delete c2Map[c];fC1.delete(c);await saveToFirebase();renderC1Page();syncSelects();syncParentSelects();rebuildDD();render();}
 function renderC1Page(){document.getElementById('c1List').innerHTML=c1.length===0?'<span class="empty-tag">Nessuna</span>':c1.map(c=>`<div class="tag-item c1">${c}<span class="del-tag" onclick="delC1('${c}')">×</span></div>`).join('');}
@@ -1091,6 +1090,7 @@ function getReportConfig(){
 function catMatch(r,p){if(p.c1v&&r.c1!==p.c1v)return false;if(p.c2v&&r.c2!==p.c2v)return false;if(p.c3v&&r.c3!==p.c3v)return false;return true;}
 function filterRows(from,to,extra){return rows.filter(r=>{if(from&&r.data<from)return false;if(to&&r.data>to)return false;if(extra&&!extra(r))return false;return true;}).sort((a,b)=>a.data.localeCompare(b.data));}
 function catLabel(p){const parts=[];if(p.c1v)parts.push(p.c1v);if(p.c2v)parts.push(p.c2v);if(p.c3v)parts.push(p.c3v);return parts.length?parts.join(' › '):'Tutte cat.';}
+
 function runReport(){
   const{type,params}=getReportConfig();
   const out=document.getElementById('reportOutput');out.style.display='block';
@@ -1106,6 +1106,7 @@ function runReport(){
   else if(type==='saldo')renderSaldoReport(params,metaEl,bodyEl);
   else if(type==='fx')renderFxReport(params,metaEl,bodyEl);
 }
+
 function renderEstrattoReport(p,metaEl,bodyEl){
   const{entity,from,to}=p;if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}
   const data=filterRows(from,to,r=>(r.from===entity||r.to===entity)&&catMatch(r,p));
@@ -1125,31 +1126,128 @@ function renderEstrattoReport(p,metaEl,bodyEl){
   html+=`</tbody><tfoot><tr><td colspan="6"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;
   bodyEl.innerHTML=html;
 }
+
+// ── REPORT CATEGORIA — logica Tipo=Bank ───────────────
+// To=Bank → entrata (ricavo); From=Bank → uscita (costo)
+// Nessuno Bank → neutro (trasferimento tra terzi, non classificato)
 function renderCategoriaReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>catMatch(r,p));
-  const cl=catLabel(p);metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;
+  const cl=catLabel(p);
+  metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;
   if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
+
+  // byCur[cur][k1][k2][k3] = { entrate, uscite }
   const byCur={};
-  data.forEach(r=>{const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';if(!byCur[cur])byCur[cur]={};if(!byCur[cur][k1])byCur[cur][k1]={tot:0,subs:{}};if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={tot:0,subs:{}};if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]=0;byCur[cur][k1].tot+=r.importo;byCur[cur][k1].subs[k2].tot+=r.importo;byCur[cur][k1].subs[k2].subs[k3]+=r.importo;});
-  let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th><th class="td-num">% tot.</th></tr></thead><tbody>`;
-  Object.keys(byCur).sort().forEach(cur=>{
-    const totCur=Object.values(byCur[cur]).reduce((s,g)=>s+g.tot,0);
-    html+=`<tr class="cur-section-header"><td colspan="5">💱 ${curSymbol(cur)} ${cur} — Totale: <strong>${fmtAmt(totCur,cur)}</strong></td></tr>`;
-    Object.keys(byCur[cur]).sort().forEach(k1=>{
-      const g1=byCur[cur][k1],pct1=totCur>0?(g1.tot/totCur*100).toFixed(1):'0';
-      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num"><strong>${fmtAmt(g1.tot,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;
-      Object.keys(g1.subs).sort().forEach(k2=>{
-        const g2=g1.subs[k2],pct2=totCur>0?(g2.tot/totCur*100).toFixed(1):'0';
-        const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');
-        html+=`<tr style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num">${fmtAmt(g2.tot,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;
-        if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const v=g2.subs[k3],pct3=totCur>0?(v/totCur*100).toFixed(1):'0';html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num">${fmtAmt(v,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});
-      });
-      html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num" style="color:#9c27b0;"><strong>${fmtAmt(g1.tot,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;
-    });
-    html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num" style="color:#1a73e8;font-weight:bold;">${fmtAmt(totCur,cur)}</td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;
+  data.forEach(r=>{
+    const cur=r.valuta||'EUR';
+    const k1=r.c1&&r.c1!=='-'?r.c1:'—';
+    const k2=r.c2&&r.c2!=='-'?r.c2:'—';
+    const k3=r.c3&&r.c3!=='-'?r.c3:'—';
+    const sign=getMovSign(r); // 'entrata' | 'uscita' | 'neutro'
+    const amt=r.importo;
+    if(!byCur[cur])byCur[cur]={};
+    if(!byCur[cur][k1])byCur[cur][k1]={entrate:0,uscite:0,subs:{}};
+    if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={entrate:0,uscite:0,subs:{}};
+    if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]={entrate:0,uscite:0};
+    if(sign==='entrata'){
+      byCur[cur][k1].entrate+=amt;
+      byCur[cur][k1].subs[k2].entrate+=amt;
+      byCur[cur][k1].subs[k2].subs[k3].entrate+=amt;
+    } else {
+      // sia 'uscita' che 'neutro' vanno in uscite
+      byCur[cur][k1].uscite+=amt;
+      byCur[cur][k1].subs[k2].uscite+=amt;
+      byCur[cur][k1].subs[k2].subs[k3].uscite+=amt;
+    }
   });
-  html+=`</tbody></table>`;bodyEl.innerHTML=html;
+
+  let html=`<table class="report-table"><thead><tr>
+    <th>Cat.1</th><th>Cat.2</th><th>Cat.3</th>
+    <th class="td-num">Entrate (+)</th>
+    <th class="td-num">Uscite (−)</th>
+    <th class="td-num">Saldo netto</th>
+    <th class="td-num">% totale</th>
+  </tr></thead><tbody>`;
+
+  Object.keys(byCur).sort().forEach(cur=>{
+    const totE=Object.values(byCur[cur]).reduce((s,g)=>s+g.entrate,0);
+    const totU=Object.values(byCur[cur]).reduce((s,g)=>s+g.uscite,0);
+    const totSaldo=totE-totU;
+    const totBase=totE+totU||1;
+
+    html+=`<tr class="cur-section-header"><td colspan="7">
+      💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp;
+      Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp;
+      Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp;
+      Saldo: <strong class="${totSaldo>=0?'pos':'neg'}">${fmtAmt(totSaldo,cur)}</strong>
+    </td></tr>`;
+
+    Object.keys(byCur[cur]).sort().forEach(k1=>{
+      const g1=byCur[cur][k1];
+      const s1=g1.entrate-g1.uscite;
+      const pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);
+
+      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;">
+        <td colspan="3"><span class="c1-badge">${k1}</span></td>
+        <td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td>
+        <td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td>
+        <td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td>
+        <td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td>
+      </tr>`;
+
+      Object.keys(g1.subs).sort().forEach(k2=>{
+        const g2=g1.subs[k2];
+        const s2=g2.entrate-g2.uscite;
+        const pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);
+        const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');
+
+        html+=`<tr style="background:rgba(230,126,34,.05);">
+          <td></td><td colspan="2"><span class="c2-badge">${k2}</span></td>
+          <td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td>
+          <td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td>
+          <td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td>
+          <td class="td-num" style="color:#e67e22;">${pct2}%</td>
+        </tr>`;
+
+        if(hasRealC3){
+          Object.keys(g2.subs).sort().forEach(k3=>{
+            const g3=g2.subs[k3];
+            const s3=g3.entrate-g3.uscite;
+            const pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);
+            html+=`<tr>
+              <td></td><td></td>
+              <td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td>
+              <td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td>
+              <td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td>
+              <td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td>
+              <td class="td-num" style="color:var(--text3)">${pct3}%</td>
+            </tr>`;
+          });
+        }
+      });
+
+      html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;">
+        <td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td>
+        <td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td>
+        <td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td>
+        <td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td>
+        <td class="td-num" style="color:#9c27b0;">${pct1}%</td>
+      </tr>`;
+    });
+
+    html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;">
+      <td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td>
+      <td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td>
+      <td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td>
+      <td class="td-num ${totSaldo>=0?'pos':'neg'}"><strong>${fmtAmt(totSaldo,cur)}</strong></td>
+      <td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td>
+    </tr>`;
+  });
+
+  html+=`</tbody></table>`;
+  bodyEl.innerHTML=html;
 }
+
 function renderTipoReport(p,metaEl,bodyEl){
   const{tipo,from,to}=p;const data=filterRows(from,to,r=>catMatch(r,p));
   const cl=catLabel(p);metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
@@ -1160,6 +1258,7 @@ function renderTipoReport(p,metaEl,bodyEl){
   Object.keys(tipiMap).sort().forEach(t=>{html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;Object.keys(tipiMap[t]).sort().forEach(nome=>{const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
+
 function renderDateReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
   metaEl.textContent=`${cl}${(p.from||p.to)?' · '+fmtDate(p.from)+'→'+fmtDate(p.to):''} · ${data.length} mov.`;
@@ -1173,6 +1272,7 @@ function renderDateReport(p,metaEl,bodyEl){
   });
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
+
 function renderSaldoReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
   metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'}`;
@@ -1184,6 +1284,7 @@ function renderSaldoReport(p,metaEl,bodyEl){
   Object.keys(perTipo).sort().forEach(tipo=>{const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));if(!items.length)return;html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
   html+=`</tbody></table>`;bodyEl.innerHTML=html;
 }
+
 function renderFxReport(p,metaEl,bodyEl){
   const data=filterRows(p.from,p.to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);
   metaEl.textContent=`Exchange FX · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} operazioni`;
@@ -1194,6 +1295,7 @@ function renderFxReport(p,metaEl,bodyEl){
   html+=`</tbody><tfoot>`;Object.keys(totByCur).forEach(cf=>{Object.keys(totByCur[cf].ricevuto).forEach(ct=>{html+=`<tr><td colspan="7"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totByCur[cf].ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(totByCur[cf].ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;});});
   html+=`</tfoot></table>`;bodyEl.innerHTML=html;
 }
+
 async function saveReport(){
   const name=document.getElementById('rptName').value.trim();if(!name){alert('Inserisci un nome');return;}
   const{type,params}=getReportConfig();
