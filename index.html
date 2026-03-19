@@ -61,7 +61,6 @@
   .toggle input:checked+.toggle-slider:before{transform:translateX(20px);}
   .btn-close-settings{width:100%;margin-top:16px;padding:10px;background:#1a73e8;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
   .settings-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
-  /* Storage meter */
   .storage-meter{margin-top:8px;}
   .storage-bar-wrap{background:var(--border);border-radius:8px;height:10px;overflow:hidden;margin:6px 0;}
   .storage-bar{height:100%;border-radius:8px;transition:width .5s;}
@@ -187,10 +186,19 @@
   .btn-action{padding:8px 16px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-action.purple{background:#8e44ad;}.btn-action.purple:hover{background:#7d3c98;}
   .cat-cell{display:flex;flex-direction:column;gap:2px;}
-  /* Doc link */
   .doc-link{display:inline-flex;align-items:center;gap:3px;background:#e8f0fe;color:#1a73e8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:bold;text-decoration:none;white-space:nowrap;}
   .doc-link:hover{background:#d2e3fc;}
   body.dark .doc-link{background:#1e3a6e;color:#7ec0f5;}
+  /* Edit doc area - inline nella riga */
+  .edit-doc-area{margin-top:6px;padding:6px 8px;background:rgba(26,115,232,.07);border:1px dashed #1a73e8;border-radius:6px;font-size:10px;}
+  .edit-doc-area .edit-doc-label{font-weight:bold;color:#1a73e8;margin-bottom:4px;}
+  .edit-doc-current{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
+  .edit-doc-pick{display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
+  .btn-pick-doc{padding:3px 8px;background:#1a73e8;color:white;border:none;border-radius:4px;cursor:pointer;font-size:10px;font-weight:bold;}
+  .btn-rm-doc{padding:3px 7px;background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;}
+  .edit-doc-status{font-size:10px;color:var(--text3);margin-top:2px;}
+  .edit-upload-bar-wrap{background:var(--border);border-radius:4px;height:5px;overflow:hidden;margin-top:3px;display:none;}
+  .edit-upload-bar{height:100%;background:#1a73e8;border-radius:4px;transition:width .3s;width:0%;}
   /* Drop area */
   .drop-area{border:2px dashed var(--input-border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;margin-top:10px;background:var(--surface2);}
   .drop-area.drag-over{border-color:#1a73e8;background:#e8f0fe;}
@@ -200,7 +208,6 @@
   .upload-progress{display:none;margin-top:8px;background:var(--border);border-radius:6px;height:8px;overflow:hidden;}
   .upload-progress-bar{height:100%;background:#1a73e8;border-radius:6px;transition:width .3s;width:0%;}
   .upload-status{font-size:11px;color:var(--text3);margin-top:4px;text-align:center;}
-  /* archivio */
   .archivio-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .nomi-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
   .nomi-table th{text-align:left;padding:7px 10px;font-size:12px;color:white;border-bottom:2px solid var(--border);font-weight:bold;}
@@ -243,7 +250,6 @@
   .btn-backup.save{background:#1a73e8;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
-  /* storage page */
   .storage-big-bar-wrap{background:var(--border);border-radius:12px;height:22px;overflow:hidden;margin:12px 0;}
   .storage-big-bar{height:100%;border-radius:12px;transition:width .6s;}
   .storage-big-bar.green{background:linear-gradient(90deg,#34a853,#1a73e8);}
@@ -258,7 +264,6 @@
   .docs-table td{padding:7px 10px;font-size:11px;border-bottom:1px solid var(--border);color:var(--text);}
   .docs-table tr:hover td{background:var(--row-hover);}
   .btn-doc-del{background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:2px 6px;}
-  /* report */
   .report-layout{display:flex;gap:16px;align-items:flex-start;}
   .report-sidebar{width:230px;flex-shrink:0;}
   .report-main{flex:1;min-width:0;}
@@ -496,7 +501,6 @@
         <span class="fx-badge" id="fxRateBadge">Tasso: —</span>
         <input type="number" id="tassoFX" placeholder="Tasso (auto)" step="0.0001" style="flex:1;min-width:80px;padding:5px 8px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);" oninput="onTassoChange()">
       </div>
-      <!-- Drop area documento -->
       <div style="margin-top:10px;">
         <div style="font-size:12px;font-weight:bold;color:var(--text2);margin-bottom:4px;">📎 Allega documento (opzionale)</div>
         <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
@@ -507,7 +511,7 @@
         <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onFileSelected(this)">
         <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>
         <div class="upload-status" id="uploadStatus"></div>
-        <div id="pendingDocPreview" style="display:none;margin-top:6px;padding:6px 10px;background:var(--surface2);border-radius:6px;font-size:11px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div id="pendingDocPreview" style="display:none;margin-top:6px;padding:6px 10px;background:var(--surface2);border-radius:6px;font-size:11px;color:var(--text2);align-items:center;gap:8px;flex-wrap:wrap;">
           <span id="pendingDocName"></span>
           <button onclick="clearPendingDoc()" style="background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:2px 6px;">✕ Rimuovi</button>
         </div>
@@ -714,6 +718,8 @@ let sortField='data',sortDir=1,filterOpen=false;
 let currentUser=null,activeReportIdx=null,refCurr='EUR';
 let fxRates={EUR:1,GBP:0.853,AED:3.972};
 let pendingDocFile=null,pendingDocUrl=null,pendingDocName=null,pendingDocSize=0;
+// Stato documento per la riga in editing
+let editPendingFile=null,editRemoveDoc=false;
 const VOID='__VOID__';
 const STORAGE_LIMIT_GB=5;
 
@@ -838,12 +844,10 @@ async function calcStorageUsage(){
     const limitBytes=STORAGE_LIMIT_GB*1024*1024*1024;
     const pct=Math.min((totalBytes/limitBytes)*100,100);
     const cls=pct<70?'green':pct<90?'yellow':'red';
-    // settings bar
     const sb=document.getElementById('settingsStorageBar');
     const st=document.getElementById('settingsStorageText');
     if(sb){sb.className='storage-bar '+cls;sb.style.width=pct.toFixed(1)+'%';}
     if(st)st.textContent=`${fmtBytes(totalBytes)} / ${STORAGE_LIMIT_GB} GB (${pct.toFixed(1)}%) — ${fileCount} file`;
-    // storage page
     const bb=document.getElementById('storageBigBar');
     const ss=document.getElementById('storageSummary');
     if(bb){bb.className='storage-big-bar '+cls;bb.style.width=pct.toFixed(1)+'%';}
@@ -854,19 +858,17 @@ async function calcStorageUsage(){
       <div class="storage-card"><div class="sc-num">${fmtBytes(totalBytes)}</div><div class="sc-lbl">Spazio usato</div></div>
       <div class="storage-card"><div class="sc-num">${fmtBytes(limitBytes-totalBytes)}</div><div class="sc-lbl">Spazio libero</div></div>
       <div class="storage-card"><div class="sc-num" style="color:${cls==='green'?'#34a853':cls==='yellow'?'#fbbc04':'#ea4335'}">${pct.toFixed(1)}%</div><div class="sc-lbl">Saturazione</div></div>`;
-    // docs list
     renderDocsList(res.items,fileMetas);
   }catch(e){
     console.warn('Storage calc error',e);
     const ss=document.getElementById('storageSummary');
-    if(ss)ss.textContent='Impossibile calcolare lo spazio (Firebase Storage potrebbe richiedere configurazione CORS).';
+    if(ss)ss.textContent='Impossibile calcolare lo spazio.';
   }
 }
 
 function renderDocsList(items,metas){
   const wrap=document.getElementById('docsListWrap');if(!wrap)return;
   if(!items.length){wrap.innerHTML='<div style="color:var(--text4);font-style:italic;font-size:13px;">Nessun documento archiviato.</div>';return;}
-  // Map storagePath → row desc
   const pathToRow={};
   rows.forEach(r=>{if(r.docPath)pathToRow[r.docPath]={desc:r.desc,data:r.data};});
   let html=`<table class="docs-table"><thead><tr><th>Nome file</th><th>Collegato a</th><th>Data</th><th>Dimensione</th><th>Azioni</th></tr></thead><tbody>`;
@@ -889,7 +891,6 @@ async function deleteDoc(path,name){
   if(!confirm(`Eliminare "${name}"?\nIl collegamento nel movimento verrà rimosso.`))return;
   try{
     await deleteObject(sRef(storage,path));
-    // rimuovi riferimento dal movimento
     rows.forEach(r=>{if(r.docPath===path){delete r.docUrl;delete r.docPath;delete r.docName;}});
     await saveToFirebase();
     render();
@@ -898,7 +899,7 @@ async function deleteDoc(path,name){
 }
 window.deleteDoc=deleteDoc;
 
-// ── UPLOAD DOC ────────────────────────────────────────
+// ── UPLOAD DOC (nuovo movimento) ──────────────────────
 function onDragOver(e){e.preventDefault();document.getElementById('dropArea').classList.add('drag-over');}
 function onDragLeave(){document.getElementById('dropArea').classList.remove('drag-over');}
 function onDrop(e){e.preventDefault();document.getElementById('dropArea').classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)prepareFile(f);}
@@ -918,6 +919,24 @@ function clearPendingDoc(){
   document.getElementById('uploadStatus').textContent='';
   document.getElementById('uploadProgress').style.display='none';
   document.getElementById('uploadBar').style.width='0%';
+}
+async function uploadFile(file,barEl,wrapEl){
+  return new Promise((resolve,reject)=>{
+    const ts=Date.now();
+    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`docs/${currentUser.uid}/${ts}_${safeName}`;
+    const storageRef=sRef(storage,path);
+    const task=uploadBytesResumable(storageRef,file);
+    if(wrapEl)wrapEl.style.display='block';
+    task.on('state_changed',snap=>{
+      const pct=(snap.bytesTransferred/snap.totalBytes*100).toFixed(0);
+      if(barEl)barEl.style.width=pct+'%';
+    },err=>{reject(err);},
+    async()=>{
+      const url=await getDownloadURL(task.snapshot.ref);
+      resolve({url,path,name:file.name});
+    });
+  });
 }
 async function uploadPendingDoc(){
   if(!pendingDocFile||!currentUser)return null;
@@ -942,6 +961,43 @@ async function uploadPendingDoc(){
     });
   });
 }
+
+// ── UPLOAD DOC in EDIT ────────────────────────────────
+// Apre il file picker per la riga in editing
+function editPickDoc(){
+  const inp=document.getElementById('editFileInput');
+  if(inp)inp.click();
+}
+function onEditFileSelected(input){
+  if(!input.files[0])return;
+  const file=input.files[0];
+  if(file.size>10*1024*1024){alert('File troppo grande (max 10MB)');return;}
+  editPendingFile=file;
+  editRemoveDoc=false;
+  // aggiorna UI nell'area edit
+  const statusEl=document.getElementById('editDocStatus');
+  if(statusEl)statusEl.textContent=`📄 Selezionato: ${file.name} (${fmtBytes(file.size)})`;
+}
+function editClearDoc(){
+  // Segnala che il doc esistente va rimosso
+  editPendingFile=null;
+  editRemoveDoc=true;
+  const statusEl=document.getElementById('editDocStatus');
+  if(statusEl)statusEl.textContent='🗑 Documento rimosso (salva per confermare)';
+}
+function editKeepDoc(){
+  // Annulla eventuali modifiche al doc
+  editPendingFile=null;
+  editRemoveDoc=false;
+  const statusEl=document.getElementById('editDocStatus');
+  if(statusEl)statusEl.textContent='';
+  const inp=document.getElementById('editFileInput');
+  if(inp)inp.value='';
+}
+window.editPickDoc=editPickDoc;
+window.onEditFileSelected=onEditFileSelected;
+window.editClearDoc=editClearDoc;
+window.editKeepDoc=editKeepDoc;
 
 // ── THEME ─────────────────────────────────────────────
 function toggleDark(on){document.body.classList.toggle('dark',on);document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro';try{localStorage.setItem('theme',on?'dark':'light');}catch(e){}}
@@ -1063,6 +1119,28 @@ function renderCatCell(r){
   if(r.c3&&r.c3!=='-')h+=`<span class="c3-badge">${r.c3}</span>`;
   h+='</div>';return h;
 }
+
+// Genera l'HTML dell'area documento nella riga edit
+function renderEditDocArea(r){
+  const hasDoc=!!(r.docUrl&&r.docName);
+  let html=`<div class="edit-doc-area">
+    <div class="edit-doc-label">📎 Documento allegato</div>`;
+  if(hasDoc){
+    html+=`<div class="edit-doc-current">
+      <a class="doc-link" href="${r.docUrl}" target="_blank">📎 ${r.docName}</a>
+      <button class="btn-rm-doc" onclick="editClearDoc()" title="Rimuovi documento">🗑 Rimuovi</button>
+    </div>`;
+  }
+  html+=`<div class="edit-doc-pick">
+    <button class="btn-pick-doc" onclick="editPickDoc()">📂 ${hasDoc?'Sostituisci':'Carica'} file</button>
+    <input type="file" id="editFileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onEditFileSelected(this)">
+  </div>
+  <div class="edit-upload-bar-wrap" id="editUploadBarWrap"><div class="edit-upload-bar" id="editUploadBar"></div></div>
+  <div class="edit-doc-status" id="editDocStatus"></div>
+</div>`;
+  return html;
+}
+
 function render(){
   renderSummary();
   const tbody=document.getElementById('tbody');
@@ -1082,6 +1160,8 @@ function render(){
     const valHtml=isEx?`<span class="${curClass(cur)}">${curSymbol(cur)}</span> <span style="color:var(--text3);font-size:10px;">→</span> <span class="${curClass(curTo)}">${curSymbol(curTo)}</span> <span class="fx-tag">FX</span>`:`<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
     const docHtml=r.docUrl?`<a class="doc-link" href="${r.docUrl}" target="_blank">📎 ${r.docName||'Doc'}</a>`:'';
     if(editingIdx===i){
+      // Reset stato edit doc all'apertura
+      editPendingFile=null;editRemoveDoc=false;
       const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
       const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
       html+=`<tr class="editing">
@@ -1096,11 +1176,16 @@ function render(){
         </div></td>
         <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
         ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}</td>
-        <td>${valHtml}</td><td>—</td><td>${docHtml}</td>
-        <td><div class="row-actions">
-          <button class="btn-save" onclick="saveEdit()">💾</button>
-          <button class="btn-cancel" onclick="cancelEdit()">✕</button>
-        </div></td>
+        <td>${valHtml}</td><td>—</td>
+        <td colspan="2">${renderEditDocArea(r)}</td>
+      </tr>
+      <tr class="editing">
+        <td colspan="10" style="padding:4px 8px 8px;">
+          <div style="display:flex;gap:6px;justify-content:flex-end;">
+            <button class="btn-save" onclick="saveEdit()">💾 Salva</button>
+            <button class="btn-cancel" onclick="cancelEdit()">✕ Annulla</button>
+          </div>
+        </td>
       </tr>`;
       setTimeout(()=>{
         const ef=document.getElementById('ed-from');if(ef)for(let o of ef.options)if(o.value===r.from)o.selected=true;
@@ -1140,7 +1225,6 @@ async function aggiungi(){
   const cf=getNomeValuta(fn),ct=getNomeValuta(tn),isEx=cf!==ct;
   const row={data,from:fn,to:tn,desc,c1:c1v,c2:c2v,c3:c3v,importo,valuta:cf};
   if(isEx){row.isExchange=true;row.valutaTo=ct;row.importoTo=parseFloat(document.getElementById('importoTo').value)||0;row.tassoFX=parseFloat(document.getElementById('tassoFX').value)||getRate(cf,ct);}
-  // Upload documento se presente
   if(pendingDocFile){
     try{
       const docInfo=await uploadPendingDoc();
@@ -1154,13 +1238,21 @@ async function aggiungi(){
   clearPendingDoc();
   await saveToFirebase();render();calcStorageUsage();
 }
-function startEdit(i){editingIdx=i;render();}
-function cancelEdit(){editingIdx=null;render();}
+function startEdit(i){
+  editingIdx=i;
+  editPendingFile=null;
+  editRemoveDoc=false;
+  render();
+}
+function cancelEdit(){editingIdx=null;editPendingFile=null;editRemoveDoc=false;render();}
+
 async function saveEdit(){
   if(editingIdx===null){cancelEdit();return;}
   const fi=getSorted(getFiltered());if(editingIdx<0||editingIdx>=fi.length){cancelEdit();return;}
   const target=fi[editingIdx],orig=rows.indexOf(target);if(orig===-1){cancelEdit();return;}
   const r=rows[orig];
+
+  // Aggiorna campi base
   r.data=document.getElementById('ed-data').value||r.data;
   r.from=document.getElementById('ed-from').value||r.from;
   r.to=document.getElementById('ed-to').value||r.to;
@@ -1171,15 +1263,41 @@ async function saveEdit(){
   r.importo=parseFloat(document.getElementById('ed-imp').value)||r.importo;
   r.valuta=getNomeValuta(r.from);
   if(isExchangeRow(r)){const el=document.getElementById('ed-impto');if(el)r.importoTo=parseFloat(el.value)||r.importoTo;}
+
+  // Gestione documento
+  if(editRemoveDoc && r.docPath){
+    // Elimina file da Storage e rimuovi riferimenti
+    try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Storage delete skip',e);}
+    delete r.docUrl;delete r.docPath;delete r.docName;
+  } else if(editPendingFile){
+    // Se c'era un documento precedente, eliminalo prima
+    if(r.docPath){
+      try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Old doc delete skip',e);}
+    }
+    // Carica il nuovo file
+    try{
+      const barWrap=document.getElementById('editUploadBarWrap');
+      const bar=document.getElementById('editUploadBar');
+      const statusEl=document.getElementById('editDocStatus');
+      if(statusEl)statusEl.textContent='⏳ Caricamento...';
+      const docInfo=await uploadFile(editPendingFile,bar,barWrap);
+      r.docUrl=docInfo.url;r.docPath=docInfo.path;r.docName=docInfo.name;
+      if(statusEl)statusEl.textContent='✅ Caricato!';
+    }catch(e){
+      if(!confirm('Errore upload documento. Salvare lo stesso?'))return;
+    }
+  }
+
   rows.sort((a,b)=>a.data.localeCompare(b.data));
-  editingIdx=null;await saveToFirebase();render();
+  editingIdx=null;editPendingFile=null;editRemoveDoc=false;
+  await saveToFirebase();render();calcStorageUsage();
 }
+
 async function elimina(i){
   if(!confirm('Eliminare?'))return;
   const fi=getSorted(getFiltered());if(i<0||i>=fi.length)return;
   const orig=rows.indexOf(fi[i]);if(orig===-1)return;
   const r=rows[orig];
-  // elimina file storage se collegato
   if(r.docPath){try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Storage delete skip',e);}calcStorageUsage();}
   rows.splice(orig,1);await saveToFirebase();render();
 }
@@ -1383,7 +1501,7 @@ async function deleteReport(idx){if(!confirm(`Eliminare "${savedReports[idx].nam
 function renderSavedReports(){const container=document.getElementById('reportSavedList');if(!savedReports.length){container.innerHTML='<div class="report-empty-saved">Nessun report salvato</div>';return;}const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};container.innerHTML=savedReports.map((r,i)=>`<div class="report-saved-item ${activeReportIdx===i?'active':''}" onclick="loadReport(${i})"><div><div class="report-saved-name">${r.name}</div><div class="report-saved-type"><span class="report-type-badge ${typeBadge[r.type]||''}">${r.typeLabel||r.type}</span></div></div><button class="report-del-btn" onclick="event.stopPropagation();deleteReport(${i})">✕</button></div>`).join('');}
 function printReport(){window.print();}
 
-function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});const totC2=Object.values(c2Map).reduce((s,a)=>s+a.length,0),totC3=Object.values(c3Map).reduce((s,a)=>s+a.length,0);let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
+function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
 function salvaBackup(){const json=JSON.stringify({version:'2.0-multicur',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
 function stampaPDF(){window.print();}
 
