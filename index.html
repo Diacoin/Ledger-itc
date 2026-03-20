@@ -34,8 +34,7 @@
   .login-btn:hover{background:#1558b0;}
   .login-btn:disabled{background:#ccc;cursor:not-allowed;}
   .login-error{background:#fce8e6;color:#ea4335;padding:12px;border-radius:8px;font-size:13px;text-align:center;}
-  #app{display:none;}
-  #app.loaded{display:block;}
+  #app{display:none;}#app.loaded{display:block;}
   .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
   .logo-wrap{display:flex;align-items:center;gap:8px;}
   .header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
@@ -64,9 +63,7 @@
   .storage-meter{margin-top:8px;}
   .storage-bar-wrap{background:var(--border);border-radius:8px;height:10px;overflow:hidden;margin:6px 0;}
   .storage-bar{height:100%;border-radius:8px;transition:width .5s;}
-  .storage-bar.green{background:#34a853;}
-  .storage-bar.yellow{background:#fbbc04;}
-  .storage-bar.red{background:#ea4335;}
+  .storage-bar.green{background:#34a853;}.storage-bar.yellow{background:#fbbc04;}.storage-bar.red{background:#ea4335;}
   .storage-text{font-size:11px;color:var(--text3);}
   nav{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:6px;box-shadow:0 2px 8px var(--shadow);flex-wrap:wrap;}
   .nav-btn{flex:1;min-width:80px;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:bold;color:var(--text2);transition:all .15s;}
@@ -118,8 +115,7 @@
   .date-range input[type="date"]{padding:6px 9px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;flex:1;min-width:115px;background:var(--input-bg);color:var(--text);}
   .date-range span{font-size:12px;color:var(--text3);}
   .btn-sm{padding:5px 10px;border:none;border-radius:5px;cursor:pointer;font-size:12px;}
-  .btn-sm.red{background:#fce8e6;color:#ea4335;}
-  .btn-sm.grey{background:var(--hover);color:var(--text3);}
+  .btn-sm.red{background:#fce8e6;color:#ea4335;}.btn-sm.grey{background:var(--hover);color:var(--text3);}
   .entity-filter-wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1;}
   .entity-select,.tipo-select,.val-select{padding:6px 10px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;flex:1;min-width:120px;background:var(--input-bg);color:var(--text);}
   .entity-select.active-sel{border-color:#1a73e8;color:#1a73e8;font-weight:bold;}
@@ -148,6 +144,7 @@
   body.dark .cur-gbp{background:#3a1a4a;color:#ce93d8;}
   body.dark .cur-aed{background:#3a2a10;color:#ffb74d;}
   body.dark .cur-other{background:#0a2a25;color:#4db6ac;}
+  /* Tabella registro */
   table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);table-layout:fixed;}
   thead{background:#1a73e8;color:white;}
   th{padding:7px 5px;text-align:left;font-size:10px;white-space:nowrap;overflow:hidden;}
@@ -158,47 +155,9 @@
   tr.editing td{background:var(--edit-row)!important;white-space:normal;overflow:visible;}
   tr.exchange-row td{background:rgba(230,126,34,.05);}
   body.dark tr.exchange-row td{background:rgba(230,126,34,.08);}
-  /* Larghezze colonne registro */
-  .col-data{width:72px;}
-  .col-from{width:11%;}
-  .col-to{width:11%;}
-  .col-desc{width:18%;}
-  .col-cat{width:13%;}
-  .col-imp{width:10%;}
-  .col-val{width:44px;}
-  .col-doc{width:70px;}
-  .col-act{width:52px;}
-  /* Badge adattivi */
+  .col-data{width:72px;}.col-from{width:11%;}.col-to{width:11%;}.col-desc{width:18%;}
+  .col-cat{width:13%;}.col-imp{width:10%;}.col-val{width:44px;}.col-doc{width:80px;}.col-act{width:52px;}
   .badge-name{border-radius:8px;padding:1px 5px;font-size:9px;font-weight:bold;cursor:pointer;transition:opacity .15s;white-space:nowrap;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
-  /* Responsive smartphone */
-  @media(max-width:600px){
-    body{padding:8px;}
-    .app-header{gap:6px;}
-    .logo-wrap svg{width:36px;height:36px;}
-    nav{gap:2px;padding:4px;}
-    .nav-btn{min-width:0;padding:7px 4px;font-size:10px;}
-    table{table-layout:auto;}
-    th,td{font-size:9px;padding:4px 3px;}
-    .col-data{width:58px;}
-    .col-desc{width:auto;}
-    .col-cat,.col-val{display:none;}
-    th.col-cat,td.col-cat,th.col-val,td.col-val{display:none;}
-    .col-imp{width:70px;}
-    .col-doc{width:50px;}
-    .col-act{width:42px;}
-    .insert-box .controls{flex-direction:column;}
-    .insert-box .controls input,
-    .insert-box .controls select{width:100%;min-width:0;}
-    .summary{gap:6px;}
-    .card{min-width:90px;padding:8px 10px;}
-    .card span{font-size:13px;}
-    .filter-row{flex-direction:column;align-items:flex-start;}
-    .date-range{flex-wrap:wrap;}
-    .report-layout{flex-direction:column;}
-    .report-sidebar{width:100%;}
-    h2{font-size:16px;}
-  }
-  .badge-name{border-radius:10px;padding:2px 8px;font-size:10px;font-weight:bold;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
   .badge-name:hover{opacity:.75;}
   .badge-from{background:#fce8e6;color:#c0392b;}
   .badge-to{background:#e6f4ea;color:#1e8449;}
@@ -226,28 +185,34 @@
   .btn-action{padding:8px 16px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;}
   .btn-action.purple{background:#8e44ad;}.btn-action.purple:hover{background:#7d3c98;}
   .cat-cell{display:flex;flex-direction:column;gap:2px;}
-  .doc-link{display:inline-flex;align-items:center;gap:3px;background:#e8f0fe;color:#1a73e8;border-radius:6px;padding:2px 7px;font-size:10px;font-weight:bold;text-decoration:none;white-space:nowrap;}
+  /* doc link */
+  .doc-link{display:inline-flex;align-items:center;gap:2px;background:#e8f0fe;color:#1a73e8;border-radius:5px;padding:1px 5px;font-size:9px;font-weight:bold;text-decoration:none;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
   .doc-link:hover{background:#d2e3fc;}
   body.dark .doc-link{background:#1e3a6e;color:#7ec0f5;}
-  /* Edit doc area - inline nella riga */
-  .edit-doc-area{margin-top:6px;padding:6px 8px;background:rgba(26,115,232,.07);border:1px dashed #1a73e8;border-radius:6px;font-size:10px;}
-  .edit-doc-area .edit-doc-label{font-weight:bold;color:#1a73e8;margin-bottom:4px;}
-  .edit-doc-current{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
-  .edit-doc-pick{display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
-  .btn-pick-doc{padding:3px 8px;background:#1a73e8;color:white;border:none;border-radius:4px;cursor:pointer;font-size:10px;font-weight:bold;}
-  .btn-rm-doc{padding:3px 7px;background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;}
-  .edit-doc-status{font-size:10px;color:var(--text3);margin-top:2px;}
-  .edit-upload-bar-wrap{background:var(--border);border-radius:4px;height:5px;overflow:hidden;margin-top:3px;display:none;}
-  .edit-upload-bar{height:100%;background:#1a73e8;border-radius:4px;transition:width .3s;width:0%;}
-  /* Drop area */
-  .drop-area{border:2px dashed var(--input-border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;margin-top:10px;background:var(--surface2);}
-  .drop-area.drag-over{border-color:#1a73e8;background:#e8f0fe;}
-  body.dark .drop-area.drag-over{background:#1e3a6e;}
-  .drop-area p{font-size:12px;color:var(--text3);margin-top:4px;}
-  .drop-area .drop-icon{font-size:24px;}
-  .upload-progress{display:none;margin-top:8px;background:var(--border);border-radius:6px;height:8px;overflow:hidden;}
-  .upload-progress-bar{height:100%;background:#1a73e8;border-radius:6px;transition:width .3s;width:0%;}
-  .upload-status{font-size:11px;color:var(--text3);margin-top:4px;text-align:center;}
+  .doc-chips{display:flex;flex-direction:column;gap:2px;}
+  /* ── Area documenti (inserimento + edit) ── */
+  .docs-area{margin-top:10px;border:2px dashed var(--input-border);border-radius:10px;padding:10px 12px;background:var(--surface2);transition:border-color .2s;}
+  .docs-area.drag-over{border-color:#1a73e8;background:#e8f0fe;}
+  body.dark .docs-area.drag-over{background:#1e3a6e;}
+  .docs-area-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;}
+  .docs-area-label{font-size:12px;font-weight:bold;color:var(--text2);}
+  .btn-pick-docs{padding:4px 10px;background:#1a73e8;color:white;border:none;border-radius:5px;cursor:pointer;font-size:11px;font-weight:bold;}
+  .pending-docs-list{display:flex;flex-direction:column;gap:4px;margin-top:4px;}
+  .pending-doc-item{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;}
+  .pending-doc-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2);}
+  .pending-doc-status{font-size:10px;color:var(--text3);white-space:nowrap;}
+  .pending-doc-bar-wrap{flex:1;background:var(--border);border-radius:4px;height:4px;overflow:hidden;min-width:40px;}
+  .pending-doc-bar{height:100%;background:#1a73e8;border-radius:4px;transition:width .3s;width:0%;}
+  .btn-rm-pending{background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:1px 5px;flex-shrink:0;}
+  .drop-hint{font-size:11px;color:var(--text4);text-align:center;padding:6px 0;display:flex;align-items:center;justify-content:center;gap:6px;}
+  /* edit doc area */
+  .edit-docs-area{margin-top:6px;padding:8px 10px;background:rgba(26,115,232,.06);border:1px dashed #1a73e8;border-radius:8px;}
+  .edit-docs-label{font-size:11px;font-weight:bold;color:#1a73e8;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+  .edit-existing-docs{display:flex;flex-direction:column;gap:3px;margin-bottom:6px;}
+  .edit-existing-item{display:flex;align-items:center;gap:5px;font-size:10px;}
+  .edit-existing-item a{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .btn-rm-existing{background:#fce8e6;color:#ea4335;border:none;border-radius:3px;cursor:pointer;font-size:9px;padding:1px 4px;flex-shrink:0;}
+  /* archivio */
   .archivio-box{background:var(--surface);border-radius:10px;padding:18px;box-shadow:0 2px 8px var(--shadow);margin-bottom:20px;}
   .nomi-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
   .nomi-table th{text-align:left;padding:7px 10px;font-size:12px;color:white;border-bottom:2px solid var(--border);font-weight:bold;}
@@ -348,17 +313,33 @@
   .rtb-estratto{background:#e8f0fe;color:#1a73e8;}.rtb-categoria{background:#f3e5f5;color:#9c27b0;}
   .rtb-tipo{background:#fff3e0;color:#e67e22;}.rtb-date{background:#e0f5f1;color:#16a085;}
   .rtb-saldo{background:#fce8e6;color:#c0392b;}.rtb-fx{background:#fff8e1;color:#f57f17;}
-  body.dark .rtb-estratto{background:#1e3a6e;color:#7ec0f5;}
-  body.dark .rtb-categoria{background:#3a1a4a;color:#ce93d8;}
-  body.dark .rtb-tipo{background:#3a2a10;color:#ffb74d;}
-  body.dark .rtb-date{background:#0a2a25;color:#4db6ac;}
-  body.dark .rtb-saldo{background:#4a1a1a;color:#ff6b6b;}
-  body.dark .rtb-fx{background:#2a2000;color:#ffd54f;}
+  body.dark .rtb-estratto{background:#1e3a6e;color:#7ec0f5;}body.dark .rtb-categoria{background:#3a1a4a;color:#ce93d8;}
+  body.dark .rtb-tipo{background:#3a2a10;color:#ffb74d;}body.dark .rtb-date{background:#0a2a25;color:#4db6ac;}
+  body.dark .rtb-saldo{background:#4a1a1a;color:#ff6b6b;}body.dark .rtb-fx{background:#2a2000;color:#ffd54f;}
   .report-section-header{background:var(--surface2);border-top:2px solid var(--border);font-weight:bold;font-size:11px;color:var(--text2);}
   .report-section-header td{padding:6px 10px;}
   .cur-section-header{background:rgba(26,115,232,.08);border-top:3px solid #1a73e8;}
   body.dark .cur-section-header{background:rgba(74,144,217,.1);}
   .cur-section-header td{padding:8px 10px;font-weight:bold;color:#1a73e8;font-size:12px;}
+  @media(max-width:600px){
+    body{padding:8px;}
+    .app-header{gap:6px;}
+    .logo-wrap svg{width:36px;height:36px;}
+    nav{gap:2px;padding:4px;}
+    .nav-btn{min-width:0;padding:7px 4px;font-size:10px;}
+    table{table-layout:auto;}
+    th,td{font-size:9px;padding:4px 3px;}
+    .col-data{width:58px;}.col-desc{width:auto;}
+    th.col-cat,td.col-cat,th.col-val,td.col-val{display:none;}
+    .col-imp{width:70px;}.col-doc{width:50px;}.col-act{width:42px;}
+    .insert-box .controls{flex-direction:column;}
+    .insert-box .controls input,.insert-box .controls select{width:100%;min-width:0;}
+    .summary{gap:6px;}.card{min-width:90px;padding:8px 10px;}.card span{font-size:13px;}
+    .filter-row{flex-direction:column;align-items:flex-start;}
+    .date-range{flex-wrap:wrap;}
+    .report-layout{flex-direction:column;}.report-sidebar{width:100%;}
+    h2{font-size:16px;}
+  }
   @media(max-width:700px){.report-layout{flex-direction:column;}.report-sidebar{width:100%;}}
   @media print{
     body{background:white!important;padding:10px;}
@@ -376,7 +357,6 @@
 </style>
 </head>
 <body>
-
 <div class="login-wrapper" id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
@@ -464,7 +444,6 @@
     <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
   </nav>
 
-  <!-- REGISTRO -->
   <div class="page active" id="page-registro">
     <h2>💸 Registro Movimenti</h2>
     <div class="entity-banner" id="entityBanner">
@@ -541,20 +520,18 @@
         <span class="fx-badge" id="fxRateBadge">Tasso: —</span>
         <input type="number" id="tassoFX" placeholder="Tasso (auto)" step="0.0001" style="flex:1;min-width:80px;padding:5px 8px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);" oninput="onTassoChange()">
       </div>
-      <div style="margin-top:10px;">
-        <div style="font-size:12px;font-weight:bold;color:var(--text2);margin-bottom:4px;">📎 Allega documento (opzionale)</div>
-        <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-          <div class="drop-icon">📄</div>
-          <div style="font-size:13px;font-weight:bold;color:var(--text2);">Trascina qui o clicca per selezionare</div>
-          <p>PDF, immagini, Word, Excel — max 10MB</p>
+      <!-- Area documenti inserimento -->
+      <div class="docs-area" id="insertDocsArea"
+           ondragover="onDragOver(event,'insertDocsArea')"
+           ondragleave="onDragLeave('insertDocsArea')"
+           ondrop="onDropInsert(event)">
+        <div class="docs-area-header">
+          <span class="docs-area-label">📎 Documenti allegati (opzionale, anche multipli)</span>
+          <button class="btn-pick-docs" onclick="document.getElementById('insertFileInput').click()">+ Aggiungi file</button>
+          <input type="file" id="insertFileInput" style="display:none" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onInsertFilesSelected(this)">
         </div>
-        <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onFileSelected(this)">
-        <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>
-        <div class="upload-status" id="uploadStatus"></div>
-        <div id="pendingDocPreview" style="display:none;margin-top:6px;padding:6px 10px;background:var(--surface2);border-radius:6px;font-size:11px;color:var(--text2);align-items:center;gap:8px;flex-wrap:wrap;">
-          <span id="pendingDocName"></span>
-          <button onclick="clearPendingDoc()" style="background:#fce8e6;color:#ea4335;border:none;border-radius:4px;cursor:pointer;font-size:10px;padding:2px 6px;">✕ Rimuovi</button>
-        </div>
+        <div class="pending-docs-list" id="insertPendingList"></div>
+        <div class="drop-hint">📂 Trascina qui i file · PDF, immagini, Word, Excel · max 10MB cad.</div>
       </div>
     </div>
     <table>
@@ -713,9 +690,7 @@
     </div>
     <div class="archivio-box">
       <h3>📁 Documenti archiviati</h3>
-      <div id="docsListWrap">
-        <div style="color:var(--text4);font-style:italic;font-size:13px;">Caricamento...</div>
-      </div>
+      <div id="docsListWrap"><div style="color:var(--text4);font-style:italic;font-size:13px;">Caricamento...</div></div>
     </div>
   </div>
 
@@ -741,12 +716,7 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from
 import { getDatabase, ref, set, get, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL, deleteObject, listAll, getMetadata } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
 
-const firebaseConfig = {
-  apiKey:"AIzaSyDbCbpwgdlPbRUlppCFX-dsbNEuyzBpVV4",authDomain:"caveau-registro.firebaseapp.com",
-  databaseURL:"https://caveau-registro-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:"caveau-registro",storageBucket:"caveau-registro.firebasestorage.app",
-  messagingSenderId:"361376077124",appId:"1:361376077124:web:411566edcc50463ce6b311"
-};
+const firebaseConfig={apiKey:"AIzaSyDbCbpwgdlPbRUlppCFX-dsbNEuyzBpVV4",authDomain:"caveau-registro.firebaseapp.com",databaseURL:"https://caveau-registro-default-rtdb.europe-west1.firebasedatabase.app",projectId:"caveau-registro",storageBucket:"caveau-registro.firebasestorage.app",messagingSenderId:"361376077124",appId:"1:361376077124:web:411566edcc50463ce6b311"};
 const fbApp=initializeApp(firebaseConfig);
 const auth=getAuth(fbApp),db=getDatabase(fbApp),storage=getStorage(fbApp);
 
@@ -757,58 +727,48 @@ let editingIdx=null,editingNomeIdx=null;
 let sortField='data',sortDir=1,filterOpen=false;
 let currentUser=null,activeReportIdx=null,refCurr='EUR';
 let fxRates={EUR:1,GBP:0.853,AED:3.972};
-let pendingDocFile=null,pendingDocUrl=null,pendingDocName=null,pendingDocSize=0;
-// Stato documento per la riga in editing
-let editPendingFile=null,editRemoveDoc=false;
+
+// ── Multi-doc state ───────────────────────────────────
+// insertPendingDocs: [{file, id, status:'pending'|'uploading'|'done'|'error', url?, path?, name}]
+let insertPendingDocs=[];
+// editPendingDocs: [{file, id, status}]  — nuovi da caricare
+let editPendingDocs=[];
+// editRemovedPaths: Set di path da eliminare su salva
+let editRemovedPaths=new Set();
+
 const VOID='__VOID__';
 const STORAGE_LIMIT_GB=5;
-
 const CUR_SYMBOLS={EUR:'€',GBP:'£',AED:'AED','':'?'};
 const CUR_CLASSES={EUR:'cur-eur',GBP:'cur-gbp',AED:'cur-aed'};
 function curSymbol(c){return CUR_SYMBOLS[c]||c;}
 function curClass(c){return CUR_CLASSES[c]||'cur-other';}
-function getNomeValuta(name){const n=nomi.find(x=>x.name===name);return n?n.valuta||'EUR':'EUR';}
-function getTipoNome(name){const n=nomi.find(x=>x.name===name);return n?n.tipo||'':'';}
-function isBankTipo(name){return getTipoNome(name)==='Bank';}
-function getMovSign(r){
-  const toB=isBankTipo(r.to),fromB=isBankTipo(r.from);
-  if(toB&&!fromB)return'entrata';
-  if(fromB&&!toB)return'uscita';
-  return'neutro';
-}
-function fmtAmt(amount,cur){
-  const sym=curSymbol(cur||'EUR');
-  const parts=Math.abs(amount).toFixed(2).split('.');
-  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-  const neg=amount<0?'-':'';
-  if(cur==='AED')return`${neg}${parts[0]},${parts[1]} ${sym}`;
-  return`${neg}${sym}\u00a0${parts[0]},${parts[1]}`;
-}
+function getNomeValuta(n){const x=nomi.find(x=>x.name===n);return x?x.valuta||'EUR':'EUR';}
+function getTipoNome(n){const x=nomi.find(x=>x.name===n);return x?x.tipo||'':'';}
+function isBankTipo(n){return getTipoNome(n)==='Bank';}
+function getMovSign(r){const tb=isBankTipo(r.to),fb=isBankTipo(r.from);if(tb&&!fb)return'entrata';if(fb&&!tb)return'uscita';return'neutro';}
+function fmtAmt(a,c){const s=curSymbol(c||'EUR');const p=Math.abs(a).toFixed(2).split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');const n=a<0?'-':'';if(c==='AED')return`${n}${p[0]},${p[1]} ${s}`;return`${n}${s}\u00a0${p[0]},${p[1]}`;}
 function fmtBytes(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';if(b<1073741824)return(b/1048576).toFixed(2)+' MB';return(b/1073741824).toFixed(3)+' GB';}
 function isExchangeRow(r){return !!(r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);}
 function c3k(a,b){return a+'|'+b;}
 function getTipi(){return[...new Set(nomi.map(n=>n.tipo).filter(Boolean))].sort();}
 function fmtDate(s){return s?s.split('-').reverse().join('/'):''}
 function isVoid(v){return !v||v==='-'||v.trim()==='';}
+function uid(){return Math.random().toString(36).slice(2);}
 
 // ── FX ────────────────────────────────────────────────
 async function fetchFxRates(force=false){
-  try{
-    const ck='fxRates_v2',ct='fxRatesTime',now=Date.now();
-    if(!force){try{const c=localStorage.getItem(ck),t=parseInt(localStorage.getItem(ct)||'0');if(c&&(now-t)<4*3600*1000){fxRates=JSON.parse(c);updateFxDisplay();return;}}catch(e){}}
-    const res=await fetch('https://open.er-api.com/v6/latest/EUR'),data=await res.json();
-    if(data.rates){fxRates={EUR:1,GBP:data.rates.GBP,AED:data.rates.AED};try{localStorage.setItem(ck,JSON.stringify(fxRates));localStorage.setItem(ct,String(now));}catch(e){}updateFxDisplay();}
-  }catch(e){console.warn('FX fail',e);updateFxDisplay();}
+  try{const ck='fxRates_v2',ct='fxRatesTime',now=Date.now();if(!force){try{const c=localStorage.getItem(ck),t=parseInt(localStorage.getItem(ct)||'0');if(c&&(now-t)<4*3600*1000){fxRates=JSON.parse(c);updateFxDisplay();return;}}catch(e){}}
+  const res=await fetch('https://open.er-api.com/v6/latest/EUR'),data=await res.json();
+  if(data.rates){fxRates={EUR:1,GBP:data.rates.GBP,AED:data.rates.AED};try{localStorage.setItem(ck,JSON.stringify(fxRates));localStorage.setItem(ct,String(now));}catch(e){}updateFxDisplay();}}catch(e){console.warn('FX fail',e);updateFxDisplay();}
 }
 function updateFxDisplay(){const el=document.getElementById('fxRateDisplay');if(!el)return;el.innerHTML=`1 EUR = ${fxRates.GBP?.toFixed(4)||'—'} GBP<br>1 EUR = ${fxRates.AED?.toFixed(4)||'—'} AED<br>1 GBP = ${(fxRates.AED/fxRates.GBP)?.toFixed(4)||'—'} AED`;}
-function getRate(from,to){if(from===to)return 1;return(fxRates[to]||1)/(fxRates[from]||1);}
+function getRate(f,t){if(f===t)return 1;return(fxRates[t]||1)/(fxRates[f]||1);}
 window.fetchFxRates=fetchFxRates;
 
 // ── AUTH ──────────────────────────────────────────────
 async function handleLogin(e){
   e.preventDefault();
-  const email=document.getElementById('loginEmail').value.trim();
-  const pass=document.getElementById('loginPassword').value;
+  const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPassword').value;
   const btn=document.getElementById('loginBtn'),err=document.getElementById('loginError');
   if(!email||!pass){err.textContent='❌ Inserisci email e password';err.style.display='block';return;}
   btn.disabled=true;btn.textContent='⏳ Accesso...';err.style.display='none';
@@ -832,20 +792,16 @@ onAuthStateChanged(auth,async(user)=>{
     if(snap.exists())loadData(snap.val());
     let firstLoad=true;
     onValue(userRef,snap2=>{
-      if(snap2.exists()){
-        loadData(snap2.val());
-        if(firstLoad){resetVolatileFilters();firstLoad=false;}
-        syncSelects();syncTipoSel();rebuildDD();render();
-        if(document.getElementById('page-nomi').classList.contains('active'))renderNomiPage();
-        if(document.getElementById('page-categorie').classList.contains('active')){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
-        if(document.getElementById('page-report').classList.contains('active')){syncReportSelects();renderSavedReports();}
-      }
+      if(snap2.exists()){loadData(snap2.val());if(firstLoad){resetVolatileFilters();firstLoad=false;}
+      syncSelects();syncTipoSel();rebuildDD();render();
+      if(document.getElementById('page-nomi').classList.contains('active'))renderNomiPage();
+      if(document.getElementById('page-categorie').classList.contains('active')){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
+      if(document.getElementById('page-report').classList.contains('active')){syncReportSelects();renderSavedReports();}}
     });
     document.getElementById('app').classList.add('loaded');document.getElementById('app').style.display='block';
     document.getElementById('loginLoading').style.display='none';
     document.getElementById('data').valueAsDate=new Date();
-    syncSelects();syncTipoSel();updateSortHeaders();render();
-    calcStorageUsage();
+    syncSelects();syncTipoSel();updateSortHeaders();render();calcStorageUsage();
   }else{
     currentUser=null;
     document.getElementById('loginScreen').style.display='flex';
@@ -854,22 +810,9 @@ onAuthStateChanged(auth,async(user)=>{
     document.getElementById('app').classList.remove('loaded');document.getElementById('app').style.display='none';
   }
 });
-
-function resetVolatileFilters(){
-  entityFilter='';tipoFilter='';valutaFilter='';fC1.clear();fC2.clear();fC3.clear();
-  const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}
-  const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}
-  const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}
-  updateEntityBanner();updateFilterBadge();
-}
-function loadData(d){
-  rows=(d.rows||[]).filter(Boolean);nomi=(d.nomi||[]).filter(Boolean);
-  c1=(d.c1||[]).filter(Boolean);c2Map=d.c2Map||{};c3Map=d.c3Map||{};
-  Object.keys(c2Map).forEach(k=>{c2Map[k]=(c2Map[k]||[]).filter(Boolean);});
-  Object.keys(c3Map).forEach(k=>{c3Map[k]=(c3Map[k]||[]).filter(Boolean);});
-  savedReports=(d.savedReports||[]).filter(Boolean);refCurr=d.refCurr||'EUR';
-  rows.forEach(r=>{if(!r.valuta)r.valuta=getNomeValuta(r.from);});
-}
+function resetVolatileFilters(){entityFilter='';tipoFilter='';valutaFilter='';fC1.clear();fC2.clear();fC3.clear();const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}updateEntityBanner();updateFilterBadge();}
+function loadData(d){rows=(d.rows||[]).filter(Boolean);nomi=(d.nomi||[]).filter(Boolean);c1=(d.c1||[]).filter(Boolean);c2Map=d.c2Map||{};c3Map=d.c3Map||{};Object.keys(c2Map).forEach(k=>{c2Map[k]=(c2Map[k]||[]).filter(Boolean);});Object.keys(c3Map).forEach(k=>{c3Map[k]=(c3Map[k]||[]).filter(Boolean);});savedReports=(d.savedReports||[]).filter(Boolean);refCurr=d.refCurr||'EUR';rows.forEach(r=>{if(!r.valuta)r.valuta=getNomeValuta(r.from);// migrazione: se c'era docUrl singolo, converti in docs[]
+if(r.docUrl&&!r.docs){r.docs=[{url:r.docUrl,path:r.docPath||'',name:r.docName||'Doc'}];delete r.docUrl;delete r.docPath;delete r.docName;}if(!r.docs)r.docs=[];});}
 async function saveToFirebase(){if(!currentUser)return;await set(ref(db,'users/'+currentUser.uid),{rows,nomi,c1,c2Map,c3Map,savedReports,refCurr,lastModified:new Date().toISOString()});}
 
 // ── STORAGE ───────────────────────────────────────────
@@ -878,166 +821,154 @@ async function calcStorageUsage(){
   try{
     const listRef=sRef(storage,`docs/${currentUser.uid}`);
     const res=await listAll(listRef);
-    let totalBytes=0,fileCount=res.items.length;
+    let totalBytes=0;const fileCount=res.items.length;
     const fileMetas=await Promise.all(res.items.map(item=>getMetadata(item).catch(()=>null)));
     fileMetas.forEach(m=>{if(m)totalBytes+=m.size||0;});
     const limitBytes=STORAGE_LIMIT_GB*1024*1024*1024;
     const pct=Math.min((totalBytes/limitBytes)*100,100);
     const cls=pct<70?'green':pct<90?'yellow':'red';
-    const sb=document.getElementById('settingsStorageBar');
-    const st=document.getElementById('settingsStorageText');
+    const sb=document.getElementById('settingsStorageBar'),st=document.getElementById('settingsStorageText');
     if(sb){sb.className='storage-bar '+cls;sb.style.width=pct.toFixed(1)+'%';}
     if(st)st.textContent=`${fmtBytes(totalBytes)} / ${STORAGE_LIMIT_GB} GB (${pct.toFixed(1)}%) — ${fileCount} file`;
-    const bb=document.getElementById('storageBigBar');
-    const ss=document.getElementById('storageSummary');
+    const bb=document.getElementById('storageBigBar'),ss=document.getElementById('storageSummary');
     if(bb){bb.className='storage-big-bar '+cls;bb.style.width=pct.toFixed(1)+'%';}
     if(ss)ss.innerHTML=`<strong>${fmtBytes(totalBytes)}</strong> utilizzati su <strong>${STORAGE_LIMIT_GB} GB</strong> (${pct.toFixed(1)}%) &nbsp;·&nbsp; <strong>${fileCount}</strong> documenti`;
     const grid=document.getElementById('storageGrid');
-    if(grid)grid.innerHTML=`
-      <div class="storage-card"><div class="sc-num">${fileCount}</div><div class="sc-lbl">Documenti</div></div>
-      <div class="storage-card"><div class="sc-num">${fmtBytes(totalBytes)}</div><div class="sc-lbl">Spazio usato</div></div>
-      <div class="storage-card"><div class="sc-num">${fmtBytes(limitBytes-totalBytes)}</div><div class="sc-lbl">Spazio libero</div></div>
-      <div class="storage-card"><div class="sc-num" style="color:${cls==='green'?'#34a853':cls==='yellow'?'#fbbc04':'#ea4335'}">${pct.toFixed(1)}%</div><div class="sc-lbl">Saturazione</div></div>`;
+    if(grid)grid.innerHTML=`<div class="storage-card"><div class="sc-num">${fileCount}</div><div class="sc-lbl">Documenti</div></div><div class="storage-card"><div class="sc-num">${fmtBytes(totalBytes)}</div><div class="sc-lbl">Spazio usato</div></div><div class="storage-card"><div class="sc-num">${fmtBytes(limitBytes-totalBytes)}</div><div class="sc-lbl">Spazio libero</div></div><div class="storage-card"><div class="sc-num" style="color:${cls==='green'?'#34a853':cls==='yellow'?'#fbbc04':'#ea4335'}">${pct.toFixed(1)}%</div><div class="sc-lbl">Saturazione</div></div>`;
     renderDocsList(res.items,fileMetas);
-  }catch(e){
-    console.warn('Storage calc error',e);
-    const ss=document.getElementById('storageSummary');
-    if(ss)ss.textContent='Impossibile calcolare lo spazio.';
-  }
+  }catch(e){console.warn('Storage calc error',e);const ss=document.getElementById('storageSummary');if(ss)ss.textContent='Impossibile calcolare lo spazio.';}
 }
-
 function renderDocsList(items,metas){
   const wrap=document.getElementById('docsListWrap');if(!wrap)return;
   if(!items.length){wrap.innerHTML='<div style="color:var(--text4);font-style:italic;font-size:13px;">Nessun documento archiviato.</div>';return;}
   const pathToRow={};
-  rows.forEach(r=>{if(r.docPath)pathToRow[r.docPath]={desc:r.desc,data:r.data};});
+  rows.forEach(r=>{(r.docs||[]).forEach(d=>{if(d.path)pathToRow[d.path]={desc:r.desc,data:r.data};});});
   let html=`<table class="docs-table"><thead><tr><th>Nome file</th><th>Collegato a</th><th>Data</th><th>Dimensione</th><th>Azioni</th></tr></thead><tbody>`;
-  items.forEach((item,i)=>{
-    const m=metas[i];const size=m?fmtBytes(m.size):'—';
-    const name=item.name;const path=item.fullPath;
-    const linked=pathToRow[path];
-    html+=`<tr>
-      <td style="font-weight:bold;">${name}</td>
-      <td>${linked?linked.desc:'<span style="color:var(--text4);font-style:italic;">—</span>'}</td>
-      <td>${linked?fmtDate(linked.data):'—'}</td>
-      <td>${size}</td>
-      <td><button class="btn-doc-del" onclick="deleteDoc('${path}','${name}')">🗑 Elimina</button></td>
-    </tr>`;
-  });
+  items.forEach((item,i)=>{const m=metas[i];const size=m?fmtBytes(m.size):'—';const name=item.name;const path=item.fullPath;const linked=pathToRow[path];
+  html+=`<tr><td style="font-weight:bold;">${name}</td><td>${linked?linked.desc:'<span style="color:var(--text4);font-style:italic;">—</span>'}</td><td>${linked?fmtDate(linked.data):'—'}</td><td>${size}</td><td><button class="btn-doc-del" onclick="deleteStorageDoc('${path}','${name}')">🗑 Elimina</button></td></tr>`;});
   html+=`</tbody></table>`;wrap.innerHTML=html;
 }
+async function deleteStorageDoc(path,name){
+  if(!confirm(`Eliminare "${name}"?`))return;
+  try{await deleteObject(sRef(storage,path));rows.forEach(r=>{if(r.docs)r.docs=r.docs.filter(d=>d.path!==path);});await saveToFirebase();render();calcStorageUsage();}catch(e){alert('Errore eliminazione: '+e.message);}
+}
+window.deleteStorageDoc=deleteStorageDoc;
 
-async function deleteDoc(path,name){
-  if(!confirm(`Eliminare "${name}"?\nIl collegamento nel movimento verrà rimosso.`))return;
-  try{
-    await deleteObject(sRef(storage,path));
-    rows.forEach(r=>{if(r.docPath===path){delete r.docUrl;delete r.docPath;delete r.docName;}});
-    await saveToFirebase();
-    render();
-    calcStorageUsage();
-  }catch(e){alert('Errore eliminazione: '+e.message);}
-}
-window.deleteDoc=deleteDoc;
-
-// ── UPLOAD DOC (nuovo movimento) ──────────────────────
-function onDragOver(e){e.preventDefault();document.getElementById('dropArea').classList.add('drag-over');}
-function onDragLeave(){document.getElementById('dropArea').classList.remove('drag-over');}
-function onDrop(e){e.preventDefault();document.getElementById('dropArea').classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)prepareFile(f);}
-function onFileSelected(input){if(input.files[0])prepareFile(input.files[0]);}
-function prepareFile(file){
-  if(file.size>10*1024*1024){alert('File troppo grande (max 10MB)');return;}
-  pendingDocFile=file;pendingDocName=file.name;pendingDocSize=file.size;
-  const prev=document.getElementById('pendingDocPreview');
-  document.getElementById('pendingDocName').textContent=`📄 ${file.name} (${fmtBytes(file.size)})`;
-  prev.style.display='flex';
-  document.getElementById('uploadStatus').textContent='';
-}
-function clearPendingDoc(){
-  pendingDocFile=null;pendingDocUrl=null;pendingDocName=null;pendingDocSize=0;
-  document.getElementById('pendingDocPreview').style.display='none';
-  document.getElementById('fileInput').value='';
-  document.getElementById('uploadStatus').textContent='';
-  document.getElementById('uploadProgress').style.display='none';
-  document.getElementById('uploadBar').style.width='0%';
-}
-async function uploadFile(file,barEl,wrapEl){
+// ── UPLOAD singolo file ───────────────────────────────
+function uploadOneFile(file,onProgress){
   return new Promise((resolve,reject)=>{
-    const ts=Date.now();
-    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    const path=`docs/${currentUser.uid}/${ts}_${safeName}`;
-    const storageRef=sRef(storage,path);
-    const task=uploadBytesResumable(storageRef,file);
-    if(wrapEl)wrapEl.style.display='block';
-    task.on('state_changed',snap=>{
-      const pct=(snap.bytesTransferred/snap.totalBytes*100).toFixed(0);
-      if(barEl)barEl.style.width=pct+'%';
-    },err=>{reject(err);},
-    async()=>{
-      const url=await getDownloadURL(task.snapshot.ref);
-      resolve({url,path,name:file.name});
-    });
-  });
-}
-async function uploadPendingDoc(){
-  if(!pendingDocFile||!currentUser)return null;
-  return new Promise((resolve,reject)=>{
-    const ts=Date.now();
-    const safeName=pendingDocFile.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    const path=`docs/${currentUser.uid}/${ts}_${safeName}`;
-    const storageRef=sRef(storage,path);
-    const task=uploadBytesResumable(storageRef,pendingDocFile);
-    document.getElementById('uploadProgress').style.display='block';
-    document.getElementById('uploadStatus').textContent='⏳ Caricamento...';
-    task.on('state_changed',snap=>{
-      const pct=(snap.bytesTransferred/snap.totalBytes*100).toFixed(0);
-      document.getElementById('uploadBar').style.width=pct+'%';
-    },err=>{
-      document.getElementById('uploadStatus').textContent='❌ Errore: '+err.message;
-      reject(err);
-    },async()=>{
-      const url=await getDownloadURL(task.snapshot.ref);
-      document.getElementById('uploadStatus').textContent='✅ Caricato!';
-      resolve({url,path,name:pendingDocFile.name});
-    });
+    const ts=Date.now(),safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`docs/${currentUser.uid}/${ts}_${safe}`;
+    const task=uploadBytesResumable(sRef(storage,path),file);
+    task.on('state_changed',snap=>{onProgress&&onProgress(snap.bytesTransferred/snap.totalBytes);},
+    err=>reject(err),
+    async()=>{const url=await getDownloadURL(task.snapshot.ref);resolve({url,path,name:file.name});});
   });
 }
 
-// ── UPLOAD DOC in EDIT ────────────────────────────────
-// Apre il file picker per la riga in editing
-function editPickDoc(){
-  const inp=document.getElementById('editFileInput');
-  if(inp)inp.click();
+// ── INSERIMENTO multi-doc ─────────────────────────────
+function onDragOver(e,areaId){e.preventDefault();document.getElementById(areaId).classList.add('drag-over');}
+function onDragLeave(areaId){document.getElementById(areaId).classList.remove('drag-over');}
+function onDropInsert(e){e.preventDefault();onDragLeave('insertDocsArea');addInsertFiles(e.dataTransfer.files);}
+function onInsertFilesSelected(input){if(input.files.length)addInsertFiles(input.files);input.value='';}
+function addInsertFiles(files){
+  for(const f of files){
+    if(f.size>10*1024*1024){alert(`"${f.name}" supera 10MB, saltato.`);continue;}
+    insertPendingDocs.push({file:f,id:uid(),status:'pending',name:f.name,size:f.size});
+  }
+  renderInsertPendingList();
 }
-function onEditFileSelected(input){
-  if(!input.files[0])return;
-  const file=input.files[0];
-  if(file.size>10*1024*1024){alert('File troppo grande (max 10MB)');return;}
-  editPendingFile=file;
-  editRemoveDoc=false;
-  // aggiorna UI nell'area edit
-  const statusEl=document.getElementById('editDocStatus');
-  if(statusEl)statusEl.textContent=`📄 Selezionato: ${file.name} (${fmtBytes(file.size)})`;
+function removeInsertPending(id){insertPendingDocs=insertPendingDocs.filter(x=>x.id!==id);renderInsertPendingList();}
+function renderInsertPendingList(){
+  const list=document.getElementById('insertPendingList');if(!list)return;
+  list.innerHTML=insertPendingDocs.map(d=>`
+    <div class="pending-doc-item" id="ipd-${d.id}">
+      <span class="pending-doc-name" title="${d.name}">📄 ${d.name} <span style="color:var(--text4)">(${fmtBytes(d.size)})</span></span>
+      <div class="pending-doc-bar-wrap" id="ipd-bar-wrap-${d.id}" style="display:${d.status==='uploading'?'block':'none'}"><div class="pending-doc-bar" id="ipd-bar-${d.id}"></div></div>
+      <span class="pending-doc-status" id="ipd-st-${d.id}">${d.status==='done'?'✅':d.status==='error'?'❌':d.status==='uploading'?'⏳':''}</span>
+      ${d.status!=='uploading'?`<button class="btn-rm-pending" onclick="removeInsertPending('${d.id}')">✕</button>`:''}
+    </div>`).join('');
 }
-function editClearDoc(){
-  // Segnala che il doc esistente va rimosso
-  editPendingFile=null;
-  editRemoveDoc=true;
-  const statusEl=document.getElementById('editDocStatus');
-  if(statusEl)statusEl.textContent='🗑 Documento rimosso (salva per confermare)';
+async function uploadInsertDocs(){
+  // upload tutti i pending, aggiorna status, ritorna array di {url,path,name}
+  const results=[];
+  for(const d of insertPendingDocs){
+    d.status='uploading';renderInsertPendingList();
+    try{
+      const info=await uploadOneFile(d.file,pct=>{const bar=document.getElementById('ipd-bar-'+d.id);const wrap=document.getElementById('ipd-bar-wrap-'+d.id);if(bar)bar.style.width=(pct*100).toFixed(0)+'%';if(wrap)wrap.style.display='block';});
+      d.status='done';results.push(info);
+    }catch(e){d.status='error';}
+    renderInsertPendingList();
+  }
+  return results;
 }
-function editKeepDoc(){
-  // Annulla eventuali modifiche al doc
-  editPendingFile=null;
-  editRemoveDoc=false;
-  const statusEl=document.getElementById('editDocStatus');
-  if(statusEl)statusEl.textContent='';
-  const inp=document.getElementById('editFileInput');
-  if(inp)inp.value='';
+window.removeInsertPending=removeInsertPending;
+window.onInsertFilesSelected=onInsertFilesSelected;
+window.onDropInsert=onDropInsert;
+window.onDragOver=onDragOver;
+window.onDragLeave=onDragLeave;
+
+// ── EDIT multi-doc ────────────────────────────────────
+function renderEditDocsArea(r,rowIdx){
+  // r.docs = [{url,path,name}]
+  const existing=(r.docs||[]).filter(d=>!editRemovedPaths.has(d.path));
+  let html=`<div class="edit-docs-area">
+    <div class="edit-docs-label"><span>📎 Documenti allegati</span>
+      <button class="btn-pick-docs" onclick="document.getElementById('editFileInput-${rowIdx}').click()">+ Aggiungi</button>
+      <input type="file" id="editFileInput-${rowIdx}" style="display:none" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onEditFilesSelected(this)">
+    </div>`;
+  if(existing.length){
+    html+=`<div class="edit-existing-docs">`;
+    existing.forEach(d=>{html+=`<div class="edit-existing-item"><a class="doc-link" href="${d.url}" target="_blank" title="${d.name}">📎 ${d.name}</a><button class="btn-rm-existing" onclick="editRemoveExisting('${d.path}')">🗑</button></div>`;});
+    html+=`</div>`;
+  }
+  if(editPendingDocs.length){
+    html+=`<div class="pending-docs-list">`;
+    editPendingDocs.forEach(d=>{html+=`<div class="pending-doc-item" id="epd-${d.id}"><span class="pending-doc-name" title="${d.name}">📄 ${d.name}</span><div class="pending-doc-bar-wrap" id="epd-bar-wrap-${d.id}" style="display:none"><div class="pending-doc-bar" id="epd-bar-${d.id}"></div></div><span class="pending-doc-status" id="epd-st-${d.id}"></span>${d.status!=='uploading'?`<button class="btn-rm-pending" onclick="removeEditPending('${d.id}')">✕</button>`:''}</div>`;});
+    html+=`</div>`;
+  }
+  if(!existing.length&&!editPendingDocs.length){html+=`<div style="font-size:10px;color:var(--text4);font-style:italic;padding:4px 0;">Nessun documento</div>`;}
+  html+=`</div>`;
+  return html;
 }
-window.editPickDoc=editPickDoc;
-window.onEditFileSelected=onEditFileSelected;
-window.editClearDoc=editClearDoc;
-window.editKeepDoc=editKeepDoc;
+function onEditFilesSelected(input){
+  for(const f of input.files){
+    if(f.size>10*1024*1024){alert(`"${f.name}" supera 10MB, saltato.`);continue;}
+    editPendingDocs.push({file:f,id:uid(),status:'pending',name:f.name});
+  }
+  input.value='';
+  // re-render solo l'area edit senza perdere i valori degli input
+  const area=document.getElementById('editDocsAreaContainer');
+  if(area){
+    const fi=getSorted(getFiltered());if(editingIdx===null||editingIdx>=fi.length)return;
+    area.innerHTML=renderEditDocsArea(fi[editingIdx],editingIdx);
+  }
+}
+function editRemoveExisting(path){
+  editRemovedPaths.add(path);
+  const area=document.getElementById('editDocsAreaContainer');
+  if(area){const fi=getSorted(getFiltered());if(editingIdx===null||editingIdx>=fi.length)return;area.innerHTML=renderEditDocsArea(fi[editingIdx],editingIdx);}
+}
+function removeEditPending(id){
+  editPendingDocs=editPendingDocs.filter(x=>x.id!==id);
+  const area=document.getElementById('editDocsAreaContainer');
+  if(area){const fi=getSorted(getFiltered());if(editingIdx===null||editingIdx>=fi.length)return;area.innerHTML=renderEditDocsArea(fi[editingIdx],editingIdx);}
+}
+async function uploadEditDocs(){
+  const results=[];
+  for(const d of editPendingDocs){
+    d.status='uploading';
+    const stEl=document.getElementById('epd-st-'+d.id);if(stEl)stEl.textContent='⏳';
+    try{
+      const info=await uploadOneFile(d.file,pct=>{const bar=document.getElementById('epd-bar-'+d.id);const wrap=document.getElementById('epd-bar-wrap-'+d.id);if(bar)bar.style.width=(pct*100).toFixed(0)+'%';if(wrap)wrap.style.display='block';});
+      d.status='done';if(stEl)stEl.textContent='✅';results.push(info);
+    }catch(e){d.status='error';if(stEl)stEl.textContent='❌';}
+  }
+  return results;
+}
+window.onEditFilesSelected=onEditFilesSelected;
+window.editRemoveExisting=editRemoveExisting;
+window.removeEditPending=removeEditPending;
 
 // ── THEME ─────────────────────────────────────────────
 function toggleDark(on){document.body.classList.toggle('dark',on);document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro';try{localStorage.setItem('theme',on?'dark':'light');}catch(e){}}
@@ -1063,14 +994,8 @@ function goTo(p){
 // ── SUMMARY ───────────────────────────────────────────
 function renderSummary(){
   const filtered=getFiltered(),byCur={};
-  filtered.forEach(r=>{
-    const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]={in:0,out:0};
-    if(entityFilter){if(r.to===entityFilter)byCur[cur].in+=r.importo;else if(r.from===entityFilter)byCur[cur].out+=r.importo;}
-    else byCur[cur].in+=r.importo;
-    if(isExchangeRow(r)&&r.importoTo&&r.valutaTo){const ct=r.valutaTo;if(!byCur[ct])byCur[ct]={in:0,out:0};if(entityFilter&&r.to===entityFilter)byCur[ct].in+=r.importoTo;}
-  });
-  const currencies=Object.keys(byCur).sort();
-  let html='';
+  filtered.forEach(r=>{const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]={in:0,out:0};if(entityFilter){if(r.to===entityFilter)byCur[cur].in+=r.importo;else if(r.from===entityFilter)byCur[cur].out+=r.importo;}else byCur[cur].in+=r.importo;if(isExchangeRow(r)&&r.importoTo&&r.valutaTo){const ct=r.valutaTo;if(!byCur[ct])byCur[ct]={in:0,out:0};if(entityFilter&&r.to===entityFilter)byCur[ct].in+=r.importoTo;}});
+  const currencies=Object.keys(byCur).sort();let html='';
   if(!currencies.length){html=`<div class="summary"><div class="card in"><label>Entrate</label><span>—</span></div><div class="card out"><label>Uscite</label><span>—</span></div><div class="card neutral"><label>Movimenti</label><span>${filtered.length}</span></div></div>`;}
   else{html='<div class="summary">';currencies.forEach(cur=>{const d=byCur[cur],s=d.in-d.out;if(d.in>0)html+=`<div class="card in"><label>${curSymbol(cur)} Entrate</label><span>${fmtAmt(d.in,cur)}</span></div>`;if(d.out>0)html+=`<div class="card out"><label>${curSymbol(cur)} Uscite</label><span>${fmtAmt(d.out,cur)}</span></div>`;if(d.in>0||d.out>0)html+=`<div class="card ${s>=0?'saldo-pos':'saldo-neg'}"><label>${curSymbol(cur)} Saldo</label><span>${fmtAmt(s,cur)}</span></div>`;});html+=`<div class="card neutral"><label>Movimenti</label><span>${filtered.length}</span></div></div>`;}
   document.getElementById('summaryArea').innerHTML=html;
@@ -1086,7 +1011,7 @@ function onTipoSelChange(){tipoFilter=document.getElementById('tipoSel').value;d
 function clearTipoFilter(){tipoFilter='';document.getElementById('tipoSel').value='';document.getElementById('tipoSel').className='tipo-select';updateFilterBadge();render();}
 function onValutaSelChange(){valutaFilter=document.getElementById('valutaSel').value;document.getElementById('valutaSel').className=valutaFilter?'val-select active-sel':'val-select';updateFilterBadge();render();}
 function clearValutaFilter(){valutaFilter='';document.getElementById('valutaSel').value='';document.getElementById('valutaSel').className='val-select';updateFilterBadge();render();}
-function setSort(field){if(sortField===field)sortDir*=-1;else{sortField=field;sortDir=1;}updateSortHeaders();render();}
+function setSort(f){if(sortField===f)sortDir*=-1;else{sortField=f;sortDir=1;}updateSortHeaders();render();}
 function updateSortHeaders(){['data','from','to','desc','c1','importo'].forEach(f=>{const el=document.getElementById('sh-'+f);if(!el)return;el.textContent=f===sortField?(sortDir===1?'▲':'▼'):'⇅';el.style.opacity=f===sortField?'1':'0.35';el.style.fontSize='10px';});}
 function getSorted(arr){return[...arr].sort((a,b)=>{let va=a[sortField],vb=b[sortField];if(sortField==='importo'){va=parseFloat(va)||0;vb=parseFloat(vb)||0;return(va-vb)*sortDir;}return String(va||'').localeCompare(String(vb||''),'it')*sortDir;});}
 function matchesCatFilter(set,value){if(set.size===0)return true;const voidSel=set.has(VOID),real=new Set([...set].filter(v=>v!==VOID));if(voidSel&&isVoid(value))return true;if(real.size>0&&!isVoid(value)&&real.has(value))return true;return false;}
@@ -1159,49 +1084,24 @@ function renderCatCell(r){
   if(r.c3&&r.c3!=='-')h+=`<span class="c3-badge">${r.c3}</span>`;
   h+='</div>';return h;
 }
-
-// Genera l'HTML dell'area documento nella riga edit
-function renderEditDocArea(r){
-  const hasDoc=!!(r.docUrl&&r.docName);
-  let html=`<div class="edit-doc-area">
-    <div class="edit-doc-label">📎 Documento allegato</div>`;
-  if(hasDoc){
-    html+=`<div class="edit-doc-current">
-      <a class="doc-link" href="${r.docUrl}" target="_blank">📎 ${r.docName}</a>
-      <button class="btn-rm-doc" onclick="editClearDoc()" title="Rimuovi documento">🗑 Rimuovi</button>
-    </div>`;
-  }
-  html+=`<div class="edit-doc-pick">
-    <button class="btn-pick-doc" onclick="editPickDoc()">📂 ${hasDoc?'Sostituisci':'Carica'} file</button>
-    <input type="file" id="editFileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onEditFileSelected(this)">
-  </div>
-  <div class="edit-upload-bar-wrap" id="editUploadBarWrap"><div class="edit-upload-bar" id="editUploadBar"></div></div>
-  <div class="edit-doc-status" id="editDocStatus"></div>
-</div>`;
-  return html;
+function renderDocChips(r){
+  if(!r.docs||!r.docs.length)return '';
+  return`<div class="doc-chips">${r.docs.map(d=>`<a class="doc-link" href="${d.url}" target="_blank" title="${d.name}">📎 ${d.name}</a>`).join('')}</div>`;
 }
-
 function render(){
   renderSummary();
   const tbody=document.getElementById('tbody');
   const filtered=getSorted(getFiltered());
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="10" class="empty">Nessun movimento</td></tr>`;return;}
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9" class="empty">Nessun movimento</td></tr>`;return;}
   const nomeOpts=nomi.map(n=>`<option value="${n.name}">${n.name}</option>`).join('');
   const c1Opts=c1.map(c=>`<option value="${c}">${c}</option>`).join('');
   let html='';
   filtered.forEach((r,i)=>{
     const isEx=isExchangeRow(r),cur=r.valuta||'EUR',curTo=r.valutaTo||cur;
     const fromTipo=getTipoNome(r.from),toTipo=getTipoNome(r.to);
-    let signHtml='';
-    if(entityFilter){
-      if(r.to===entityFilter)signHtml=`<span class="amount-pos">+ ${fmtAmt(isEx&&r.valutaTo?r.importoTo||r.importo:r.importo,isEx&&r.valutaTo?r.valutaTo:cur)}</span>`;
-      else signHtml=`<span class="amount-neg">- ${fmtAmt(r.importo,cur)}</span>`;
-    }
-    const valHtml=isEx?`<span class="${curClass(cur)}">${curSymbol(cur)}</span> <span style="color:var(--text3);font-size:10px;">→</span> <span class="${curClass(curTo)}">${curSymbol(curTo)}</span> <span class="fx-tag">FX</span>`:`<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
-    const docHtml=r.docUrl?`<a class="doc-link" href="${r.docUrl}" target="_blank">📎 ${r.docName||'Doc'}</a>`:'';
+    const valHtml=isEx?`<span class="${curClass(cur)}">${curSymbol(cur)}</span><span style="color:var(--text3);font-size:9px;">→</span><span class="${curClass(curTo)}">${curSymbol(curTo)}</span><span class="fx-tag">FX</span>`:`<span class="${curClass(cur)}">${curSymbol(cur)}</span>`;
     if(editingIdx===i){
-      // Reset stato edit doc all'apertura
-      editPendingFile=null;editRemoveDoc=false;
+      editPendingDocs=editPendingDocs.filter(d=>d.status!=='done');// reset done on re-open
       const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
       const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
       html+=`<tr class="editing">
@@ -1215,9 +1115,9 @@ function render(){
           <select class="edit-select" id="ed-c3" style="margin-top:2px">${rc3}</select>
         </div></td>
         <td class="col-imp"><input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
-        ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:60px"> ${curSymbol(curTo)}</small>`:''}</td>
+        ${isEx?`<br><small style="color:#e67e22;">→<input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:55px"> ${curSymbol(curTo)}</small>`:''}</td>
         <td class="col-val">${valHtml}</td>
-        <td class="col-doc" colspan="2">${renderEditDocArea(r)}</td>
+        <td class="col-doc" colspan="2"><div id="editDocsAreaContainer">${renderEditDocsArea(r,i)}</div></td>
       </tr>
       <tr class="editing">
         <td colspan="9" style="padding:4px 8px 8px;">
@@ -1233,7 +1133,7 @@ function render(){
         const ec=document.getElementById('ed-c1');if(ec)for(let o of ec.options)if(o.value===r.c1)o.selected=true;
       },0);
     }else{
-      const importoDisplay=isEx?`${fmtAmt(r.importo,cur)}<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,curTo)}</small>`:fmtAmt(r.importo,cur);
+      const importoDisplay=isEx?`${fmtAmt(r.importo,cur)}<br><small style="color:#e67e22;">→${fmtAmt(r.importoTo||0,curTo)}</small>`:fmtAmt(r.importo,cur);
       html+=`<tr ${isEx?'class="exchange-row"':''}>
         <td class="col-data">${fmtDate(r.data)}</td>
         <td class="col-from"><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')" title="${r.from}">${r.from}</span>${fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:''}</td>
@@ -1242,7 +1142,7 @@ function render(){
         <td class="col-cat">${renderCatCell(r)}</td>
         <td class="col-imp amount-neu">${importoDisplay}</td>
         <td class="col-val">${valHtml}</td>
-        <td class="col-doc">${docHtml}</td>
+        <td class="col-doc">${renderDocChips(r)}</td>
         <td class="col-act"><div class="row-actions">
           <button class="btn-edit" onclick="startEdit(${i})">✏️</button>
           <button class="btn-del" onclick="elimina(${i})">🗑</button>
@@ -1262,36 +1162,31 @@ async function aggiungi(){
   if(!data||!fn||!tn||!desc||isNaN(importo)||importo<=0){alert('Compila tutti i campi');return;}
   if(fn===tn){alert('From = To non valido');return;}
   const cf=getNomeValuta(fn),ct=getNomeValuta(tn),isEx=cf!==ct;
-  const row={data,from:fn,to:tn,desc,c1:c1v,c2:c2v,c3:c3v,importo,valuta:cf};
+  const row={data,from:fn,to:tn,desc,c1:c1v,c2:c2v,c3:c3v,importo,valuta:cf,docs:[]};
   if(isEx){row.isExchange=true;row.valutaTo=ct;row.importoTo=parseFloat(document.getElementById('importoTo').value)||0;row.tassoFX=parseFloat(document.getElementById('tassoFX').value)||getRate(cf,ct);}
-  if(pendingDocFile){
-    try{
-      const docInfo=await uploadPendingDoc();
-      if(docInfo){row.docUrl=docInfo.url;row.docPath=docInfo.path;row.docName=docInfo.name;}
-    }catch(e){if(!confirm('Errore upload documento. Salvare il movimento lo stesso?'))return;}
+  // Upload tutti i doc pending
+  if(insertPendingDocs.length){
+    const uploaded=await uploadInsertDocs();
+    row.docs.push(...uploaded);
   }
   rows.push(row);rows.sort((a,b)=>a.data.localeCompare(b.data));
   document.getElementById('descrizione').value='';document.getElementById('importo').value='';
   document.getElementById('importoTo').value='';document.getElementById('tassoFX').value='';
   delete document.getElementById('tassoFX').dataset.manual;document.getElementById('fxRow').style.display='none';
-  clearPendingDoc();
+  insertPendingDocs=[];renderInsertPendingList();
   await saveToFirebase();render();calcStorageUsage();
 }
+
 function startEdit(i){
-  editingIdx=i;
-  editPendingFile=null;
-  editRemoveDoc=false;
-  render();
+  editingIdx=i;editPendingDocs=[];editRemovedPaths=new Set();render();
 }
-function cancelEdit(){editingIdx=null;editPendingFile=null;editRemoveDoc=false;render();}
+function cancelEdit(){editingIdx=null;editPendingDocs=[];editRemovedPaths=new Set();render();}
 
 async function saveEdit(){
   if(editingIdx===null){cancelEdit();return;}
   const fi=getSorted(getFiltered());if(editingIdx<0||editingIdx>=fi.length){cancelEdit();return;}
   const target=fi[editingIdx],orig=rows.indexOf(target);if(orig===-1){cancelEdit();return;}
   const r=rows[orig];
-
-  // Aggiorna campi base
   r.data=document.getElementById('ed-data').value||r.data;
   r.from=document.getElementById('ed-from').value||r.from;
   r.to=document.getElementById('ed-to').value||r.to;
@@ -1302,33 +1197,19 @@ async function saveEdit(){
   r.importo=parseFloat(document.getElementById('ed-imp').value)||r.importo;
   r.valuta=getNomeValuta(r.from);
   if(isExchangeRow(r)){const el=document.getElementById('ed-impto');if(el)r.importoTo=parseFloat(el.value)||r.importoTo;}
-
-  // Gestione documento
-  if(editRemoveDoc && r.docPath){
-    // Elimina file da Storage e rimuovi riferimenti
-    try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Storage delete skip',e);}
-    delete r.docUrl;delete r.docPath;delete r.docName;
-  } else if(editPendingFile){
-    // Se c'era un documento precedente, eliminalo prima
-    if(r.docPath){
-      try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Old doc delete skip',e);}
-    }
-    // Carica il nuovo file
-    try{
-      const barWrap=document.getElementById('editUploadBarWrap');
-      const bar=document.getElementById('editUploadBar');
-      const statusEl=document.getElementById('editDocStatus');
-      if(statusEl)statusEl.textContent='⏳ Caricamento...';
-      const docInfo=await uploadFile(editPendingFile,bar,barWrap);
-      r.docUrl=docInfo.url;r.docPath=docInfo.path;r.docName=docInfo.name;
-      if(statusEl)statusEl.textContent='✅ Caricato!';
-    }catch(e){
-      if(!confirm('Errore upload documento. Salvare lo stesso?'))return;
-    }
+  // Rimuovi doc eliminati
+  for(const path of editRemovedPaths){
+    try{await deleteObject(sRef(storage,path));}catch(e){console.warn('del skip',e);}
+    r.docs=(r.docs||[]).filter(d=>d.path!==path);
   }
-
+  // Carica nuovi doc
+  if(editPendingDocs.length){
+    const uploaded=await uploadEditDocs();
+    if(!r.docs)r.docs=[];
+    r.docs.push(...uploaded);
+  }
   rows.sort((a,b)=>a.data.localeCompare(b.data));
-  editingIdx=null;editPendingFile=null;editRemoveDoc=false;
+  editingIdx=null;editPendingDocs=[];editRemovedPaths=new Set();
   await saveToFirebase();render();calcStorageUsage();
 }
 
@@ -1337,8 +1218,8 @@ async function elimina(i){
   const fi=getSorted(getFiltered());if(i<0||i>=fi.length)return;
   const orig=rows.indexOf(fi[i]);if(orig===-1)return;
   const r=rows[orig];
-  if(r.docPath){try{await deleteObject(sRef(storage,r.docPath));}catch(e){console.warn('Storage delete skip',e);}calcStorageUsage();}
-  rows.splice(orig,1);await saveToFirebase();render();
+  for(const d of(r.docs||[])){try{await deleteObject(sRef(storage,d.path));}catch(e){console.warn('del skip',e);}}
+  rows.splice(orig,1);await saveToFirebase();render();calcStorageUsage();
 }
 function edC1Change(v){const s2=document.getElementById('ed-c2'),s3=document.getElementById('ed-c3');s2.innerHTML='<option value="-">—</option>'+(c2Map[v]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');s3.innerHTML='<option value="-">—</option>';}
 function edC2Change(c1v,v){const s3=document.getElementById('ed-c3');s3.innerHTML='<option value="-">—</option>'+(c3Map[c3k(c1v,v)]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');}
@@ -1372,182 +1253,32 @@ function syncRptCatC2(){syncDepC2('rptC1','rptCatC2');syncRptCatC3();}function s
 function syncRptTipoC2(){syncDepC2('rptTipoC1','rptTipoC2');syncRptTipoC3();}function syncRptTipoC3(){syncDepC3('rptTipoC1','rptTipoC2','rptTipoC3');}
 function syncRptDateC2(){syncDepC2('rptDateC1','rptDateC2');syncRptDateC3();}function syncRptDateC3(){syncDepC3('rptDateC1','rptDateC2','rptDateC3');}
 function syncRptSaldoC2(){syncDepC2('rptSaldoC1','rptSaldoC2');syncRptSaldoC3();}function syncRptSaldoC3(){syncDepC3('rptSaldoC1','rptSaldoC2','rptSaldoC3');}
-function syncReportSelects(){
-  const re=document.getElementById('rptEntity'),prev=re.value;
-  re.innerHTML='<option value="">— Seleziona —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name} (${curSymbol(n.valuta||'EUR')})${n.tipo?' ['+n.tipo+']':''}</option>`).join('');
-  const c1opts='<option value="">— Tutte —</option>'+c1.map(c=>`<option value="${c}">${c}</option>`).join('');
-  ['rptEstrC1','rptC1','rptTipoC1','rptDateC1','rptSaldoC1'].forEach(id=>{const el=document.getElementById(id);if(el){const p=el.value;el.innerHTML=c1opts;if(p)el.value=p;}});
-  const rt=document.getElementById('rptTipoSel'),prevt=rt.value;
-  rt.innerHTML='<option value="">— Tutti —</option>'+getTipi().map(t=>`<option value="${t}" ${t===prevt?'selected':''}>${t}</option>`).join('');
-}
-function onRptTypeChange(){
-  const t=document.getElementById('rptType').value;
-  ['Estrato','Categoria','Tipo','Date','Saldo','Fx'].forEach(x=>{const el=document.getElementById('rptParam'+x);if(el)el.style.display='none';});
-  const map={estratto:'Estrato',categoria:'Categoria',tipo:'Tipo',date:'Date',saldo:'Saldo',fx:'Fx'};
-  const el=document.getElementById('rptParam'+map[t]);if(el)el.style.display='block';
-}
+function syncReportSelects(){const re=document.getElementById('rptEntity'),prev=re.value;re.innerHTML='<option value="">— Seleziona —</option>'+nomi.map(n=>`<option value="${n.name}" ${n.name===prev?'selected':''}>${n.name} (${curSymbol(n.valuta||'EUR')})${n.tipo?' ['+n.tipo+']':''}</option>`).join('');const c1opts='<option value="">— Tutte —</option>'+c1.map(c=>`<option value="${c}">${c}</option>`).join('');['rptEstrC1','rptC1','rptTipoC1','rptDateC1','rptSaldoC1'].forEach(id=>{const el=document.getElementById(id);if(el){const p=el.value;el.innerHTML=c1opts;if(p)el.value=p;}});const rt=document.getElementById('rptTipoSel'),prevt=rt.value;rt.innerHTML='<option value="">— Tutti —</option>'+getTipi().map(t=>`<option value="${t}" ${t===prevt?'selected':''}>${t}</option>`).join('');}
+function onRptTypeChange(){const t=document.getElementById('rptType').value;['Estrato','Categoria','Tipo','Date','Saldo','Fx'].forEach(x=>{const el=document.getElementById('rptParam'+x);if(el)el.style.display='none';});const map={estratto:'Estrato',categoria:'Categoria',tipo:'Tipo',date:'Date',saldo:'Saldo',fx:'Fx'};const el=document.getElementById('rptParam'+map[t]);if(el)el.style.display='block';}
 function newReport(){activeReportIdx=null;document.getElementById('rptName').value='';document.getElementById('rptType').value='estratto';onRptTypeChange();['rptFrom','rptTo','rptFromCat','rptToCat','rptFromTipo','rptToTipo','rptFromDate','rptToDate','rptFromSaldo','rptToSaldo','rptFromFx','rptToFx'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('reportOutput').style.display='none';document.querySelectorAll('.report-saved-item').forEach(x=>x.classList.remove('active'));}
-function loadReport(idx){
-  activeReportIdx=idx;const r=savedReports[idx];
-  document.getElementById('rptName').value=r.name;document.getElementById('rptType').value=r.type;onRptTypeChange();
-  const p=r.params||{};
-  if(r.type==='estratto'){document.getElementById('rptEntity').value=p.entity||'';document.getElementById('rptFrom').value=p.from||'';document.getElementById('rptTo').value=p.to||'';document.getElementById('rptEstrC1').value=p.c1v||'';syncRptEstrC2();document.getElementById('rptEstrC2').value=p.c2v||'';syncRptEstrC3();document.getElementById('rptEstrC3').value=p.c3v||'';}
-  if(r.type==='categoria'){document.getElementById('rptC1').value=p.c1v||'';syncRptCatC2();document.getElementById('rptCatC2').value=p.c2v||'';syncRptCatC3();document.getElementById('rptCatC3').value=p.c3v||'';document.getElementById('rptFromCat').value=p.from||'';document.getElementById('rptToCat').value=p.to||'';}
-  if(r.type==='tipo'){document.getElementById('rptTipoSel').value=p.tipo||'';document.getElementById('rptTipoC1').value=p.c1v||'';syncRptTipoC2();document.getElementById('rptTipoC2').value=p.c2v||'';syncRptTipoC3();document.getElementById('rptTipoC3').value=p.c3v||'';document.getElementById('rptFromTipo').value=p.from||'';document.getElementById('rptToTipo').value=p.to||'';}
-  if(r.type==='date'){document.getElementById('rptDateC1').value=p.c1v||'';syncRptDateC2();document.getElementById('rptDateC2').value=p.c2v||'';syncRptDateC3();document.getElementById('rptDateC3').value=p.c3v||'';document.getElementById('rptFromDate').value=p.from||'';document.getElementById('rptToDate').value=p.to||'';}
-  if(r.type==='saldo'){document.getElementById('rptSaldoC1').value=p.c1v||'';syncRptSaldoC2();document.getElementById('rptSaldoC2').value=p.c2v||'';syncRptSaldoC3();document.getElementById('rptSaldoC3').value=p.c3v||'';document.getElementById('rptFromSaldo').value=p.from||'';document.getElementById('rptToSaldo').value=p.to||'';}
-  if(r.type==='fx'){document.getElementById('rptFromFx').value=p.from||'';document.getElementById('rptToFx').value=p.to||'';}
-  document.querySelectorAll('.report-saved-item').forEach((x,i2)=>x.classList.toggle('active',i2===idx));
-  runReport();
-}
-function getReportConfig(){
-  const type=document.getElementById('rptType').value;let params={};
-  if(type==='estratto')params={entity:document.getElementById('rptEntity').value,from:document.getElementById('rptFrom').value,to:document.getElementById('rptTo').value,c1v:document.getElementById('rptEstrC1').value,c2v:document.getElementById('rptEstrC2').value,c3v:document.getElementById('rptEstrC3').value};
-  if(type==='categoria')params={c1v:document.getElementById('rptC1').value,c2v:document.getElementById('rptCatC2').value,c3v:document.getElementById('rptCatC3').value,from:document.getElementById('rptFromCat').value,to:document.getElementById('rptToCat').value};
-  if(type==='tipo')params={tipo:document.getElementById('rptTipoSel').value,c1v:document.getElementById('rptTipoC1').value,c2v:document.getElementById('rptTipoC2').value,c3v:document.getElementById('rptTipoC3').value,from:document.getElementById('rptFromTipo').value,to:document.getElementById('rptToTipo').value};
-  if(type==='date')params={c1v:document.getElementById('rptDateC1').value,c2v:document.getElementById('rptDateC2').value,c3v:document.getElementById('rptDateC3').value,from:document.getElementById('rptFromDate').value,to:document.getElementById('rptToDate').value};
-  if(type==='saldo')params={c1v:document.getElementById('rptSaldoC1').value,c2v:document.getElementById('rptSaldoC2').value,c3v:document.getElementById('rptSaldoC3').value,from:document.getElementById('rptFromSaldo').value,to:document.getElementById('rptToSaldo').value};
-  if(type==='fx')params={from:document.getElementById('rptFromFx').value,to:document.getElementById('rptToFx').value};
-  return{type,params};
-}
+function loadReport(idx){activeReportIdx=idx;const r=savedReports[idx];document.getElementById('rptName').value=r.name;document.getElementById('rptType').value=r.type;onRptTypeChange();const p=r.params||{};if(r.type==='estratto'){document.getElementById('rptEntity').value=p.entity||'';document.getElementById('rptFrom').value=p.from||'';document.getElementById('rptTo').value=p.to||'';document.getElementById('rptEstrC1').value=p.c1v||'';syncRptEstrC2();document.getElementById('rptEstrC2').value=p.c2v||'';syncRptEstrC3();document.getElementById('rptEstrC3').value=p.c3v||'';}if(r.type==='categoria'){document.getElementById('rptC1').value=p.c1v||'';syncRptCatC2();document.getElementById('rptCatC2').value=p.c2v||'';syncRptCatC3();document.getElementById('rptCatC3').value=p.c3v||'';document.getElementById('rptFromCat').value=p.from||'';document.getElementById('rptToCat').value=p.to||'';}if(r.type==='tipo'){document.getElementById('rptTipoSel').value=p.tipo||'';document.getElementById('rptTipoC1').value=p.c1v||'';syncRptTipoC2();document.getElementById('rptTipoC2').value=p.c2v||'';syncRptTipoC3();document.getElementById('rptTipoC3').value=p.c3v||'';document.getElementById('rptFromTipo').value=p.from||'';document.getElementById('rptToTipo').value=p.to||'';}if(r.type==='date'){document.getElementById('rptDateC1').value=p.c1v||'';syncRptDateC2();document.getElementById('rptDateC2').value=p.c2v||'';syncRptDateC3();document.getElementById('rptDateC3').value=p.c3v||'';document.getElementById('rptFromDate').value=p.from||'';document.getElementById('rptToDate').value=p.to||'';}if(r.type==='saldo'){document.getElementById('rptSaldoC1').value=p.c1v||'';syncRptSaldoC2();document.getElementById('rptSaldoC2').value=p.c2v||'';syncRptSaldoC3();document.getElementById('rptSaldoC3').value=p.c3v||'';document.getElementById('rptFromSaldo').value=p.from||'';document.getElementById('rptToSaldo').value=p.to||'';}if(r.type==='fx'){document.getElementById('rptFromFx').value=p.from||'';document.getElementById('rptToFx').value=p.to||'';}document.querySelectorAll('.report-saved-item').forEach((x,i2)=>x.classList.toggle('active',i2===idx));runReport();}
+function getReportConfig(){const type=document.getElementById('rptType').value;let params={};if(type==='estratto')params={entity:document.getElementById('rptEntity').value,from:document.getElementById('rptFrom').value,to:document.getElementById('rptTo').value,c1v:document.getElementById('rptEstrC1').value,c2v:document.getElementById('rptEstrC2').value,c3v:document.getElementById('rptEstrC3').value};if(type==='categoria')params={c1v:document.getElementById('rptC1').value,c2v:document.getElementById('rptCatC2').value,c3v:document.getElementById('rptCatC3').value,from:document.getElementById('rptFromCat').value,to:document.getElementById('rptToCat').value};if(type==='tipo')params={tipo:document.getElementById('rptTipoSel').value,c1v:document.getElementById('rptTipoC1').value,c2v:document.getElementById('rptTipoC2').value,c3v:document.getElementById('rptTipoC3').value,from:document.getElementById('rptFromTipo').value,to:document.getElementById('rptToTipo').value};if(type==='date')params={c1v:document.getElementById('rptDateC1').value,c2v:document.getElementById('rptDateC2').value,c3v:document.getElementById('rptDateC3').value,from:document.getElementById('rptFromDate').value,to:document.getElementById('rptToDate').value};if(type==='saldo')params={c1v:document.getElementById('rptSaldoC1').value,c2v:document.getElementById('rptSaldoC2').value,c3v:document.getElementById('rptSaldoC3').value,from:document.getElementById('rptFromSaldo').value,to:document.getElementById('rptToSaldo').value};if(type==='fx')params={from:document.getElementById('rptFromFx').value,to:document.getElementById('rptToFx').value};return{type,params};}
 function catMatch(r,p){if(p.c1v&&r.c1!==p.c1v)return false;if(p.c2v&&r.c2!==p.c2v)return false;if(p.c3v&&r.c3!==p.c3v)return false;return true;}
 function filterRows(from,to,extra){return rows.filter(r=>{if(from&&r.data<from)return false;if(to&&r.data>to)return false;if(extra&&!extra(r))return false;return true;}).sort((a,b)=>a.data.localeCompare(b.data));}
 function catLabel(p){const parts=[];if(p.c1v)parts.push(p.c1v);if(p.c2v)parts.push(p.c2v);if(p.c3v)parts.push(p.c3v);return parts.length?parts.join(' › '):'Tutte cat.';}
-function runReport(){
-  const{type,params}=getReportConfig();
-  const out=document.getElementById('reportOutput');out.style.display='block';
-  const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità',fx:'Exchange FX'};
-  const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};
-  const name=document.getElementById('rptName').value||typeLabels[type];
-  document.getElementById('rptOutTitle').innerHTML=`${name} <span class="report-type-badge ${typeBadge[type]}">${typeLabels[type]}</span>`;
-  const metaEl=document.getElementById('rptOutMeta'),bodyEl=document.getElementById('rptOutBody');
-  if(type==='estratto')renderEstrattoReport(params,metaEl,bodyEl);
-  else if(type==='categoria')renderCategoriaReport(params,metaEl,bodyEl);
-  else if(type==='tipo')renderTipoReport(params,metaEl,bodyEl);
-  else if(type==='date')renderDateReport(params,metaEl,bodyEl);
-  else if(type==='saldo')renderSaldoReport(params,metaEl,bodyEl);
-  else if(type==='fx')renderFxReport(params,metaEl,bodyEl);
-}
-function renderEstrattoReport(p,metaEl,bodyEl){
-  const{entity,from,to}=p;if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}
-  const data=filterRows(from,to,r=>(r.from===entity||r.to===entity)&&catMatch(r,p));
-  const no=nomi.find(x=>x.name===entity),entityCur=no?no.valuta||'EUR':'EUR';
-  const cl=catLabel(p);metaEl.textContent=`${entity} (${curSymbol(entityCur)})${no&&no.tipo?' · '+no.tipo:''}${cl!=='Tutte cat.'?' · '+cl:''} ${(from||to)?'· '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;
-  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-  let saldoProg=0,totE=0,totU=0;
-  let html=`<table class="report-table"><thead><tr><th>Data</th><th>Controparte</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrata</th><th class="td-num">Uscita</th><th class="td-num">Saldo Prog.</th><th>Val.</th></tr></thead><tbody>`;
-  data.forEach(r=>{
-    const cur=r.valuta||'EUR',isEx=isExchangeRow(r);
-    const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';
-    const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';
-    const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';
-    if(r.to===entity){const entrata=isEx?r.importoTo||r.importo:r.importo,ec=isEx?r.valutaTo||cur:cur;totE+=entrata;saldoProg+=entrata;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.from}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num pos">${fmtAmt(entrata,ec)}</td><td></td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(ec)}">${curSymbol(ec)}</span></td></tr>`;}
-    else{totU+=r.importo;saldoProg-=r.importo;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.to}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td></td><td class="td-num neg">${fmtAmt(r.importo,cur)}</td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;}
-  });
-  html+=`</tbody><tfoot><tr><td colspan="6"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;
-  bodyEl.innerHTML=html;
-}
-function renderCategoriaReport(p,metaEl,bodyEl){
-  const data=filterRows(p.from,p.to,r=>catMatch(r,p));
-  const cl=catLabel(p);
-  metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;
-  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-  const byCur={};
-  data.forEach(r=>{
-    const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';
-    const sign=getMovSign(r),amt=r.importo;
-    if(!byCur[cur])byCur[cur]={};
-    if(!byCur[cur][k1])byCur[cur][k1]={entrate:0,uscite:0,subs:{}};
-    if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={entrate:0,uscite:0,subs:{}};
-    if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]={entrate:0,uscite:0};
-    const field=sign==='entrata'?'entrate':'uscite';
-    byCur[cur][k1][field]+=amt;byCur[cur][k1].subs[k2][field]+=amt;byCur[cur][k1].subs[k2].subs[k3][field]+=amt;
-  });
-  let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrate (+)</th><th class="td-num">Uscite (−)</th><th class="td-num">Saldo netto</th><th class="td-num">% totale</th></tr></thead><tbody>`;
-  Object.keys(byCur).sort().forEach(cur=>{
-    const totE=Object.values(byCur[cur]).reduce((s,g)=>s+g.entrate,0);
-    const totU=Object.values(byCur[cur]).reduce((s,g)=>s+g.uscite,0);
-    const totS=totE-totU,totBase=totE+totU||1;
-    html+=`<tr class="cur-section-header"><td colspan="7">💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp; Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp; Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp; Saldo: <strong class="${totS>=0?'pos':'neg'}">${fmtAmt(totS,cur)}</strong></td></tr>`;
-    Object.keys(byCur[cur]).sort().forEach(k1=>{
-      const g1=byCur[cur][k1],s1=g1.entrate-g1.uscite,pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);
-      html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td><td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;
-      Object.keys(g1.subs).sort().forEach(k2=>{
-        const g2=g1.subs[k2],s2=g2.entrate-g2.uscite,pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);
-        const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');
-        html+=`<tr style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td><td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td><td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;
-        if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const g3=g2.subs[k3],s3=g3.entrate-g3.uscite,pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td><td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td><td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});
-      });
-      html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td><td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;
-    });
-    html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td><td class="td-num ${totS>=0?'pos':'neg'}"><strong>${fmtAmt(totS,cur)}</strong></td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;
-  });
-  html+=`</tbody></table>`;bodyEl.innerHTML=html;
-}
-function renderTipoReport(p,metaEl,bodyEl){
-  const{tipo,from,to}=p;const data=filterRows(from,to,r=>catMatch(r,p));
-  const cl=catLabel(p);metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;
-  const tipiMap={};
-  data.forEach(r=>{[r.from,r.to].forEach((nome,idx)=>{const tn=getTipoNome(nome)||'—';if(tipo&&tn!==tipo)return;const cur=getNomeValuta(nome);if(!tipiMap[tn])tipiMap[tn]={};if(!tipiMap[tn][nome])tipiMap[tn][nome]={entrate:{},uscite:{}};if(idx===1)tipiMap[tn][nome].entrate[cur]=(tipiMap[tn][nome].entrate[cur]||0)+r.importo;else tipiMap[tn][nome].uscite[cur]=(tipiMap[tn][nome].uscite[cur]||0)+r.importo;});});
-  if(!Object.keys(tipiMap).length){bodyEl.innerHTML='<div class="report-no-data">Nessun dato</div>';return;}
-  let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
-  Object.keys(tipiMap).sort().forEach(t=>{html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;Object.keys(tipiMap[t]).sort().forEach(nome=>{const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
-  html+=`</tbody></table>`;bodyEl.innerHTML=html;
-}
-function renderDateReport(p,metaEl,bodyEl){
-  const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
-  metaEl.textContent=`${cl}${(p.from||p.to)?' · '+fmtDate(p.from)+'→'+fmtDate(p.to):''} · ${data.length} mov.`;
-  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-  const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]=[];byCur[cur].push(r);});
-  let html=`<table class="report-table"><thead><tr><th>Data</th><th>From</th><th>To</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th><th>Val.</th></tr></thead><tbody>`;
-  Object.keys(byCur).sort().forEach(cur=>{
-    const arr=byCur[cur],tot=arr.reduce((s,r)=>s+r.importo,0);
-    html+=`<tr class="cur-section-header"><td colspan="9">💱 ${curSymbol(cur)} ${cur} — ${arr.length} mov. — Totale: <strong>${fmtAmt(tot,cur)}</strong></td></tr>`;
-    arr.forEach(r=>{const isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from}</td><td>${r.to}</td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;});
-  });
-  html+=`</tbody></table>`;bodyEl.innerHTML=html;
-}
-function renderSaldoReport(p,metaEl,bodyEl){
-  const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);
-  metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'}`;
-  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}
-  const saldi={};nomi.forEach(n=>{saldi[n.name]={entrate:{},uscite:{},tipo:n.tipo||'—',valuta:n.valuta||'EUR'};});
-  data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo||cf;if(!saldi[r.from])saldi[r.from]={entrate:{},uscite:{},tipo:getTipoNome(r.from)||'—',valuta:cf};if(!saldi[r.to])saldi[r.to]={entrate:{},uscite:{},tipo:getTipoNome(r.to)||'—',valuta:ct};saldi[r.from].uscite[cf]=(saldi[r.from].uscite[cf]||0)+r.importo;const toAmt=isExchangeRow(r)?r.importoTo||r.importo:r.importo;saldi[r.to].entrate[ct]=(saldi[r.to].entrate[ct]||0)+toAmt;});
-  const perTipo={};Object.keys(saldi).forEach(nome=>{const s=saldi[nome],t=s.tipo;if(!perTipo[t])perTipo[t]=[];perTipo[t].push({nome,...s});});
-  let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;
-  Object.keys(perTipo).sort().forEach(tipo=>{const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));if(!items.length)return;html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});
-  html+=`</tbody></table>`;bodyEl.innerHTML=html;
-}
-function renderFxReport(p,metaEl,bodyEl){
-  const data=filterRows(p.from,p.to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);
-  metaEl.textContent=`Exchange FX · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} operazioni`;
-  if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessuna operazione FX trovata</div>';return;}
-  let html=`<table class="report-table"><thead><tr><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Ceduto</th><th class="td-num">Ricevuto</th><th class="td-num">Tasso appl.</th><th class="td-num">Tasso att.*</th><th class="td-num">Δ%</th></tr></thead><tbody>`;
-  let totByCur={};
-  data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo;const ta=r.tassoFX||(r.importoTo&&r.importo?r.importoTo/r.importo:getRate(cf,ct));const tatt=getRate(cf,ct),delta=ta>0?((ta-tatt)/ta*100):0;if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{}};totByCur[cf].ceduto+=r.importo;totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from} <span class="${curClass(cf)}">${curSymbol(cf)}</span></td><td>${r.to} <span class="${curClass(ct)}">${curSymbol(ct)}</span></td><td>${r.desc}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num neg">${fmtAmt(r.importo,cf)}</td><td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td><td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${ta.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tatt.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta.toFixed(2)}%</td></tr>`;});
-  html+=`</tbody><tfoot>`;Object.keys(totByCur).forEach(cf=>{Object.keys(totByCur[cf].ricevuto).forEach(ct=>{html+=`<tr><td colspan="7"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totByCur[cf].ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(totByCur[cf].ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;});});
-  html+=`</tfoot></table>`;bodyEl.innerHTML=html;
-}
-async function saveReport(){
-  const name=document.getElementById('rptName').value.trim();if(!name){alert('Inserisci un nome');return;}
-  const{type,params}=getReportConfig();
-  const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità',fx:'Exchange FX'};
-  const rpt={name,type,typeLabel:typeLabels[type],params,updatedAt:new Date().toISOString()};
-  if(activeReportIdx!==null)savedReports[activeReportIdx]=rpt;else{savedReports.push(rpt);activeReportIdx=savedReports.length-1;}
-  await saveToFirebase();renderSavedReports();runReport();alert(`Report "${name}" salvato!`);
-}
+function runReport(){const{type,params}=getReportConfig();const out=document.getElementById('reportOutput');out.style.display='block';const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità',fx:'Exchange FX'};const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};const name=document.getElementById('rptName').value||typeLabels[type];document.getElementById('rptOutTitle').innerHTML=`${name} <span class="report-type-badge ${typeBadge[type]}">${typeLabels[type]}</span>`;const metaEl=document.getElementById('rptOutMeta'),bodyEl=document.getElementById('rptOutBody');if(type==='estratto')renderEstrattoReport(params,metaEl,bodyEl);else if(type==='categoria')renderCategoriaReport(params,metaEl,bodyEl);else if(type==='tipo')renderTipoReport(params,metaEl,bodyEl);else if(type==='date')renderDateReport(params,metaEl,bodyEl);else if(type==='saldo')renderSaldoReport(params,metaEl,bodyEl);else if(type==='fx')renderFxReport(params,metaEl,bodyEl);}
+function renderEstrattoReport(p,metaEl,bodyEl){const{entity,from,to}=p;if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}const data=filterRows(from,to,r=>(r.from===entity||r.to===entity)&&catMatch(r,p));const no=nomi.find(x=>x.name===entity),entityCur=no?no.valuta||'EUR':'EUR';const cl=catLabel(p);metaEl.textContent=`${entity} (${curSymbol(entityCur)})${no&&no.tipo?' · '+no.tipo:''}${cl!=='Tutte cat.'?' · '+cl:''} ${(from||to)?'· '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}let saldoProg=0,totE=0,totU=0;let html=`<table class="report-table"><thead><tr><th>Data</th><th>Controparte</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrata</th><th class="td-num">Uscita</th><th class="td-num">Saldo Prog.</th><th>Val.</th></tr></thead><tbody>`;data.forEach(r=>{const cur=r.valuta||'EUR',isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';if(r.to===entity){const entrata=isEx?r.importoTo||r.importo:r.importo,ec=isEx?r.valutaTo||cur:cur;totE+=entrata;saldoProg+=entrata;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.from}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num pos">${fmtAmt(entrata,ec)}</td><td></td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(ec)}">${curSymbol(ec)}</span></td></tr>`;}else{totU+=r.importo;saldoProg-=r.importo;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.to}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td></td><td class="td-num neg">${fmtAmt(r.importo,cur)}</td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;}});html+=`</tbody><tfoot><tr><td colspan="6"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;bodyEl.innerHTML=html;}
+function renderCategoriaReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';const sign=getMovSign(r),amt=r.importo;if(!byCur[cur])byCur[cur]={};if(!byCur[cur][k1])byCur[cur][k1]={entrate:0,uscite:0,subs:{}};if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={entrate:0,uscite:0,subs:{}};if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]={entrate:0,uscite:0};const field=sign==='entrata'?'entrate':'uscite';byCur[cur][k1][field]+=amt;byCur[cur][k1].subs[k2][field]+=amt;byCur[cur][k1].subs[k2].subs[k3][field]+=amt;});let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrate (+)</th><th class="td-num">Uscite (−)</th><th class="td-num">Saldo netto</th><th class="td-num">% totale</th></tr></thead><tbody>`;Object.keys(byCur).sort().forEach(cur=>{const totE=Object.values(byCur[cur]).reduce((s,g)=>s+g.entrate,0);const totU=Object.values(byCur[cur]).reduce((s,g)=>s+g.uscite,0);const totS=totE-totU,totBase=totE+totU||1;html+=`<tr class="cur-section-header"><td colspan="7">💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp; Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp; Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp; Saldo: <strong class="${totS>=0?'pos':'neg'}">${fmtAmt(totS,cur)}</strong></td></tr>`;Object.keys(byCur[cur]).sort().forEach(k1=>{const g1=byCur[cur][k1],s1=g1.entrate-g1.uscite,pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td><td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;Object.keys(g1.subs).sort().forEach(k2=>{const g2=g1.subs[k2],s2=g2.entrate-g2.uscite,pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');html+=`<tr style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td><td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td><td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const g3=g2.subs[k3],s3=g3.entrate-g3.uscite,pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td><td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td><td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});});html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td><td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;});html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td><td class="td-num ${totS>=0?'pos':'neg'}"><strong>${fmtAmt(totS,cur)}</strong></td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
+function renderTipoReport(p,metaEl,bodyEl){const{tipo,from,to}=p;const data=filterRows(from,to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;const tipiMap={};data.forEach(r=>{[r.from,r.to].forEach((nome,idx)=>{const tn=getTipoNome(nome)||'—';if(tipo&&tn!==tipo)return;const cur=getNomeValuta(nome);if(!tipiMap[tn])tipiMap[tn]={};if(!tipiMap[tn][nome])tipiMap[tn][nome]={entrate:{},uscite:{}};if(idx===1)tipiMap[tn][nome].entrate[cur]=(tipiMap[tn][nome].entrate[cur]||0)+r.importo;else tipiMap[tn][nome].uscite[cur]=(tipiMap[tn][nome].uscite[cur]||0)+r.importo;});});if(!Object.keys(tipiMap).length){bodyEl.innerHTML='<div class="report-no-data">Nessun dato</div>';return;}let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;Object.keys(tipiMap).sort().forEach(t=>{html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;Object.keys(tipiMap[t]).sort().forEach(nome=>{const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
+function renderDateReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${cl}${(p.from||p.to)?' · '+fmtDate(p.from)+'→'+fmtDate(p.to):''} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]=[];byCur[cur].push(r);});let html=`<table class="report-table"><thead><tr><th>Data</th><th>From</th><th>To</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th><th>Val.</th></tr></thead><tbody>`;Object.keys(byCur).sort().forEach(cur=>{const arr=byCur[cur],tot=arr.reduce((s,r)=>s+r.importo,0);html+=`<tr class="cur-section-header"><td colspan="9">💱 ${curSymbol(cur)} ${cur} — ${arr.length} mov. — Totale: <strong>${fmtAmt(tot,cur)}</strong></td></tr>`;arr.forEach(r=>{const isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from}</td><td>${r.to}</td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;});});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
+function renderSaldoReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'}`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const saldi={};nomi.forEach(n=>{saldi[n.name]={entrate:{},uscite:{},tipo:n.tipo||'—',valuta:n.valuta||'EUR'};});data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo||cf;if(!saldi[r.from])saldi[r.from]={entrate:{},uscite:{},tipo:getTipoNome(r.from)||'—',valuta:cf};if(!saldi[r.to])saldi[r.to]={entrate:{},uscite:{},tipo:getTipoNome(r.to)||'—',valuta:ct};saldi[r.from].uscite[cf]=(saldi[r.from].uscite[cf]||0)+r.importo;const toAmt=isExchangeRow(r)?r.importoTo||r.importo:r.importo;saldi[r.to].entrate[ct]=(saldi[r.to].entrate[ct]||0)+toAmt;});const perTipo={};Object.keys(saldi).forEach(nome=>{const s=saldi[nome],t=s.tipo;if(!perTipo[t])perTipo[t]=[];perTipo[t].push({nome,...s});});let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;Object.keys(perTipo).sort().forEach(tipo=>{const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));if(!items.length)return;html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
+function renderFxReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>r.isExchange&&r.valutaTo&&r.valutaTo!==r.valuta);metaEl.textContent=`Exchange FX · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} operazioni`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessuna operazione FX trovata</div>';return;}let html=`<table class="report-table"><thead><tr><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Ceduto</th><th class="td-num">Ricevuto</th><th class="td-num">Tasso appl.</th><th class="td-num">Tasso att.*</th><th class="td-num">Δ%</th></tr></thead><tbody>`;let totByCur={};data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo;const ta=r.tassoFX||(r.importoTo&&r.importo?r.importoTo/r.importo:getRate(cf,ct));const tatt=getRate(cf,ct),delta=ta>0?((ta-tatt)/ta*100):0;if(!totByCur[cf])totByCur[cf]={ceduto:0,ricevuto:{}};totByCur[cf].ceduto+=r.importo;totByCur[cf].ricevuto[ct]=(totByCur[cf].ricevuto[ct]||0)+(r.importoTo||0);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from} <span class="${curClass(cf)}">${curSymbol(cf)}</span></td><td>${r.to} <span class="${curClass(ct)}">${curSymbol(ct)}</span></td><td>${r.desc}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num neg">${fmtAmt(r.importo,cf)}</td><td class="td-num pos">${fmtAmt(r.importoTo||0,ct)}</td><td class="td-num" style="font-family:monospace;">1 ${curSymbol(cf)} = ${ta.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num" style="font-family:monospace;color:var(--text3);">1 ${curSymbol(cf)} = ${tatt.toFixed(4)} ${curSymbol(ct)}</td><td class="td-num ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta.toFixed(2)}%</td></tr>`;});html+=`</tbody><tfoot>`;Object.keys(totByCur).forEach(cf=>{Object.keys(totByCur[cf].ricevuto).forEach(ct=>{html+=`<tr><td colspan="7"><strong>Totale ${curSymbol(cf)}→${curSymbol(ct)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totByCur[cf].ceduto,cf)}</strong></td><td class="td-num pos"><strong>${fmtAmt(totByCur[cf].ricevuto[ct],ct)}</strong></td><td colspan="3"><small style="color:var(--text3)">*tasso corrente via API</small></td></tr>`;});});html+=`</tfoot></table>`;bodyEl.innerHTML=html;}
+async function saveReport(){const name=document.getElementById('rptName').value.trim();if(!name){alert('Inserisci un nome');return;}const{type,params}=getReportConfig();const typeLabels={estratto:'Estratto Conto',categoria:'Per Categoria',tipo:'Per Tipo',date:'Per Periodo',saldo:'Saldo Entità',fx:'Exchange FX'};const rpt={name,type,typeLabel:typeLabels[type],params,updatedAt:new Date().toISOString()};if(activeReportIdx!==null)savedReports[activeReportIdx]=rpt;else{savedReports.push(rpt);activeReportIdx=savedReports.length-1;}await saveToFirebase();renderSavedReports();runReport();alert(`Report "${name}" salvato!`);}
 async function deleteReport(idx){if(!confirm(`Eliminare "${savedReports[idx].name}"?`))return;savedReports.splice(idx,1);if(activeReportIdx===idx){activeReportIdx=null;document.getElementById('reportOutput').style.display='none';}else if(activeReportIdx>idx)activeReportIdx--;await saveToFirebase();renderSavedReports();}
 function renderSavedReports(){const container=document.getElementById('reportSavedList');if(!savedReports.length){container.innerHTML='<div class="report-empty-saved">Nessun report salvato</div>';return;}const typeBadge={estratto:'rtb-estratto',categoria:'rtb-categoria',tipo:'rtb-tipo',date:'rtb-date',saldo:'rtb-saldo',fx:'rtb-fx'};container.innerHTML=savedReports.map((r,i)=>`<div class="report-saved-item ${activeReportIdx===i?'active':''}" onclick="loadReport(${i})"><div><div class="report-saved-name">${r.name}</div><div class="report-saved-type"><span class="report-type-badge ${typeBadge[r.type]||''}">${r.typeLabel||r.type}</span></div></div><button class="report-del-btn" onclick="event.stopPropagation();deleteReport(${i})">✕</button></div>`).join('');}
 function printReport(){window.print();}
-
 function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
-function salvaBackup(){const json=JSON.stringify({version:'2.0-multicur',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
+function salvaBackup(){const json=JSON.stringify({version:'3.0-multidoc',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
 function stampaPDF(){window.print();}
 
 Object.assign(window,{
   goTo,aggiungi,startEdit,saveEdit,cancelEdit,elimina,
   onFromChange,onToChange,onImportoChange,onImportoToChange,onTassoChange,
-  onDragOver,onDragLeave,onDrop,onFileSelected,clearPendingDoc,
   addNome,delNome,startEditNome,saveEditNome,cancelEditNome,renderNomiPage,
   addC1,delC1,addC2,delC2,addC3,delC3,
   renderC2Page,renderC3Page,syncC2ForC3,onC1Change,onC2Change,edC1Change,edC2Change,
