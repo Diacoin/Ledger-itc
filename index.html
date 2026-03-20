@@ -148,16 +148,56 @@
   body.dark .cur-gbp{background:#3a1a4a;color:#ce93d8;}
   body.dark .cur-aed{background:#3a2a10;color:#ffb74d;}
   body.dark .cur-other{background:#0a2a25;color:#4db6ac;}
-  table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);}
+  table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);table-layout:fixed;}
   thead{background:#1a73e8;color:white;}
-  th{padding:9px 8px;text-align:left;font-size:11px;white-space:nowrap;}
+  th{padding:7px 5px;text-align:left;font-size:10px;white-space:nowrap;overflow:hidden;}
   th.sortable{cursor:pointer;user-select:none;}
   th.sortable:hover{background:rgba(255,255,255,.15);}
-  td{padding:7px 8px;font-size:11px;border-bottom:1px solid var(--border);color:var(--text);}
+  td{padding:5px 5px;font-size:10px;border-bottom:1px solid var(--border);color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;}
   tr:hover td{background:var(--row-hover);}
-  tr.editing td{background:var(--edit-row)!important;}
+  tr.editing td{background:var(--edit-row)!important;white-space:normal;overflow:visible;}
   tr.exchange-row td{background:rgba(230,126,34,.05);}
   body.dark tr.exchange-row td{background:rgba(230,126,34,.08);}
+  /* Larghezze colonne registro */
+  .col-data{width:72px;}
+  .col-from{width:11%;}
+  .col-to{width:11%;}
+  .col-desc{width:18%;}
+  .col-cat{width:13%;}
+  .col-imp{width:10%;}
+  .col-val{width:44px;}
+  .col-doc{width:70px;}
+  .col-act{width:52px;}
+  /* Badge adattivi */
+  .badge-name{border-radius:8px;padding:1px 5px;font-size:9px;font-weight:bold;cursor:pointer;transition:opacity .15s;white-space:nowrap;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+  /* Responsive smartphone */
+  @media(max-width:600px){
+    body{padding:8px;}
+    .app-header{gap:6px;}
+    .logo-wrap svg{width:36px;height:36px;}
+    nav{gap:2px;padding:4px;}
+    .nav-btn{min-width:0;padding:7px 4px;font-size:10px;}
+    table{table-layout:auto;}
+    th,td{font-size:9px;padding:4px 3px;}
+    .col-data{width:58px;}
+    .col-desc{width:auto;}
+    .col-cat,.col-val{display:none;}
+    th.col-cat,td.col-cat,th.col-val,td.col-val{display:none;}
+    .col-imp{width:70px;}
+    .col-doc{width:50px;}
+    .col-act{width:42px;}
+    .insert-box .controls{flex-direction:column;}
+    .insert-box .controls input,
+    .insert-box .controls select{width:100%;min-width:0;}
+    .summary{gap:6px;}
+    .card{min-width:90px;padding:8px 10px;}
+    .card span{font-size:13px;}
+    .filter-row{flex-direction:column;align-items:flex-start;}
+    .date-range{flex-wrap:wrap;}
+    .report-layout{flex-direction:column;}
+    .report-sidebar{width:100%;}
+    h2{font-size:16px;}
+  }
   .badge-name{border-radius:10px;padding:2px 8px;font-size:10px;font-weight:bold;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
   .badge-name:hover{opacity:.75;}
   .badge-from{background:#fce8e6;color:#c0392b;}
@@ -519,13 +559,13 @@
     </div>
     <table>
       <thead><tr>
-        <th class="sortable" onclick="setSort('data')">Data <span id="sh-data">⇅</span></th>
-        <th class="sortable" onclick="setSort('from')">From <span id="sh-from">⇅</span></th>
-        <th class="sortable" onclick="setSort('to')">To <span id="sh-to">⇅</span></th>
-        <th class="sortable" onclick="setSort('desc')">Descrizione <span id="sh-desc">⇅</span></th>
-        <th class="sortable" onclick="setSort('c1')">Categorie <span id="sh-c1">⇅</span></th>
-        <th class="sortable" onclick="setSort('importo')">Importo <span id="sh-importo">⇅</span></th>
-        <th>Valuta</th><th>Segno</th><th>Doc</th><th></th>
+        <th class="sortable col-data" onclick="setSort('data')">Data <span id="sh-data">⇅</span></th>
+        <th class="sortable col-from" onclick="setSort('from')">From <span id="sh-from">⇅</span></th>
+        <th class="sortable col-to" onclick="setSort('to')">To <span id="sh-to">⇅</span></th>
+        <th class="sortable col-desc" onclick="setSort('desc')">Descrizione <span id="sh-desc">⇅</span></th>
+        <th class="sortable col-cat" onclick="setSort('c1')">Cat. <span id="sh-c1">⇅</span></th>
+        <th class="sortable col-imp" onclick="setSort('importo')">Importo <span id="sh-importo">⇅</span></th>
+        <th class="col-val">Val.</th><th class="col-doc">Doc</th><th class="col-act"></th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -1165,22 +1205,22 @@ function render(){
       const rc2=(c2Map[r.c1]||[]).map(s=>`<option value="${s}" ${s===r.c2?'selected':''}>${s}</option>`).join('');
       const rc3=(c3Map[c3k(r.c1,r.c2)]||[]).map(s=>`<option value="${s}" ${s===r.c3?'selected':''}>${s}</option>`).join('');
       html+=`<tr class="editing">
-        <td><input class="edit-input" id="ed-data" type="date" value="${r.data}"></td>
-        <td><select class="edit-select" id="ed-from">${nomeOpts}</select></td>
-        <td><select class="edit-select" id="ed-to">${nomeOpts}</select></td>
-        <td><input class="edit-input" id="ed-desc" type="text" value="${r.desc||''}"></td>
-        <td><div class="cat-cell">
+        <td class="col-data"><input class="edit-input" id="ed-data" type="date" value="${r.data}"></td>
+        <td class="col-from"><select class="edit-select" id="ed-from">${nomeOpts}</select></td>
+        <td class="col-to"><select class="edit-select" id="ed-to">${nomeOpts}</select></td>
+        <td class="col-desc"><input class="edit-input" id="ed-desc" type="text" value="${r.desc||''}"></td>
+        <td class="col-cat"><div class="cat-cell">
           <select class="edit-select" id="ed-c1" onchange="edC1Change(this.value)">${c1Opts}</select>
           <select class="edit-select" id="ed-c2" style="margin-top:2px" onchange="edC2Change(document.getElementById('ed-c1').value,this.value)">${rc2}</select>
           <select class="edit-select" id="ed-c3" style="margin-top:2px">${rc3}</select>
         </div></td>
-        <td><input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
-        ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:70px"> ${curSymbol(curTo)}</small>`:''}</td>
-        <td>${valHtml}</td><td>—</td>
-        <td colspan="2">${renderEditDocArea(r)}</td>
+        <td class="col-imp"><input class="edit-input" id="ed-imp" type="number" value="${r.importo}">
+        ${isEx?`<br><small style="color:#e67e22;">→ <input class="edit-input" id="ed-impto" type="number" value="${r.importoTo||''}" style="width:60px"> ${curSymbol(curTo)}</small>`:''}</td>
+        <td class="col-val">${valHtml}</td>
+        <td class="col-doc" colspan="2">${renderEditDocArea(r)}</td>
       </tr>
       <tr class="editing">
-        <td colspan="10" style="padding:4px 8px 8px;">
+        <td colspan="9" style="padding:4px 8px 8px;">
           <div style="display:flex;gap:6px;justify-content:flex-end;">
             <button class="btn-save" onclick="saveEdit()">💾 Salva</button>
             <button class="btn-cancel" onclick="cancelEdit()">✕ Annulla</button>
@@ -1195,16 +1235,15 @@ function render(){
     }else{
       const importoDisplay=isEx?`${fmtAmt(r.importo,cur)}<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,curTo)}</small>`:fmtAmt(r.importo,cur);
       html+=`<tr ${isEx?'class="exchange-row"':''}>
-        <td>${fmtDate(r.data)}</td>
-        <td><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')">${r.from}</span>${fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:''}</td>
-        <td><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')">${r.to}</span>${toTipo?`<span class="tipo-tag">${toTipo}</span>`:''}</td>
-        <td>${r.desc||''}</td>
-        <td>${renderCatCell(r)}</td>
-        <td class="amount-neu">${importoDisplay}</td>
-        <td>${valHtml}</td>
-        <td>${signHtml}</td>
-        <td>${docHtml}</td>
-        <td><div class="row-actions">
+        <td class="col-data">${fmtDate(r.data)}</td>
+        <td class="col-from"><span class="badge-name badge-from" onclick="filterByEntity('${r.from}')" title="${r.from}">${r.from}</span>${fromTipo?`<span class="tipo-tag">${fromTipo}</span>`:''}</td>
+        <td class="col-to"><span class="badge-name badge-to" onclick="filterByEntity('${r.to}')" title="${r.to}">${r.to}</span>${toTipo?`<span class="tipo-tag">${toTipo}</span>`:''}</td>
+        <td class="col-desc" title="${r.desc||''}">${r.desc||''}</td>
+        <td class="col-cat">${renderCatCell(r)}</td>
+        <td class="col-imp amount-neu">${importoDisplay}</td>
+        <td class="col-val">${valHtml}</td>
+        <td class="col-doc">${docHtml}</td>
+        <td class="col-act"><div class="row-actions">
           <button class="btn-edit" onclick="startEdit(${i})">✏️</button>
           <button class="btn-del" onclick="elimina(${i})">🗑</button>
         </div></td>
