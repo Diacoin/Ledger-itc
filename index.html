@@ -489,9 +489,9 @@
       <div class="filter-row">
         <span class="filter-label">📅 Periodo:</span>
         <div class="date-range">
-          <input type="date" id="dateFrom" onchange="updateFilterBadge();render()">
+          <input type="date" id="dateFrom" onchange="onDateFilterChange()" oninput="onDateFilterChange()">
           <span>→</span>
-          <input type="date" id="dateTo" onchange="updateFilterBadge();render()">
+          <input type="date" id="dateTo" onchange="onDateFilterChange()" oninput="onDateFilterChange()">
           <button class="btn-sm red" onclick="clearDate()">✕</button>
         </div>
       </div>
@@ -834,7 +834,7 @@ onAuthStateChanged(auth,async(user)=>{
     document.getElementById('app').classList.remove('loaded');document.getElementById('app').style.display='none';
   }
 });
-function resetVolatileFilters(){entityFilter='';tipoFilter='';valutaFilter='';fC1.clear();fC2.clear();fC3.clear();const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}updateEntityBanner();updateFilterBadge();}
+function resetVolatileFilters(){entityFilter='';tipoFilter='';valutaFilter='';fC1.clear();fC2.clear();fC3.clear();const ef=document.getElementById('entitySel');if(ef){ef.value='';ef.className='entity-select';}const tf=document.getElementById('tipoSel');if(tf){tf.value='';tf.className='tipo-select';}const vf=document.getElementById('valutaSel');if(vf){vf.value='';vf.className='val-select';}const df=document.getElementById('dateFrom');if(df)df.value='';const dt=document.getElementById('dateTo');if(dt)dt.value='';updateEntityBanner();updateFilterBadge();}
 function loadData(d){rows=(d.rows||[]).filter(Boolean);nomi=(d.nomi||[]).filter(Boolean);c1=(d.c1||[]).filter(Boolean);c2Map=d.c2Map||{};c3Map=d.c3Map||{};Object.keys(c2Map).forEach(k=>{c2Map[k]=(c2Map[k]||[]).filter(Boolean);});Object.keys(c3Map).forEach(k=>{c3Map[k]=(c3Map[k]||[]).filter(Boolean);});savedReports=(d.savedReports||[]).filter(Boolean);refCurr=d.refCurr||'EUR';rows.forEach(r=>{if(!r.valuta)r.valuta=getNomeValuta(r.from);if(r.docUrl&&!r.docs){r.docs=[{url:r.docUrl,path:r.docPath||'',name:r.docName||'Doc'}];delete r.docUrl;delete r.docPath;delete r.docName;}if(!r.docs)r.docs=[];});}
 async function saveToFirebase(){if(!currentUser)return;await set(ref(db,'users/'+currentUser.uid),{rows,nomi,c1,c2Map,c3Map,savedReports,refCurr,lastModified:new Date().toISOString()});}
 
@@ -1004,6 +1004,8 @@ function getFiltered(){
 }
 function clearFilters(){fC1.clear();fC2.clear();fC3.clear();document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';clearEntityFilter();clearTipoFilter();clearValutaFilter();rebuildDD();updateFilterBadge();render();}
 function clearDate(){document.getElementById('dateFrom').value='';document.getElementById('dateTo').value='';updateFilterBadge();render();}
+// Filtro periodo: unico handler per change+input, esposto su window (lo script è un modulo)
+function onDateFilterChange(){updateFilterBadge();render();}
 
 // ── SELECTS ───────────────────────────────────────────
 function syncSelects(){
@@ -1441,7 +1443,7 @@ Object.assign(window,{
   addNome,delNome,startEditNome,saveEditNome,cancelEditNome,renderNomiPage,
   addC1,delC1,addC2,delC2,addC3,delC3,
   renderC2Page,renderC3Page,syncC2ForC3,onC1Change,onC2Change,edC1Change,edC2Change,
-  setSort,toggleDD,toggleF,clearFilters,clearDate,
+  setSort,toggleDD,toggleF,clearFilters,clearDate,onDateFilterChange,render,updateFilterBadge,
   onEntitySelChange,clearEntityFilter,filterByEntity,
   onTipoSelChange,clearTipoFilter,onValutaSelChange,clearValutaFilter,
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
