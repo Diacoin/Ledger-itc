@@ -346,6 +346,8 @@
     h2{font-size:16px;}
   }
   @media(max-width:700px){.report-layout{flex-direction:column;}.report-sidebar{width:100%;}}
+  .drill-row{cursor:pointer;user-select:none;}
+  .drill-row:hover{background:rgba(26,115,232,.14)!important;box-shadow:inset 3px 0 0 #1a73e8;}
   @media print{
     body{background:white!important;padding:10px;}
     nav,.filter-toggle-bar,.filter-panel,.insert-box,.row-actions,.entity-banner,.btn-settings,.settings-overlay,
@@ -1226,6 +1228,36 @@ function catMatch(r,p){if(p.c1v&&r.c1!==p.c1v)return false;if(p.c2v&&r.c2!==p.c2
 function filterRows(from,to,extra){return rows.filter(r=>{if(from&&r.data<from)return false;if(to&&r.data>to)return false;if(extra&&!extra(r))return false;return true;}).sort((a,b)=>a.data.localeCompare(b.data));}
 function catLabel(p){const parts=[];if(p.c1v)parts.push(p.c1v);if(p.c2v)parts.push(p.c2v);if(p.c3v)parts.push(p.c3v);return parts.length?parts.join(' › '):'Tutte cat.';}
 
+// ── DRILL-DOWN: doppio click su una riga di report → Registro filtrato ──
+// I parametri della riga sono tenuti in un registro interno e passati per indice:
+// così i nomi delle categorie con apici o virgolette non rompono l'attributo inline.
+let drillStack=[];
+function drillKey(k){return k==='—'?VOID:k;}
+function drillAttr(o,cls){drillStack.push(o);return `class="drill-row${cls?' '+cls:''}" title="Doppio click: apri nel Registro i movimenti di questa riga" ondblclick="reportDrill(${drillStack.length-1})"`;}
+// Intervallo del mese, ristretto al periodo del report se questo è più stretto
+function drillMonthRange(ym,limFrom,limTo){
+  const[y,m]=ym.split('-').map(Number),last=new Date(y,m,0).getDate();
+  let from=`${ym}-01`,to=`${ym}-${String(last).padStart(2,'0')}`;
+  if(limFrom&&limFrom>from)from=limFrom;
+  if(limTo&&limTo<to)to=limTo;
+  return{from,to};
+}
+function reportDrill(i){
+  const o=drillStack[i];if(!o)return;
+  fC1.clear();fC2.clear();fC3.clear();
+  if(o.c1)fC1.add(o.c1);if(o.c2)fC2.add(o.c2);if(o.c3)fC3.add(o.c3);
+  entityFilter=o.entity||'';tipoFilter='';valutaFilter=o.cur||'';
+  document.getElementById('dateFrom').value=o.from||'';
+  document.getElementById('dateTo').value=o.to||'';
+  const es=document.getElementById('entitySel');if(es){es.value=entityFilter;es.className='entity-select'+(entityFilter?' active-sel':'');}
+  const ts=document.getElementById('tipoSel');if(ts){ts.value='';ts.className='tipo-select';}
+  const vs=document.getElementById('valutaSel');if(vs){vs.value=valutaFilter;vs.className='val-select'+(valutaFilter?' active-sel':'');}
+  goTo('registro');
+  updateEntityBanner();updateFilterBadge();
+  if(!filterOpen)toggleFilterPanel();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function runReport(){
   const{type,params}=getReportConfig();
   const out=document.getElementById('reportOutput');out.style.display='block';
@@ -1234,6 +1266,7 @@ function runReport(){
   const name=document.getElementById('rptName').value||typeLabels[type];
   document.getElementById('rptOutTitle').innerHTML=`${name} <span class="report-type-badge ${typeBadge[type]}">${typeLabels[type]}</span>`;
   const metaEl=document.getElementById('rptOutMeta'),bodyEl=document.getElementById('rptOutBody');
+  drillStack=[];
   if(type==='estratto')renderEstrattoReport(params,metaEl,bodyEl);
   else if(type==='categoria')renderCategoriaReport(params,metaEl,bodyEl);
   else if(type==='tipo')renderTipoReport(params,metaEl,bodyEl);
@@ -1241,6 +1274,7 @@ function runReport(){
   else if(type==='saldo')renderSaldoReport(params,metaEl,bodyEl);
   else if(type==='fx')renderFxReport(params,metaEl,bodyEl);
   else if(type==='mensile')renderMensileReport(params,metaEl,bodyEl);
+  if(drillStack.length)metaEl.textContent+=' · 🖱️ doppio click su una riga per aprire i movimenti nel Registro';
 }
 
 function renderMensileReport(p,metaEl,bodyEl){
@@ -1309,7 +1343,8 @@ function renderMensileReport(p,metaEl,bodyEl){
         const m=byCur[cur][ym];
         const s=m.entrate-m.uscite;
         prog+=s;
-        html+=`<tr>
+        const mr=drillMonthRange(ym,from,to);
+        html+=`<tr ${drillAttr({c1:c1v,c2:c2v,c3:c3v,entity,cur,...mr})}>
           <td style="font-weight:bold;color:#2e7d32;">📆 ${fmtYearMonth(ym)}</td>
           <td class="td-num" style="color:var(--text3);">${m.nMov}</td>
           <td class="td-num pos">${m.entrate>0?fmtAmt(m.entrate,cur):''}</td>
@@ -1342,7 +1377,8 @@ function renderMensileReport(p,metaEl,bodyEl){
         const m=byCur[cur][ym];
         const ms=m.entrate-m.uscite;
         prog+=ms;
-        html+=`<tr class="month-section-header">
+        const mr=drillMonthRange(ym,from,to);
+        html+=`<tr ${drillAttr({c1:c1v,c2:c2v,c3:c3v,entity,cur,...mr},'month-section-header')}>
           <td colspan="5">📆 ${fmtYearMonth(ym)} &nbsp;·&nbsp; ${m.nMov} mov. &nbsp;|&nbsp;
             ${m.entrate>0?`Entrate: <strong class="pos">${fmtAmt(m.entrate,cur)}</strong>`:''}
             ${m.entrate>0&&m.uscite>0?' &nbsp; ':''}
@@ -1357,7 +1393,7 @@ function renderMensileReport(p,metaEl,bodyEl){
         Object.keys(cats).sort().forEach(k1=>{
           const g1=cats[k1];
           const s1=g1.entrate-g1.uscite;
-          html+=`<tr style="background:rgba(156,39,176,.05);">
+          html+=`<tr ${drillAttr({c1:drillKey(k1),c2:c2v,c3:c3v,entity,cur,...mr})} style="background:rgba(156,39,176,.05);">
             <td><span class="c1-badge">${k1}</span></td>
             <td></td><td></td>
             <td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td>
@@ -1366,7 +1402,7 @@ function renderMensileReport(p,metaEl,bodyEl){
           </tr>`;
           Object.keys(g1.c2s).sort().forEach(k2=>{
             const g2=g1.c2s[k2];const s2=g2.entrate-g2.uscite;
-            html+=`<tr style="background:rgba(230,126,34,.04);">
+            html+=`<tr ${drillAttr({c1:drillKey(k1),c2:drillKey(k2),c3:c3v,entity,cur,...mr})} style="background:rgba(230,126,34,.04);">
               <td></td>
               <td><span class="c2-badge">${k2}</span></td>
               <td></td>
@@ -1379,7 +1415,7 @@ function renderMensileReport(p,metaEl,bodyEl){
             if(hasRealC3){
               c3keys.forEach(k3=>{
                 const g3=g2.c3s[k3];const s3=g3.entrate-g3.uscite;
-                html+=`<tr>
+                html+=`<tr ${drillAttr({c1:drillKey(k1),c2:drillKey(k2),c3:drillKey(k3),entity,cur,...mr})}>
                   <td></td><td></td>
                   <td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td>
                   <td class="td-num pos" style="font-size:10px;">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td>
@@ -1411,7 +1447,7 @@ function renderMensileReport(p,metaEl,bodyEl){
 
 // ── ALTRI REPORT (invariati) ──────────────────────────
 function renderEstrattoReport(p,metaEl,bodyEl){const{entity,from,to}=p;if(!entity){bodyEl.innerHTML='<div class="report-no-data">Seleziona un\'entità</div>';metaEl.textContent='';return;}const data=filterRows(from,to,r=>(r.from===entity||r.to===entity)&&catMatch(r,p));const no=nomi.find(x=>x.name===entity),entityCur=no?no.valuta||'EUR':'EUR';const cl=catLabel(p);metaEl.textContent=`${entity} (${curSymbol(entityCur)})${no&&no.tipo?' · '+no.tipo:''}${cl!=='Tutte cat.'?' · '+cl:''} ${(from||to)?'· '+fmtDate(from)+'→'+fmtDate(to):''} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}let saldoProg=0,totE=0,totU=0;let html=`<table class="report-table"><thead><tr><th>Data</th><th>Controparte</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrata</th><th class="td-num">Uscita</th><th class="td-num">Saldo Prog.</th><th>Val.</th></tr></thead><tbody>`;data.forEach(r=>{const cur=r.valuta||'EUR',isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';if(r.to===entity){const entrata=isEx?r.importoTo||r.importo:r.importo,ec=isEx?r.valutaTo||cur:cur;totE+=entrata;saldoProg+=entrata;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.from}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num pos">${fmtAmt(entrata,ec)}</td><td></td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(ec)}">${curSymbol(ec)}</span></td></tr>`;}else{totU+=r.importo;saldoProg-=r.importo;html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${r.to}</strong></td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td></td><td class="td-num neg">${fmtAmt(r.importo,cur)}</td><td class="td-num ${saldoProg>=0?'pos':'neg'}">${fmtAmt(saldoProg,entityCur)}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;}});html+=`</tbody><tfoot><tr><td colspan="6"><strong>TOTALE (${curSymbol(entityCur)})</strong></td><td class="td-num pos"><strong>${fmtAmt(totE,entityCur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,entityCur)}</strong></td><td class="td-num ${saldoProg>=0?'pos':'neg'}"><strong>${fmtAmt(saldoProg,entityCur)}</strong></td><td></td></tr></tfoot></table>`;bodyEl.innerHTML=html;}
-function renderCategoriaReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';const sign=getMovSign(r),amt=r.importo;if(!byCur[cur])byCur[cur]={};if(!byCur[cur][k1])byCur[cur][k1]={entrate:0,uscite:0,subs:{}};if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={entrate:0,uscite:0,subs:{}};if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]={entrate:0,uscite:0};const field=sign==='entrata'?'entrate':'uscite';byCur[cur][k1][field]+=amt;byCur[cur][k1].subs[k2][field]+=amt;byCur[cur][k1].subs[k2].subs[k3][field]+=amt;});let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrate (+)</th><th class="td-num">Uscite (−)</th><th class="td-num">Saldo netto</th><th class="td-num">% totale</th></tr></thead><tbody>`;Object.keys(byCur).sort().forEach(cur=>{const totE=Object.values(byCur[cur]).reduce((s,g)=>s+g.entrate,0);const totU=Object.values(byCur[cur]).reduce((s,g)=>s+g.uscite,0);const totS=totE-totU,totBase=totE+totU||1;html+=`<tr class="cur-section-header"><td colspan="7">💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp; Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp; Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp; Saldo: <strong class="${totS>=0?'pos':'neg'}">${fmtAmt(totS,cur)}</strong></td></tr>`;Object.keys(byCur[cur]).sort().forEach(k1=>{const g1=byCur[cur][k1],s1=g1.entrate-g1.uscite,pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);html+=`<tr style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td><td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;Object.keys(g1.subs).sort().forEach(k2=>{const g2=g1.subs[k2],s2=g2.entrate-g2.uscite,pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');html+=`<tr style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td><td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td><td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const g3=g2.subs[k3],s3=g3.entrate-g3.uscite,pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);html+=`<tr><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td><td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td><td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});});html+=`<tr style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td><td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;});html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td><td class="td-num ${totS>=0?'pos':'neg'}"><strong>${fmtAmt(totS,cur)}</strong></td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
+function renderCategoriaReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${cl} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR',k1=r.c1&&r.c1!=='-'?r.c1:'—',k2=r.c2&&r.c2!=='-'?r.c2:'—',k3=r.c3&&r.c3!=='-'?r.c3:'—';const sign=getMovSign(r),amt=r.importo;if(!byCur[cur])byCur[cur]={};if(!byCur[cur][k1])byCur[cur][k1]={entrate:0,uscite:0,subs:{}};if(!byCur[cur][k1].subs[k2])byCur[cur][k1].subs[k2]={entrate:0,uscite:0,subs:{}};if(!byCur[cur][k1].subs[k2].subs[k3])byCur[cur][k1].subs[k2].subs[k3]={entrate:0,uscite:0};const field=sign==='entrata'?'entrate':'uscite';byCur[cur][k1][field]+=amt;byCur[cur][k1].subs[k2][field]+=amt;byCur[cur][k1].subs[k2].subs[k3][field]+=amt;});let html=`<table class="report-table"><thead><tr><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Entrate (+)</th><th class="td-num">Uscite (−)</th><th class="td-num">Saldo netto</th><th class="td-num">% totale</th></tr></thead><tbody>`;Object.keys(byCur).sort().forEach(cur=>{const totE=Object.values(byCur[cur]).reduce((s,g)=>s+g.entrate,0);const totU=Object.values(byCur[cur]).reduce((s,g)=>s+g.uscite,0);const totS=totE-totU,totBase=totE+totU||1;html+=`<tr class="cur-section-header"><td colspan="7">💱 ${curSymbol(cur)} ${cur} &nbsp;|&nbsp; Entrate: <strong class="pos">${fmtAmt(totE,cur)}</strong> &nbsp; Uscite: <strong class="neg">${fmtAmt(totU,cur)}</strong> &nbsp; Saldo: <strong class="${totS>=0?'pos':'neg'}">${fmtAmt(totS,cur)}</strong></td></tr>`;Object.keys(byCur[cur]).sort().forEach(k1=>{const g1=byCur[cur][k1],s1=g1.entrate-g1.uscite,pct1=((g1.entrate+g1.uscite)/totBase*100).toFixed(1);html+=`<tr ${drillAttr({c1:drillKey(k1),from:p.from,to:p.to,cur})} style="background:rgba(156,39,176,.08);border-top:2px solid #f3e5f5;"><td colspan="3"><span class="c1-badge">${k1}</span></td><td class="td-num pos"><strong>${g1.entrate>0?fmtAmt(g1.entrate,cur):''}</strong></td><td class="td-num neg"><strong>${g1.uscite>0?fmtAmt(g1.uscite,cur):''}</strong></td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;font-weight:bold;">${pct1}%</td></tr>`;Object.keys(g1.subs).sort().forEach(k2=>{const g2=g1.subs[k2],s2=g2.entrate-g2.uscite,pct2=((g2.entrate+g2.uscite)/totBase*100).toFixed(1);const hasRealC3=Object.keys(g2.subs).some(k=>k!=='—');html+=`<tr ${drillAttr({c1:drillKey(k1),c2:drillKey(k2),from:p.from,to:p.to,cur})} style="background:rgba(230,126,34,.05);"><td></td><td colspan="2"><span class="c2-badge">${k2}</span></td><td class="td-num pos">${g2.entrate>0?fmtAmt(g2.entrate,cur):''}</td><td class="td-num neg">${g2.uscite>0?fmtAmt(g2.uscite,cur):''}</td><td class="td-num ${s2>=0?'pos':'neg'}">${fmtAmt(s2,cur)}</td><td class="td-num" style="color:#e67e22;">${pct2}%</td></tr>`;if(hasRealC3)Object.keys(g2.subs).sort().forEach(k3=>{const g3=g2.subs[k3],s3=g3.entrate-g3.uscite,pct3=((g3.entrate+g3.uscite)/totBase*100).toFixed(1);html+=`<tr ${drillAttr({c1:drillKey(k1),c2:drillKey(k2),c3:drillKey(k3),from:p.from,to:p.to,cur})}><td></td><td></td><td>${k3!=='—'?`<span class="c3-badge">${k3}</span>`:'<span class="void-badge">—</span>'}</td><td class="td-num pos">${g3.entrate>0?fmtAmt(g3.entrate,cur):''}</td><td class="td-num neg">${g3.uscite>0?fmtAmt(g3.uscite,cur):''}</td><td class="td-num ${s3>=0?'pos':'neg'}">${fmtAmt(s3,cur)}</td><td class="td-num" style="color:var(--text3)">${pct3}%</td></tr>`;});});html+=`<tr ${drillAttr({c1:drillKey(k1),from:p.from,to:p.to,cur})} style="background:rgba(156,39,176,.04);border-bottom:2px solid #f3e5f5;"><td colspan="3" style="font-size:10px;color:#9c27b0;padding-left:16px;">↳ Subtotale ${k1}</td><td class="td-num pos">${g1.entrate>0?`<strong>${fmtAmt(g1.entrate,cur)}</strong>`:''}</td><td class="td-num neg">${g1.uscite>0?`<strong>${fmtAmt(g1.uscite,cur)}</strong>`:''}</td><td class="td-num ${s1>=0?'pos':'neg'}"><strong>${fmtAmt(s1,cur)}</strong></td><td class="td-num" style="color:#9c27b0;">${pct1}%</td></tr>`;});html+=`<tr style="background:#e8f0fe;border-top:3px solid #1a73e8;"><td colspan="3" style="font-weight:bold;color:#1a73e8;">Totale ${curSymbol(cur)}</td><td class="td-num pos"><strong>${fmtAmt(totE,cur)}</strong></td><td class="td-num neg"><strong>${fmtAmt(totU,cur)}</strong></td><td class="td-num ${totS>=0?'pos':'neg'}"><strong>${fmtAmt(totS,cur)}</strong></td><td class="td-num" style="color:#1a73e8;font-weight:bold;">100%</td></tr>`;});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
 function renderTipoReport(p,metaEl,bodyEl){const{tipo,from,to}=p;const data=filterRows(from,to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${tipo||'Tutti i tipi'}${cl!=='Tutte cat.'?' · '+cl:''} · ${(from||to)?fmtDate(from)+'→'+fmtDate(to):'Tutti'}`;const tipiMap={};data.forEach(r=>{[r.from,r.to].forEach((nome,idx)=>{const tn=getTipoNome(nome)||'—';if(tipo&&tn!==tipo)return;const cur=getNomeValuta(nome);if(!tipiMap[tn])tipiMap[tn]={};if(!tipiMap[tn][nome])tipiMap[tn][nome]={entrate:{},uscite:{}};if(idx===1)tipiMap[tn][nome].entrate[cur]=(tipiMap[tn][nome].entrate[cur]||0)+r.importo;else tipiMap[tn][nome].uscite[cur]=(tipiMap[tn][nome].uscite[cur]||0)+r.importo;});});if(!Object.keys(tipiMap).length){bodyEl.innerHTML='<div class="report-no-data">Nessun dato</div>';return;}let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;Object.keys(tipiMap).sort().forEach(t=>{html+=`<tr class="report-section-header"><td colspan="5"><strong>${t}</strong></td></tr>`;Object.keys(tipiMap[t]).sort().forEach(nome=>{const e=tipiMap[t][nome],allCurs=[...new Set([...Object.keys(e.entrate),...Object.keys(e.uscite)])];allCurs.forEach(cur=>{const ei=e.entrate[cur]||0,ui=e.uscite[cur]||0,si=ei-ui;html+=`<tr><td></td><td><strong>${nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
 function renderDateReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`${cl}${(p.from||p.to)?' · '+fmtDate(p.from)+'→'+fmtDate(p.to):''} · ${data.length} mov.`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const byCur={};data.forEach(r=>{const cur=r.valuta||'EUR';if(!byCur[cur])byCur[cur]=[];byCur[cur].push(r);});let html=`<table class="report-table"><thead><tr><th>Data</th><th>From</th><th>To</th><th>Descrizione</th><th>Cat.1</th><th>Cat.2</th><th>Cat.3</th><th class="td-num">Importo</th><th>Val.</th></tr></thead><tbody>`;Object.keys(byCur).sort().forEach(cur=>{const arr=byCur[cur],tot=arr.reduce((s,r)=>s+r.importo,0);html+=`<tr class="cur-section-header"><td colspan="9">💱 ${curSymbol(cur)} ${cur} — ${arr.length} mov. — Totale: <strong>${fmtAmt(tot,cur)}</strong></td></tr>`;arr.forEach(r=>{const isEx=isExchangeRow(r);const c1b=r.c1&&r.c1!=='-'?`<span class="c1-badge">${r.c1}</span>`:'<span class="void-badge">—</span>';const c2b=r.c2&&r.c2!=='-'?`<span class="c2-badge">${r.c2}</span>`:'<span class="void-badge">—</span>';const c3b=r.c3&&r.c3!=='-'?`<span class="c3-badge">${r.c3}</span>`:'';html+=`<tr><td>${fmtDate(r.data)}</td><td>${r.from}</td><td>${r.to}</td><td>${r.desc}${isEx?' <span class="fx-tag">FX</span>':''}</td><td>${c1b}</td><td>${c2b}</td><td>${c3b}</td><td class="td-num">${fmtAmt(r.importo,cur)}${isEx?`<br><small style="color:#e67e22;">→ ${fmtAmt(r.importoTo||0,r.valutaTo)}</small>`:''}</td><td><span class="${curClass(cur)}">${curSymbol(cur)}</span></td></tr>`;});});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
 function renderSaldoReport(p,metaEl,bodyEl){const data=filterRows(p.from,p.to,r=>catMatch(r,p));const cl=catLabel(p);metaEl.textContent=`Confronto saldi${cl!=='Tutte cat.'?' · '+cl:''} · ${(p.from||p.to)?fmtDate(p.from)+'→'+fmtDate(p.to):'Tutti'}`;if(!data.length){bodyEl.innerHTML='<div class="report-no-data">Nessun movimento</div>';return;}const saldi={};nomi.forEach(n=>{saldi[n.name]={entrate:{},uscite:{},tipo:n.tipo||'—',valuta:n.valuta||'EUR'};});data.forEach(r=>{const cf=r.valuta||'EUR',ct=r.valutaTo||cf;if(!saldi[r.from])saldi[r.from]={entrate:{},uscite:{},tipo:getTipoNome(r.from)||'—',valuta:cf};if(!saldi[r.to])saldi[r.to]={entrate:{},uscite:{},tipo:getTipoNome(r.to)||'—',valuta:ct};saldi[r.from].uscite[cf]=(saldi[r.from].uscite[cf]||0)+r.importo;const toAmt=isExchangeRow(r)?r.importoTo||r.importo:r.importo;saldi[r.to].entrate[ct]=(saldi[r.to].entrate[ct]||0)+toAmt;});const perTipo={};Object.keys(saldi).forEach(nome=>{const s=saldi[nome],t=s.tipo;if(!perTipo[t])perTipo[t]=[];perTipo[t].push({nome,...s});});let html=`<table class="report-table"><thead><tr><th>Tipo</th><th>Entità</th><th class="td-num">Entrate</th><th class="td-num">Uscite</th><th class="td-num">Saldo</th></tr></thead><tbody>`;Object.keys(perTipo).sort().forEach(tipo=>{const items=perTipo[tipo].filter(x=>Object.values(x.entrate).some(v=>v>0)||Object.values(x.uscite).some(v=>v>0)).sort((a,b)=>a.nome.localeCompare(b.nome));if(!items.length)return;html+=`<tr class="report-section-header"><td colspan="5"><strong>${tipo}</strong></td></tr>`;items.forEach(x=>{const allCurs=[...new Set([...Object.keys(x.entrate),...Object.keys(x.uscite)])];const sc=[x.valuta,...allCurs.filter(c=>c!==x.valuta)];sc.forEach(cur=>{const ei=x.entrate[cur]||0,ui=x.uscite[cur]||0;if(ei===0&&ui===0)return;const si=ei-ui;html+=`<tr><td></td><td><strong>${x.nome}</strong> <span class="${curClass(cur)}">${curSymbol(cur)}</span></td><td class="td-num pos">${ei>0?fmtAmt(ei,cur):''}</td><td class="td-num neg">${ui>0?fmtAmt(ui,cur):''}</td><td class="td-num ${si>=0?'pos':'neg'}">${fmtAmt(si,cur)}</td></tr>`;});});});html+=`</tbody></table>`;bodyEl.innerHTML=html;}
@@ -1448,7 +1484,7 @@ Object.assign(window,{
   onTipoSelChange,clearTipoFilter,onValutaSelChange,clearValutaFilter,
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
-  onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,
+  onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
   syncRptEstrC2,syncRptEstrC3,syncRptCatC2,syncRptCatC3,
   syncRptTipoC2,syncRptTipoC3,syncRptDateC2,syncRptDateC3,syncRptSaldoC2,syncRptSaldoC3,
   syncRptMensileC2,syncRptMensileC3
