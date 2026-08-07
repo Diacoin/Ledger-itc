@@ -248,6 +248,9 @@
   .backup-actions{display:flex;gap:12px;flex-wrap:wrap;}
   .btn-backup{padding:10px 22px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
   .btn-backup.save{background:#1a73e8;}
+  .btn-backup.restore{background:#e67e22;}
+  .btn-backup.convert{background:#16a085;}
+  .btn-backup.danger{background:#c0392b;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
   /* ── Import movimenti da Excel ── */
   .import-msg{margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);}
@@ -466,7 +469,7 @@
     <button class="nav-btn" onclick="goTo('nomi')">👤 Nomi</button>
     <button class="nav-btn" onclick="goTo('categorie')">🏷️ Categorie</button>
     <button class="nav-btn" onclick="goTo('storage')">☁️ Storage</button>
-    <button class="nav-btn" onclick="goTo('backup')">💾 Backup</button>
+    <button class="nav-btn" onclick="goTo('backup')">💾 BackUp/Restore</button>
   </nav>
 
   <div class="page active" id="page-registro">
@@ -739,11 +742,34 @@
 
   <!-- BACKUP -->
   <div class="page" id="page-backup">
-    <h2>💾 Backup</h2>
+    <h2>💾 BackUp/Restore</h2>
     <div class="backup-box">
       <h3>⬇️ Esporta dati locali</h3>
       <p>Scarica i dati in formato JSON.</p>
       <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">💾 Scarica JSON</button></div>
+    </div>
+    <div class="backup-box">
+      <h3>♻️ Ripristina da backup JSON</h3>
+      <p><strong>Attenzione:</strong> il ripristino <strong>sostituisce tutti i dati</strong> (movimenti, nomi, categorie, report salvati) con quelli del file. Prima di procedere viene scaricato automaticamente un backup della situazione attuale.</p>
+      <div class="backup-actions">
+        <button class="btn-backup restore" onclick="document.getElementById('restoreFileInput').click()">♻️ Scegli file JSON</button>
+        <input type="file" id="restoreFileInput" style="display:none" accept=".json" onchange="onRestoreFileSelected(this)">
+      </div>
+      <div id="restoreArea"></div>
+    </div>
+    <div class="backup-box">
+      <h3>📄 Converti estratto conto PDF → Excel</h3>
+      <p>Carica il PDF dell'estratto: viene letto qui nel browser (non esce dal tuo computer), le categorie vengono dedotte dai movimenti già registrati e ottieni il file Excel da rivedere e poi importare qui sotto.</p>
+      <div class="backup-actions" style="align-items:center;gap:10px;flex-wrap:wrap;">
+        <select id="pdfBankSel" class="entity-select" style="max-width:200px;">
+          <option value="icard">iCard</option>
+          <option value="auto">Rileva automaticamente</option>
+        </select>
+        <select id="pdfContoSel" class="entity-select" style="max-width:220px;"></select>
+        <button class="btn-backup convert" onclick="document.getElementById('pdfFileInput').click()">📄 Scegli PDF</button>
+        <input type="file" id="pdfFileInput" style="display:none" accept=".pdf" onchange="onPdfFileSelected(this)">
+      </div>
+      <div id="pdfArea"></div>
     </div>
     <div class="backup-box">
       <h3>📥 Importa movimenti da Excel</h3>
@@ -992,6 +1018,7 @@ function goTo(p){
   if(p==='categorie'){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
   if(p==='report'){syncReportSelects();renderSavedReports();}
   if(p==='storage')calcStorageUsage();
+  if(p==='backup')syncPdfConti();
 }
 
 // ── SUMMARY ───────────────────────────────────────────
@@ -1495,6 +1522,236 @@ function renderSavedReports(){
 }
 function printReport(){window.print();}
 function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
+// ── RESTORE DA BACKUP JSON ────────────────────────────
+let pendingRestore=null;
+async function onRestoreFileSelected(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;
+  const area=document.getElementById('restoreArea');
+  try{
+    const d=JSON.parse(await f.text());
+    if(!d||!Array.isArray(d.rows))throw new Error('File non valido: manca l\'elenco dei movimenti.');
+    pendingRestore=d;
+    area.innerHTML=`<div class="import-msg">📦 <strong>${f.name}</strong>${d.date?` · backup del ${fmtDate(String(d.date).slice(0,10))}`:''}<br>
+      Contiene <strong>${d.rows.length} movimenti</strong>, ${(d.nomi||[]).length} entità, ${(d.c1||[]).length} categorie di 1° livello, ${(d.savedReports||[]).length} report salvati.<br>
+      Ora nel registro ci sono <strong>${rows.length} movimenti</strong> e ${nomi.length} entità: verranno <strong>sostituiti</strong>.</div>
+      <div class="backup-actions" style="margin-top:10px;">
+        <button class="btn-backup danger" onclick="confirmRestore()">♻️ Sostituisci tutti i dati</button>
+        <button class="btn-sm grey" onclick="cancelRestore()">✕ Annulla</button>
+      </div>`;
+  }catch(e){pendingRestore=null;area.innerHTML=`<div class="import-msg err">❌ ${e.message||'file non leggibile'}</div>`;}
+}
+function cancelRestore(){pendingRestore=null;document.getElementById('restoreArea').innerHTML='';}
+async function confirmRestore(){
+  if(!pendingRestore)return;
+  if(!confirm(`Sostituire i ${rows.length} movimenti attuali con i ${pendingRestore.rows.length} del file?\n\nPrima viene scaricato un backup della situazione attuale.\nL'operazione non è annullabile.`))return;
+  salvaBackup();                                   // rete di sicurezza prima di sovrascrivere
+  loadData(pendingRestore);
+  await saveToFirebase();
+  const n=rows.length;pendingRestore=null;
+  document.getElementById('restoreArea').innerHTML=`<div class="import-msg ok">✅ Ripristinati ${n} movimenti. Il backup dei dati precedenti è nella cartella Download.</div>`;
+  resetVolatileFilters();syncSelects();syncTipoSel();syncEntitySel();rebuildDD();render();calcStorageUsage();
+}
+
+// ── CONVERSIONE ESTRATTO CONTO PDF → EXCEL ────────────
+// Il PDF viene letto nel browser (pdf.js). Le categorie sono dedotte dai movimenti
+// già registrati: per ogni controparte si usa la classificazione più ricorrente.
+const PDFJS_CDN='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.min.mjs';
+const PDFJS_WORKER='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.worker.min.mjs';
+const MESI_EN={jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+let pdfRighe=[];
+
+function syncPdfConti(){
+  const sel=document.getElementById('pdfContoSel');if(!sel)return;
+  const banks=nomi.filter(n=>(n.tipo||'').toLowerCase().includes('bank')).map(n=>n.name).sort();
+  const lista=banks.length?banks:nomi.map(n=>n.name).sort();
+  sel.innerHTML=lista.map(n=>`<option value="${n}" ${/icard/i.test(n)&&n.indexOf('£')<0?'selected':''}>${n}</option>`).join('');
+}
+
+// Ricostruisce le righe di testo dal PDF raggruppando per coordinata verticale
+async function pdfToLines(file){
+  const pdfjs=await import(PDFJS_CDN);
+  pdfjs.GlobalWorkerOptions.workerSrc=PDFJS_WORKER;
+  const doc=await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  const lines=[];
+  for(let p=1;p<=doc.numPages;p++){
+    const page=await doc.getPage(p),tc=await page.getTextContent(),byY={};
+    tc.items.forEach(it=>{
+      if(!it.str||!it.str.trim())return;
+      const y=Math.round(it.transform[5]),x=it.transform[4];
+      const k=Object.keys(byY).find(v=>Math.abs(v-y)<=2)||y;
+      (byY[k]=byY[k]||[]).push({x,s:it.str});
+    });
+    Object.keys(byY).sort((a,b)=>b-a).forEach(y=>{
+      lines.push(byY[y].sort((a,b)=>a.x-b.x).map(i=>i.s).join(' ').replace(/\s+/g,' ').trim());
+    });
+  }
+  return lines;
+}
+
+// Le colonne del PDF possono toccarsi: "1.00001100.00" = tasso 1.0000 + importo 1100.00
+function pdfFixCols(s){return s.replace(/(\d\.\d{4})(?=\d)/g,'$1 ');}
+
+// Il tipo operazione può andare a capo nella cella ("Outgoing bank" / "trans"):
+// si cerca su tutto il blocco e vince la corrispondenza che compare per prima,
+// così "Fee for funds disbursement" resta una Fee e non un Funds Disbursement.
+// I gap ammessi ([\s\S]{0,80}) servono perché fra le due parole può finirci
+// il resto della riga: "… Mobile Funds SORAYA MANFERDINI … 18:32 Disbursement".
+const PDF_TIPI=[[/online[\s\S]{0,20}?payment/i,'Online payment'],[/card[\s\S]{0,20}?payment/i,'Card payment'],
+  [/\bfee\b/i,'Fee'],[/funds[\s\S]{0,80}?disbursement/i,'Funds Disbursement'],
+  [/outgoing[\s\S]{0,60}?bank/i,'Outgoing bank transfer'],[/received[\s\S]{0,60}?bank/i,'Received bank transfer'],
+  [/incoming[\s\S]{0,60}?bank/i,'Incoming bank transfer'],[/atm[\s\S]{0,20}?withdrawal/i,'ATM withdrawal'],
+  [/currency[\s\S]{0,20}?exchange/i,'Currency exchange'],[/\brefund\b/i,'Refund']];
+function pdfTipo(t){
+  let best=null;
+  for(const[re,label]of PDF_TIPI){const m=re.exec(t);if(m&&(!best||m.index<best.i))best={i:m.index,len:m[0].length,label};}
+  return best;
+}
+
+// Parser iCard: righe che iniziano con "GG Mmm AAAA", importi in coda (Debit, Credit)
+function pdfParseICard(lines){
+  const blocchi=[];let cur=null;
+  const skip=/^(Statement|Date Ordered|Account |Name:|Address:|IBAN|Opening balance|Closing balance|© ?\d{4}|\d+ ?\/ ?\d+$|Fee -|Funds Disbursement -|Online payment -|Outgoing bank transfer -|Received bank transfer )/i;
+  for(const raw of lines){
+    const l=pdfFixCols(raw);
+    const m=l.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})\b/);
+    if(m&&MESI_EN[m[2].toLowerCase()]){
+      if(cur)blocchi.push(cur);
+      cur={data:`${m[3]}-${MESI_EN[m[2].toLowerCase()]}-${m[1].padStart(2,'0')}`,prima:l,resto:''};
+    }else if(cur&&!skip.test(l))cur.resto+=' '+l;
+  }
+  if(cur)blocchi.push(cur);
+  return blocchi.map(b=>{
+    // gli importi (Debit, Credit) stanno in coda alla prima riga
+    const imp=[...b.prima.matchAll(/(\d[\d,]*\.\d{2})\s*EUR/g)].map(x=>impAmount(x[1]));
+    const debit=imp.length>=2?imp[imp.length-2]:NaN,credit=imp.length>=2?imp[imp.length-1]:NaN;
+    // via data e canale PRIMA di cercare il tipo: "Card" è il canale, non l'operazione
+    const blocco=b.prima+' '+b.resto;
+    let d=blocco.replace(/^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}\s*/,'').replace(/^(Card|System|Mobile|Web|ATM|POS)\b/i,'');
+    const t=pdfTipo(d),tipo=t?t.label:'';
+    if(t)t.label.split(/\s+/).forEach(w=>{d=d.replace(new RegExp('\\b'+w+'\\b','ig'),' ');});
+    d=d.replace(/\btrans\b/ig,' ')                       // coda di "bank trans" andata a capo
+       .replace(/\d\.\d{4}/g,' ')                        // tasso di cambio
+       .replace(/-?[\d,]+\.\d{2}\s*EUR/g,' ')            // importi
+       .replace(/\b[A-Z]{2}\d{2}[A-Z0-9]{10,}\b/g,' ')   // IBAN / coordinate
+       .replace(/\*\d{3,4}/g,' ')                        // maschera carta
+       .replace(/\b\d{1,2}:\d{2}\b/g,' ')                // orari
+       .replace(/\s+/g,' ').trim();
+    const parti=d.split(/\s*,\s*/).map(s=>s.trim()).filter(Boolean);
+    let controparte=parti[0]||'',causale=parti.slice(1).join(', ');
+    // le commissioni non hanno una controparte: sono della banca stessa
+    if(tipo==='Fee'){causale=d;controparte='iCard';}
+    return{data:b.data,tipo,controparte,causale,debit,credit,grezza:blocco.replace(/\s+/g,' ').trim()};
+  }).filter(r=>r.data&&(r.debit>0||r.credit>0));
+}
+
+// Aggancia il testo del PDF a un'entità esistente; a parità, vince quella più usata
+function pdfMatchEntita(testo){
+  if(!testo)return null;
+  const t=impNorm(testo);if(!t)return null;
+  const uso={};rows.forEach(r=>{uso[r.from]=(uso[r.from]||0)+1;uso[r.to]=(uso[r.to]||0)+1;});
+  const cand=nomi.filter(n=>{const e=impNorm(n.name);return e&&(e===t||t.includes(e)||e.includes(t));});
+  if(!cand.length)return null;
+  cand.sort((a,b)=>{
+    const ea=impNorm(a.name)===t?1:0,eb=impNorm(b.name)===t?1:0;
+    if(ea!==eb)return eb-ea;
+    return (uso[b.name]||0)-(uso[a.name]||0);
+  });
+  return cand[0].name;
+}
+// Classificazione più ricorrente per quella controparte
+function pdfCategorieStoriche(entita){
+  if(!entita)return null;
+  const conta={};
+  rows.forEach(r=>{
+    if(r.from!==entita&&r.to!==entita)return;
+    const k=[r.c1||'-',r.c2||'-',r.c3||'-'].join('|');conta[k]=(conta[k]||0)+1;
+  });
+  const tot=Object.values(conta).reduce((s,v)=>s+v,0);if(!tot)return null;
+  const best=Object.entries(conta).sort((a,b)=>b[1]-a[1])[0];
+  const[c1v,c2v,c3v]=best[0].split('|');
+  return{c1:c1v,c2:c2v,c3:c3v,n:best[1],tot,sicura:best[1]/tot>=0.6};
+}
+
+async function onPdfFileSelected(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;
+  const area=document.getElementById('pdfArea');
+  area.innerHTML='<div class="import-msg">⏳ Lettura di '+f.name+'…</div>';
+  try{
+    const lines=await pdfToLines(f);
+    let banca=document.getElementById('pdfBankSel').value;
+    if(banca==='auto')banca=/icard/i.test(lines.join(' '))?'icard':'';
+    if(banca!=='icard')throw new Error('Banca non riconosciuta. Al momento è supportato solo il formato iCard: scegli la banca a mano o segnalami un estratto di esempio per aggiungere il formato.');
+    const conto=document.getElementById('pdfContoSel').value;
+    const grezze=pdfParseICard(lines);
+    if(!grezze.length)throw new Error('Nessun movimento riconosciuto nel PDF. Il layout potrebbe essere cambiato.');
+    pdfRighe=grezze.map(g=>{
+      const entita=pdfMatchEntita(g.controparte),cat=pdfCategorieStoriche(entita);
+      const uscita=g.debit>0;
+      const r={data:g.data,from:uscita?conto:(entita||g.controparte||'?'),to:uscita?(entita||g.controparte||'?'):conto,
+        desc:(g.causale||g.controparte||g.tipo||'').slice(0,60),importo:uscita?g.debit:g.credit,valuta:'EUR',
+        c1:cat?cat.c1:'-',c2:cat?cat.c2:'-',c3:cat?cat.c3:'-',
+        nuova:!entita,sicura:!!(cat&&cat.sicura),storico:cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico',
+        grezza:g.grezza};
+      r.dup=impDuplicate(r);
+      return r;
+    });
+    renderPdfPreview(f.name,lines.length);
+  }catch(e){area.innerHTML=`<div class="import-msg err">❌ ${e.message||'PDF non leggibile'}</div>`;}
+}
+
+function renderPdfPreview(fname,nLines){
+  const area=document.getElementById('pdfArea');
+  const nDub=pdfRighe.filter(r=>!r.sicura).length,nDup=pdfRighe.filter(r=>r.dup.level==='dup').length,nNew=pdfRighe.filter(r=>r.nuova).length;
+  const tE=pdfRighe.filter(r=>r.dup.level!=='dup'&&r.to===document.getElementById('pdfContoSel').value).reduce((s,r)=>s+r.importo,0);
+  const tU=pdfRighe.filter(r=>r.dup.level!=='dup'&&r.from===document.getElementById('pdfContoSel').value).reduce((s,r)=>s+r.importo,0);
+  let html=`<div class="import-summary"><strong>${fname}</strong> · ${nLines} righe di testo · <span class="imp-ok">${pdfRighe.length} movimenti riconosciuti</span>
+    ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}${nNew?` · <span class="imp-maybe">${nNew} controparti nuove</span>`:''}
+    <br>Entrate ${fmtAmt(tE,'EUR')} · Uscite ${fmtAmt(tU,'EUR')} (esclusi i già presenti)</div>
+    <div class="import-msg">Controlla la quadratura con il saldo dell'estratto prima di scaricare. Le righe <span class="imp-maybe">arancioni</span> hanno una classificazione incerta o una controparte mai vista: nell'Excel sono evidenziate in giallo.</div>
+    <div class="import-table-wrap"><table class="import-table"><thead><tr><th>Data</th><th>Da → A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Da dove arriva</th></tr></thead><tbody>`;
+  pdfRighe.forEach(r=>{
+    const cls=r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova?'imp-row-maybe':'');
+    const nota=r.dup.level==='dup'?'<span class="imp-dup">già presente</span>'
+      :r.nuova?`<span class="imp-maybe">controparte nuova</span>`
+      :`<span class="${r.sicura?'imp-ok':'imp-maybe'}">${r.storico}</span>`;
+    html+=`<tr class="${cls}"><td>${fmtDate(r.data)}</td><td>${r.from} → <strong>${r.to}</strong></td><td title="${(r.grezza||'').replace(/"/g,'')}">${r.desc}</td>
+      <td>${[r.c1,r.c2,r.c3].filter(x=>x&&x!=='-').join(' › ')||'—'}</td><td class="td-num">${fmtAmt(r.importo,'EUR')}</td><td>${nota}</td></tr>`;
+  });
+  html+=`</tbody></table></div><div class="backup-actions" style="margin-top:12px;">
+    <button class="btn-backup convert" onclick="scaricaExcelDaPdf()">⬇️ Scarica Excel da rivedere</button>
+    <button class="btn-sm grey" onclick="cancelPdf()">✕ Annulla</button></div>`;
+  area.innerHTML=html;
+}
+function cancelPdf(){pdfRighe=[];document.getElementById('pdfArea').innerHTML='';}
+
+async function scaricaExcelDaPdf(){
+  if(!pdfRighe.length)return;
+  const XLSX=await import(XLSX_CDN);
+  const head=['Importa','Data','Da','A','Descrizione','Cat.1','Cat.2','Cat.3','Importo','Valuta','Tipo Da','Tipo A','Note'];
+  const aoa=[head];
+  pdfRighe.forEach(r=>{
+    const note=[];
+    if(r.dup.level==='dup')note.push('GIA PRESENTE nel registro ('+fmtDate(r.dup.ref.data)+')');
+    else if(r.dup.level==='maybe')note.push('SIMILE a movimento del '+fmtDate(r.dup.ref.data));
+    if(r.nuova)note.push('CONTROPARTE NUOVA: compila Tipo Da/Tipo A');
+    if(!r.sicura&&!r.nuova)note.push('CATEGORIA DA CONFERMARE ('+r.storico+')');
+    note.push('PDF: '+(r.grezza||'').slice(0,90));
+    aoa.push([r.dup.level==='dup'?'NO':'SI',r.data,r.from,r.to,r.desc,r.c1,r.c2,r.c3,r.importo,'EUR','','',note.join(' · ')]);
+  });
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols']=[{wch:9},{wch:12},{wch:18},{wch:24},{wch:30},{wch:14},{wch:14},{wch:14},{wch:11},{wch:7},{wch:11},{wch:11},{wch:60}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Movimenti');
+  // foglio di riferimento: entità e categorie in uso, per compilare a mano senza errori
+  const c2all=[...new Set(Object.values(c2Map).flat())].sort(),c3all=[...new Set(Object.values(c3Map).flat())].sort();
+  const ref=[['Entita esistenti','Cat.1','Cat.2','Cat.3']];
+  const ns=nomi.map(n=>n.name).sort(),max=Math.max(ns.length,c1.length,c2all.length,c3all.length);
+  for(let i=0;i<max;i++)ref.push([ns[i]||'',c1[i]||'',c2all[i]||'',c3all[i]||'']);
+  const wr=XLSX.utils.aoa_to_sheet(ref);wr['!cols']=[{wch:30},{wch:16},{wch:16},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,wr,'Riferimenti');
+  const conto=document.getElementById('pdfContoSel').value.replace(/[^\w]/g,''),per=(pdfRighe[0]||{}).data.slice(0,7);
+  XLSX.writeFile(wb,`IMPORT_${conto}_${per}.xlsx`);
+}
+
 // ── IMPORT MOVIMENTI DA EXCEL ─────────────────────────
 // L'estratto conto (PDF) non viene letto qui: a monte viene convertito in un
 // foglio Excel con le intestazioni attese. Questo è il contratto fra i due passi.
@@ -1684,6 +1941,8 @@ Object.assign(window,{
   onTipoSelChange,clearTipoFilter,onValutaSelChange,clearValutaFilter,
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
   onImportFileSelected,toggleImportRow,confirmImport,cancelImport,
+  onRestoreFileSelected,confirmRestore,cancelRestore,
+  onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
   onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
   syncRptEstrC2,syncRptEstrC3,syncRptCatC2,syncRptCatC3,
