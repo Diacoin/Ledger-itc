@@ -268,6 +268,10 @@
   .import-table tr.imp-row-dup td{background:rgba(138,143,152,.10);}
   .import-table tr.imp-row-maybe td{background:rgba(230,126,34,.08);}
   .import-table tr.imp-row-err td{background:rgba(192,57,43,.08);}
+  .imp-sel{font-size:11px;padding:3px 4px;border:1px solid var(--input-border);border-radius:5px;background:var(--input-bg);color:var(--text);max-width:150px;margin-bottom:2px;}
+  .imp-sel-tipo{font-size:10px;color:#e67e22;border-color:#e67e22;}
+  .imp-inp{font-size:11px;padding:3px 5px;border:1px solid var(--input-border);border-radius:5px;background:var(--input-bg);color:var(--text);width:100%;box-sizing:border-box;}
+  .imp-inp-num{max-width:92px;text-align:right;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
   .storage-big-bar-wrap{background:var(--border);border-radius:12px;height:22px;overflow:hidden;margin:12px 0;}
   .storage-big-bar{height:100%;border-radius:12px;transition:width .6s;}
@@ -1689,40 +1693,132 @@ async function onPdfFileSelected(input){
       const uscita=g.debit>0;
       const r={data:g.data,from:uscita?conto:(entita||g.controparte||'?'),to:uscita?(entita||g.controparte||'?'):conto,
         desc:(g.causale||g.controparte||g.tipo||'').slice(0,60),importo:uscita?g.debit:g.credit,valuta:'EUR',
-        c1:cat?cat.c1:'-',c2:cat?cat.c2:'-',c3:cat?cat.c3:'-',
+        c1:cat?cat.c1:'-',c2:cat?cat.c2:'-',c3:cat?cat.c3:'-',tipoDa:'',tipoA:'',
         nuova:!entita,sicura:!!(cat&&cat.sicura),storico:cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico',
         grezza:g.grezza};
       r.dup=impDuplicate(r);
+      r.sel=r.dup.level!=='dup';
       return r;
     });
     renderPdfPreview(f.name,lines.length);
   }catch(e){area.innerHTML=`<div class="import-msg err">❌ ${e.message||'PDF non leggibile'}</div>`;}
 }
 
+// ── Anteprima modificabile: si correggono qui categorie e controparti,
+//    con gli stessi menu a tendina del registro, senza passare dall'Excel.
+let pdfFileName='',pdfNLines=0;
+function pdfEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function pdfOpts(lista,valore,vuoto){
+  const v=valore==null?'':valore,set=[...lista];
+  if(v&&v!=='-'&&!set.includes(v))set.unshift(v);
+  return `<option value="-">${vuoto}</option>`+set.map(o=>`<option value="${pdfEsc(o)}" ${o===v?'selected':''}>${pdfEsc(o)}</option>`).join('');
+}
+function pdfEntSel(i,campo){
+  const r=pdfRighe[i],v=r[campo],ns=nomi.map(n=>n.name).sort((a,b)=>a.localeCompare(b,'it'));
+  const nuova=!impFindNome(v);
+  let html=`<select class="imp-sel" onchange="pdfSetEnt(${i},'${campo}',this.value)">`;
+  if(nuova&&v)html+=`<option value="${pdfEsc(v)}" selected>${pdfEsc(v)} — NUOVA</option>`;
+  html+=ns.map(n=>`<option value="${pdfEsc(n)}" ${!nuova&&n===v?'selected':''}>${pdfEsc(n)}</option>`).join('')+`</select>`;
+  if(nuova&&v){
+    const tipi=[...new Set(nomi.map(n=>(n.tipo||'').trim()).filter(Boolean))].sort();
+    const tv=campo==='from'?r.tipoDa:r.tipoA;
+    html+=`<br><select class="imp-sel imp-sel-tipo" onchange="pdfSetTipo(${i},'${campo}',this.value)"><option value="">tipo…</option>`+
+      tipi.map(t=>`<option value="${pdfEsc(t)}" ${t===tv?'selected':''}>${pdfEsc(t)}</option>`).join('')+`</select>`;
+  }
+  return html;
+}
+function pdfCatCell(i){
+  const r=pdfRighe[i];
+  const l2=(c2Map[r.c1]||[]),l3=(c3Map[c3k(r.c1,r.c2)]||[]);
+  return `<select class="imp-sel" onchange="pdfSetCat(${i},1,this.value)">${pdfOpts(c1,r.c1,'— Cat.1 —')}</select>
+    <select class="imp-sel" onchange="pdfSetCat(${i},2,this.value)">${pdfOpts(l2,r.c2,'— Cat.2 —')}</select>
+    <select class="imp-sel" onchange="pdfSetCat(${i},3,this.value)">${pdfOpts(l3,r.c3,'— Cat.3 —')}</select>`;
+}
+function pdfRowCells(i){
+  const r=pdfRighe[i];
+  const nota=r.dup.level==='dup'?`<span class="imp-dup">già presente (${fmtDate(r.dup.ref.data)})</span>`
+    :r.dup.level==='maybe'?`<span class="imp-maybe">simile al ${fmtDate(r.dup.ref.data)}</span>`
+    :r.nuova?`<span class="imp-maybe">controparte nuova</span>`
+    :`<span class="${r.sicura?'imp-ok':'imp-maybe'}">${r.storico}</span>`;
+  return `<td><input type="checkbox" ${r.sel?'checked':''} onchange="pdfToggleRow(${i},this.checked)"></td>
+    <td><input type="date" class="imp-inp" value="${r.data}" onchange="pdfSetTesto(${i},'data',this.value)"></td>
+    <td>${pdfEntSel(i,'from')}</td><td>${pdfEntSel(i,'to')}</td>
+    <td><input type="text" class="imp-inp" style="min-width:150px" value="${pdfEsc(r.desc)}" title="${pdfEsc(r.grezza)}" onchange="pdfSetTesto(${i},'desc',this.value)"></td>
+    <td id="pdfcat-${i}">${pdfCatCell(i)}</td>
+    <td class="td-num"><input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)"></td>
+    <td>${nota}</td>`;
+}
+function pdfRowClass(i){const r=pdfRighe[i];return r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova||r.dup.level==='maybe'?'imp-row-maybe':'');}
+
 function renderPdfPreview(fname,nLines){
+  if(fname!==undefined){pdfFileName=fname;pdfNLines=nLines;}
   const area=document.getElementById('pdfArea');
-  const nDub=pdfRighe.filter(r=>!r.sicura).length,nDup=pdfRighe.filter(r=>r.dup.level==='dup').length,nNew=pdfRighe.filter(r=>r.nuova).length;
-  const tE=pdfRighe.filter(r=>r.dup.level!=='dup'&&r.to===document.getElementById('pdfContoSel').value).reduce((s,r)=>s+r.importo,0);
-  const tU=pdfRighe.filter(r=>r.dup.level!=='dup'&&r.from===document.getElementById('pdfContoSel').value).reduce((s,r)=>s+r.importo,0);
-  let html=`<div class="import-summary"><strong>${fname}</strong> · ${nLines} righe di testo · <span class="imp-ok">${pdfRighe.length} movimenti riconosciuti</span>
-    ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}${nNew?` · <span class="imp-maybe">${nNew} controparti nuove</span>`:''}
-    <br>Entrate ${fmtAmt(tE,'EUR')} · Uscite ${fmtAmt(tU,'EUR')} (esclusi i già presenti)</div>
-    <div class="import-msg">Controlla la quadratura con il saldo dell'estratto prima di scaricare. Le righe <span class="imp-maybe">arancioni</span> hanno una classificazione incerta o una controparte mai vista: nell'Excel sono evidenziate in giallo.</div>
-    <div class="import-table-wrap"><table class="import-table"><thead><tr><th>Data</th><th>Da → A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Da dove arriva</th></tr></thead><tbody>`;
-  pdfRighe.forEach(r=>{
-    const cls=r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova?'imp-row-maybe':'');
-    const nota=r.dup.level==='dup'?'<span class="imp-dup">già presente</span>'
-      :r.nuova?`<span class="imp-maybe">controparte nuova</span>`
-      :`<span class="${r.sicura?'imp-ok':'imp-maybe'}">${r.storico}</span>`;
-    html+=`<tr class="${cls}"><td>${fmtDate(r.data)}</td><td>${r.from} → <strong>${r.to}</strong></td><td title="${(r.grezza||'').replace(/"/g,'')}">${r.desc}</td>
-      <td>${[r.c1,r.c2,r.c3].filter(x=>x&&x!=='-').join(' › ')||'—'}</td><td class="td-num">${fmtAmt(r.importo,'EUR')}</td><td>${nota}</td></tr>`;
-  });
+  let html=`<div id="pdfSommario"></div>
+    <div class="import-msg">Correggi qui quello che serve: le tendine sono le stesse del registro. Le entità marcate <strong>NUOVA</strong> vengono create al momento dell'inserimento — scegli il tipo, oppure sostituiscile con un'entità esistente.</div>
+    <div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Note</th></tr></thead><tbody>`;
+  pdfRighe.forEach((r,i)=>{html+=`<tr id="pdfrow-${i}" class="${pdfRowClass(i)}">${pdfRowCells(i)}</tr>`;});
   html+=`</tbody></table></div><div class="backup-actions" style="margin-top:12px;">
-    <button class="btn-backup convert" onclick="scaricaExcelDaPdf()">⬇️ Scarica Excel da rivedere</button>
+    <button class="btn-backup save" onclick="importaPdfDiretto()">✅ Inserisci nel registro</button>
+    <button class="btn-backup convert" onclick="scaricaExcelDaPdf()">⬇️ Scarica Excel</button>
     <button class="btn-sm grey" onclick="cancelPdf()">✕ Annulla</button></div>`;
   area.innerHTML=html;
+  aggiornaPdfSommario();
 }
-function cancelPdf(){pdfRighe=[];document.getElementById('pdfArea').innerHTML='';}
+function aggiornaPdfSommario(){
+  const el=document.getElementById('pdfSommario');if(!el)return;
+  const conto=document.getElementById('pdfContoSel').value;
+  const sel=pdfRighe.filter(r=>r.sel);
+  const tE=sel.filter(r=>r.to===conto).reduce((s,r)=>s+r.importo,0),tU=sel.filter(r=>r.from===conto).reduce((s,r)=>s+r.importo,0);
+  const nDup=pdfRighe.filter(r=>r.dup.level==='dup').length,nDub=pdfRighe.filter(r=>!r.sicura||r.nuova).length;
+  el.innerHTML=`<div class="import-summary"><strong>${pdfEsc(pdfFileName)}</strong> · ${pdfNLines} righe di testo · <span class="imp-ok">${pdfRighe.length} movimenti riconosciuti</span>
+    ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}
+    <br><strong>${sel.length} selezionati</strong> · entrate ${fmtAmt(tE,'EUR')} · uscite ${fmtAmt(tU,'EUR')} — confronta con il saldo dell'estratto</div>`;
+}
+function pdfRefreshRow(i){
+  const tr=document.getElementById('pdfrow-'+i);if(!tr)return;
+  tr.className=pdfRowClass(i);tr.innerHTML=pdfRowCells(i);
+}
+function pdfToggleRow(i,v){pdfRighe[i].sel=v;aggiornaPdfSommario();}
+function pdfSetTipo(i,campo,v){pdfRighe[i][campo==='from'?'tipoDa':'tipoA']=v;}
+function pdfSetEnt(i,campo,v){
+  const r=pdfRighe[i];r[campo]=v;
+  r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
+  // controparte cambiata: rileggi lo storico e ricontrolla i duplicati
+  const conto=document.getElementById('pdfContoSel').value,altra=r.from===conto?r.to:r.from;
+  const cat=pdfCategorieStoriche(impFindNome(altra)?impFindNome(altra).name:null);
+  if(cat&&(r.c1==='-'||!r.c1)){r.c1=cat.c1;r.c2=cat.c2;r.c3=cat.c3;}
+  r.sicura=!!(cat&&cat.sicura);r.storico=cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico';
+  r.dup=impDuplicate(r);
+  pdfRefreshRow(i);aggiornaPdfSommario();
+}
+function pdfSetCat(i,liv,v){
+  const r=pdfRighe[i];
+  if(liv===1){r.c1=v;r.c2='-';r.c3='-';}
+  else if(liv===2){r.c2=v;r.c3='-';}
+  else r.c3=v;
+  r.sicura=true;                                   // scelta a mano: non è più un'ipotesi
+  const cell=document.getElementById('pdfcat-'+i);if(cell)cell.innerHTML=pdfCatCell(i);
+  const tr=document.getElementById('pdfrow-'+i);if(tr)tr.className=pdfRowClass(i);
+}
+function pdfSetTesto(i,campo,v){
+  const r=pdfRighe[i];
+  if(campo==='importo'){r.importo=Math.abs(parseFloat(v)||0);r.dup=impDuplicate(r);aggiornaPdfSommario();}
+  else if(campo==='data'){r.data=v;r.dup=impDuplicate(r);pdfRefreshRow(i);aggiornaPdfSommario();}
+  else r[campo]=v;
+}
+function cancelPdf(){pdfRighe=[];pdfFileName='';document.getElementById('pdfArea').innerHTML='';}
+
+// Inserimento diretto: le righe corrette passano per lo stesso percorso dell'import Excel
+async function importaPdfDiretto(){
+  const sel=pdfRighe.filter(r=>r.sel);
+  if(!sel.length){alert('Nessuna riga selezionata');return;}
+  const senzaCat=sel.filter(r=>!r.c1||r.c1==='-').length;
+  if(senzaCat&&!confirm(`${senzaCat} righe non hanno la Cat.1. Inserirle comunque senza categoria?`))return;
+  importPreview=sel.map(r=>({data:r.data,from:r.from,to:r.to,desc:r.desc,c1:r.c1||'-',c2:r.c2||'-',c3:r.c3||'-',
+    importo:r.importo,tipoDa:r.tipoDa,tipoA:r.tipoA,valuta:'EUR',errore:'',dup:r.dup,sel:true}));
+  await confirmImport('pdfArea');
+  if(!importPreview.length){pdfRighe=[];}          // andato a buon fine
+}
 
 async function scaricaExcelDaPdf(){
   if(!pdfRighe.length)return;
@@ -1736,7 +1832,7 @@ async function scaricaExcelDaPdf(){
     if(r.nuova)note.push('CONTROPARTE NUOVA: compila Tipo Da/Tipo A');
     if(!r.sicura&&!r.nuova)note.push('CATEGORIA DA CONFERMARE ('+r.storico+')');
     note.push('PDF: '+(r.grezza||'').slice(0,90));
-    aoa.push([r.dup.level==='dup'?'NO':'SI',r.data,r.from,r.to,r.desc,r.c1,r.c2,r.c3,r.importo,'EUR','','',note.join(' · ')]);
+    aoa.push([r.sel?'SI':'NO',r.data,r.from,r.to,r.desc,r.c1,r.c2,r.c3,r.importo,'EUR',r.tipoDa||'',r.tipoA||'',note.join(' · ')]);
   });
   const ws=XLSX.utils.aoa_to_sheet(aoa);
   ws['!cols']=[{wch:9},{wch:12},{wch:18},{wch:24},{wch:30},{wch:14},{wch:14},{wch:14},{wch:11},{wch:7},{wch:11},{wch:11},{wch:60}];
@@ -1904,7 +2000,7 @@ function renderImportPreview(fname){
 function toggleImportRow(i,checked){importPreview[i].sel=checked;renderImportPreview(document.querySelector('.import-summary strong').textContent);}
 function cancelImport(){importPreview=[];document.getElementById('importArea').innerHTML='';}
 
-async function confirmImport(){
+async function confirmImport(areaId){
   const sel=importPreview.filter(r=>r.sel&&!r.errore);
   if(!sel.length){alert('Nessuna riga selezionata');return;}
   const ents=importNewEntities(),cats=importNewCats();
@@ -1923,7 +2019,7 @@ async function confirmImport(){
   rows.sort((a,b)=>a.data.localeCompare(b.data));
   await saveToFirebase();
   importPreview=[];
-  document.getElementById('importArea').innerHTML=`<div class="import-msg ok">✅ Importati ${sel.length} movimenti${ents.length?`, create ${ents.length} entità`:''}. Vai al Registro per vederli.</div>`;
+  document.getElementById(areaId||'importArea').innerHTML=`<div class="import-msg ok">✅ Inseriti ${sel.length} movimenti${ents.length?`, create ${ents.length} entità`:''}. Vai al Registro per vederli.</div>`;
   syncSelects();syncTipoSel();syncEntitySel();rebuildDD();render();
 }
 
@@ -1942,7 +2038,8 @@ Object.assign(window,{
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
   onImportFileSelected,toggleImportRow,confirmImport,cancelImport,
   onRestoreFileSelected,confirmRestore,cancelRestore,
-  onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,
+  onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,importaPdfDiretto,
+  pdfToggleRow,pdfSetEnt,pdfSetCat,pdfSetTesto,pdfSetTipo,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
   onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
   syncRptEstrC2,syncRptEstrC3,syncRptCatC2,syncRptCatC3,
