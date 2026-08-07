@@ -1701,7 +1701,7 @@ async function onPdfFileSelected(input){
         desc:(g.causale||g.controparte||g.tipo||'').slice(0,60),importo:uscita?g.debit:g.credit,valuta:'EUR',
         c1:cat?cat.c1:'-',c2:cat?cat.c2:'-',c3:cat?cat.c3:'-',tipoDa:'',tipoA:'',
         nuova:!entita,sicura:!!(cat&&cat.sicura),storico:cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico',
-        grezza:g.grezza};
+        raw:g.controparte,grezza:g.grezza};
       r.dup=impDuplicate(r);
       r.sel=r.dup.level!=='dup';
       return r;
@@ -1714,22 +1714,28 @@ async function onPdfFileSelected(input){
 //    con gli stessi menu a tendina del registro, senza passare dall'Excel.
 let pdfFileName='',pdfNLines=0;
 function pdfEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+const NEW_OPT='__NUOVA__';
 function pdfOpts(lista,valore,vuoto){
   const v=valore==null?'':valore,set=[...lista];
   if(v&&v!=='-'&&!set.includes(v))set.unshift(v);
-  return `<option value="-">${vuoto}</option>`+set.map(o=>`<option value="${pdfEsc(o)}" ${o===v?'selected':''}>${pdfEsc(o)}</option>`).join('');
+  return `<option value="-">${vuoto}</option>`+set.map(o=>`<option value="${pdfEsc(o)}" ${o===v?'selected':''}>${pdfEsc(o)}</option>`).join('')
+    +`<option value="${NEW_OPT}">➕ Nuova…</option>`;
 }
 function pdfEntSel(i,campo){
   const r=pdfRighe[i],v=r[campo],ns=nomi.map(n=>n.name).sort((a,b)=>a.localeCompare(b,'it'));
-  const nuova=!impFindNome(v);
+  const esistente=impFindNome(v),nuova=!esistente;
   let html=`<select class="imp-sel" onchange="pdfSetEnt(${i},'${campo}',this.value)">`;
   if(nuova&&v)html+=`<option value="${pdfEsc(v)}" selected>${pdfEsc(v)} — NUOVA</option>`;
-  html+=ns.map(n=>`<option value="${pdfEsc(n)}" ${!nuova&&n===v?'selected':''}>${pdfEsc(n)}</option>`).join('')+`</select>`;
-  if(nuova&&v){
+  html+=ns.map(n=>`<option value="${pdfEsc(n)}" ${!nuova&&n===v?'selected':''}>${pdfEsc(n)}</option>`).join('')
+    +`<option value="${NEW_OPT}">➕ Nuova entità…</option></select>`;
+  // il tipo si chiede sia per le entità da creare sia per quelle esistenti che non ce l'hanno
+  const senzaTipo=esistente&&!(esistente.tipo||'').trim();
+  if((nuova&&v)||senzaTipo){
     const tipi=[...new Set(nomi.map(n=>(n.tipo||'').trim()).filter(Boolean))].sort();
-    const tv=campo==='from'?r.tipoDa:r.tipoA;
-    html+=`<br><select class="imp-sel imp-sel-tipo" onchange="pdfSetTipo(${i},'${campo}',this.value)"><option value="">tipo…</option>`+
-      tipi.map(t=>`<option value="${pdfEsc(t)}" ${t===tv?'selected':''}>${pdfEsc(t)}</option>`).join('')+`</select>`;
+    const tv=esistente?(esistente.tipo||''):(campo==='from'?r.tipoDa:r.tipoA);
+    html+=`<select class="imp-sel imp-sel-tipo" onchange="pdfSetTipo(${i},'${campo}',this.value)"><option value="">tipo…</option>`+
+      tipi.map(t=>`<option value="${pdfEsc(t)}" ${t===tv?'selected':''}>${pdfEsc(t)}</option>`).join('')+
+      `<option value="${NEW_OPT}">➕ Nuovo tipo…</option></select>`;
   }
   return html;
 }
@@ -1758,9 +1764,9 @@ function pdfRowClass(i){const r=pdfRighe[i];return r.dup.level==='dup'?'imp-row-
 
 function renderPdfPreview(fname,nLines){
   if(fname!==undefined){pdfFileName=fname;pdfNLines=nLines;}
-  const area=document.getElementById('pdfArea');
+  const area=document.getElementById('pdfArea');if(!area)return;
   let html=`<div id="pdfSommario"></div>
-    <div class="import-msg">Correggi qui quello che serve: le tendine sono le stesse del registro. Le entità marcate <strong>NUOVA</strong> vengono create al momento dell'inserimento — scegli il tipo, oppure sostituiscile con un'entità esistente.</div>
+    <div class="import-msg">Correggi qui quello che serve: le tendine sono le stesse del registro. Se una voce manca, scegli <strong>➕ Nuova…</strong> in fondo alla tendina: entità e categorie vengono create subito in archivio, senza passare da Nomi o Categorie. Le entità marcate <strong>NUOVA</strong> sono quelle lette dal PDF e non ancora in archivio: assegna il tipo, sostituiscile con una esistente, oppure lasciale così e verranno create all'inserimento.</div>
     <div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Note</th></tr></thead><tbody>`;
   pdfRighe.forEach((r,i)=>{html+=`<tr id="pdfrow-${i}" class="${pdfRowClass(i)}">${pdfRowCells(i)}</tr>`;});
   html+=`</tbody></table></div><div class="backup-actions" style="margin-top:12px;">
@@ -1785,9 +1791,36 @@ function pdfRefreshRow(i){
   tr.className=pdfRowClass(i);tr.innerHTML=pdfRowCells(i);
 }
 function pdfToggleRow(i,v){pdfRighe[i].sel=v;aggiornaPdfSommario();}
-function pdfSetTipo(i,campo,v){pdfRighe[i][campo==='from'?'tipoDa':'tipoA']=v;}
-function pdfSetEnt(i,campo,v){
-  const r=pdfRighe[i];r[campo]=v;
+
+// Creazione al volo dall'anteprima: niente giro dalla pagina Nomi/Categorie
+async function pdfSetTipo(i,campo,v){
+  const r=pdfRighe[i];
+  if(v===NEW_OPT){
+    const t=(prompt('Nuovo tipo di entità (es. Insurance, Vendor, Tenant):')||'').trim();
+    if(!t){pdfRefreshRow(i);return;}
+    v=t;
+  }
+  const ent=impFindNome(r[campo]);
+  if(ent){ent.tipo=v;await saveToFirebase();syncTipoSel();}   // entità già in archivio: aggiorno lì
+  else r[campo==='from'?'tipoDa':'tipoA']=v;                  // ancora da creare: viaggia con la riga
+  renderPdfPreview();                                          // il tipo nuovo compare in tutte le righe
+}
+async function pdfSetEnt(i,campo,v){
+  const r=pdfRighe[i];let creata=false;
+  if(v===NEW_OPT){
+    const suggerito=r.raw&&!impFindNome(r.raw)?r.raw:'';
+    const nome=(prompt('Nome della nuova entità (verrà aggiunta subito all\'archivio Nomi):',suggerito)||'').trim();
+    if(!nome){pdfRefreshRow(i);return;}
+    const gia=impFindNome(nome);
+    if(!gia){
+      const cnt=document.getElementById('pdfContoSel').value;
+      nomi.push({name:nome,tipo:'',valuta:getNomeValuta(cnt)||'EUR'});
+      await saveToFirebase();
+      syncSelects();syncTipoSel();syncEntitySel();creata=true;
+    }
+    v=gia?gia.name:nome;
+  }
+  r[campo]=v;r.creata=creata;
   r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
   // controparte cambiata: rileggi lo storico e ricontrolla i duplicati
   const conto=document.getElementById('pdfContoSel').value,altra=r.from===conto?r.to:r.from;
@@ -1795,10 +1828,23 @@ function pdfSetEnt(i,campo,v){
   if(cat&&(r.c1==='-'||!r.c1)){r.c1=cat.c1;r.c2=cat.c2;r.c3=cat.c3;}
   r.sicura=!!(cat&&cat.sicura);r.storico=cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico';
   r.dup=impDuplicate(r);
-  pdfRefreshRow(i);aggiornaPdfSommario();
+  if(creata)renderPdfPreview();                    // l'entità nuova deve comparire in tutte le tendine
+  else{pdfRefreshRow(i);aggiornaPdfSommario();}
 }
-function pdfSetCat(i,liv,v){
+async function pdfSetCat(i,liv,v){
   const r=pdfRighe[i];
+  if(v===NEW_OPT){
+    if(liv===2&&(!r.c1||r.c1==='-')){alert('Scegli prima la Cat.1');pdfRefreshRow(i);return;}
+    if(liv===3&&(!r.c2||r.c2==='-')){alert('Scegli prima la Cat.2');pdfRefreshRow(i);return;}
+    const dove=liv===1?'Cat.1':liv===2?`Cat.2 dentro "${r.c1}"`:`Cat.3 dentro "${r.c1} › ${r.c2}"`;
+    const nome=(prompt(`Nuova ${dove} (verrà aggiunta subito all'archivio Categorie):`)||'').trim();
+    if(!nome){pdfRefreshRow(i);return;}
+    if(liv===1){if(!c1.includes(nome))c1.push(nome);}
+    else if(liv===2){const k=r.c1;if(!c2Map[k])c2Map[k]=[];if(!c2Map[k].includes(nome))c2Map[k].push(nome);}
+    else{const k=c3k(r.c1,r.c2);if(!c3Map[k])c3Map[k]=[];if(!c3Map[k].includes(nome))c3Map[k].push(nome);}
+    await saveToFirebase();rebuildDD();
+    v=nome;
+  }
   if(liv===1){r.c1=v;r.c2='-';r.c3='-';}
   else if(liv===2){r.c2=v;r.c3='-';}
   else r.c3=v;
