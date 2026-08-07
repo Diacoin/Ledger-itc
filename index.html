@@ -249,6 +249,22 @@
   .btn-backup{padding:10px 22px;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;}
   .btn-backup.save{background:#1a73e8;}
   .backup-status{display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;font-weight:bold;}
+  /* ── Import movimenti da Excel ── */
+  .import-msg{margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+  .import-msg.err{background:#fdecea;border-color:#f5c6cb;color:#c0392b;}
+  .import-msg.ok{background:#e8f5e9;border-color:#c8e6c9;color:#2e7d32;}
+  .import-summary{margin-top:12px;padding:10px 12px;border-radius:8px;background:#e8f0fe;border:1px solid #c5d9f7;font-size:12px;color:#1a3d6d;}
+  .imp-ok{color:#2e7d32;font-weight:bold;}
+  .imp-dup{color:#8a8f98;font-weight:bold;}
+  .imp-maybe{color:#e67e22;font-weight:bold;}
+  .imp-err{color:#c0392b;font-weight:bold;}
+  .import-table-wrap{margin-top:10px;max-height:420px;overflow:auto;border:1px solid var(--border);border-radius:8px;}
+  .import-table{width:100%;border-collapse:collapse;font-size:11px;}
+  .import-table th{position:sticky;top:0;background:#1a73e8;color:white;padding:7px 8px;text-align:left;font-size:10px;white-space:nowrap;}
+  .import-table td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .import-table tr.imp-row-dup td{background:rgba(138,143,152,.10);}
+  .import-table tr.imp-row-maybe td{background:rgba(230,126,34,.08);}
+  .import-table tr.imp-row-err td{background:rgba(192,57,43,.08);}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
   .storage-big-bar-wrap{background:var(--border);border-radius:12px;height:22px;overflow:hidden;margin:12px 0;}
   .storage-big-bar{height:100%;border-radius:12px;transition:width .6s;}
@@ -728,6 +744,15 @@
       <h3>⬇️ Esporta dati locali</h3>
       <p>Scarica i dati in formato JSON.</p>
       <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">💾 Scarica JSON</button></div>
+    </div>
+    <div class="backup-box">
+      <h3>📥 Importa movimenti da Excel</h3>
+      <p>Carica il file <strong>IMPORT_*.xlsx</strong> revisionato (foglio <em>Movimenti</em>). Prima dell'inserimento vedi un'anteprima con i possibili duplicati già segnalati. Accetta anche .csv.</p>
+      <div class="backup-actions">
+        <button class="btn-backup save" onclick="document.getElementById('importFileInput').click()">📂 Scegli file</button>
+        <input type="file" id="importFileInput" style="display:none" accept=".xlsx,.xls,.csv" onchange="onImportFileSelected(this)">
+      </div>
+      <div id="importArea"></div>
     </div>
     <div class="backup-box">
       <h3>☁️ Sincronizzazione</h3>
@@ -1470,6 +1495,181 @@ function renderSavedReports(){
 }
 function printReport(){window.print();}
 function stampaCategorie(){const w=window.open('','_blank','width=800,height=600');const now=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Categorie</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}body{background:white;padding:24px;color:#333;}h1{font-size:18px;font-weight:900;margin-bottom:4px;}.subtitle{font-size:11px;color:#888;margin-bottom:20px;}.c1-block{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;}.c1-header{background:#9c27b0;color:white;padding:9px 14px;font-size:13px;font-weight:bold;}.c2-header{background:#fff3e0;padding:7px 14px 7px 28px;font-size:12px;font-weight:bold;color:#e67e22;border-bottom:1px solid #f5e6d0;}.c3-row{padding:5px 14px 5px 52px;font-size:11px;color:#16a085;border-bottom:1px solid #f0faf7;}.empty{color:#aaa;font-style:italic;font-size:11px;padding:6px 14px 6px 28px;}.footer{margin-top:24px;font-size:10px;color:#aaa;text-align:right;}</style></head><body>`;html+=`<h1>🏷️ Archivio Categorie</h1><div class="subtitle">Stampato il ${now}</div>`;c1.forEach(cat1=>{const subs2=c2Map[cat1]||[];html+=`<div class="c1-block"><div class="c1-header">${cat1}</div>`;if(!subs2.length){html+=`<div class="empty">Nessuna Cat.2</div>`;}else subs2.forEach(cat2=>{const subs3=c3Map[c3k(cat1,cat2)]||[];html+=`<div class="c2-header">${cat2}</div>`;if(!subs3.length)html+=`<div class="empty">Nessuna Cat.3</div>`;else subs3.forEach(cat3=>{html+=`<div class="c3-row">${cat3}</div>`;});});html+=`</div>`;});html+=`<div class="footer">IlTuoCaveau · ${now}</div><script>window.onload=()=>window.print();<\/script></body></html>`;w.document.write(html);w.document.close();}
+// ── IMPORT MOVIMENTI DA EXCEL ─────────────────────────
+// L'estratto conto (PDF) non viene letto qui: a monte viene convertito in un
+// foglio Excel con le intestazioni attese. Questo è il contratto fra i due passi.
+// Colonne: Importa | Data | Da | A | Descrizione | Cat.1 | Cat.2 | Cat.3 | Importo | Valuta | Tipo Da | Tipo A | Note
+let importPreview=[];
+const XLSX_CDN='https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs';
+
+function impNorm(s){return String(s==null?'':s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[\s._]/g,'');}
+function impSame(a,b){return impNorm(a)===impNorm(b);}
+
+// Accetta: data Excel (Date o seriale), 'AAAA-MM-GG', 'GG/MM/AAAA', 'GG-MM-AAAA'
+function impDate(v){
+  if(v instanceof Date&&!isNaN(v))return `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
+  if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Date.UTC(1899,11,30+Math.floor(v)));return d.toISOString().slice(0,10);}
+  const s=String(v||'').trim();
+  let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return `${m[1]}-${m[2]}-${m[3]}`;
+  m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);if(m)return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  return '';
+}
+// Accetta 1234.56 / "1.234,56" / "1234,56" / "€ 1.234,56"
+function impAmount(v){
+  if(typeof v==='number')return Math.abs(v);
+  let s=String(v||'').replace(/[^\d.,-]/g,'');
+  if(s.includes(',')&&s.includes('.'))s=s.lastIndexOf(',')>s.lastIndexOf('.')?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'');
+  else if(s.includes(','))s=s.replace(',','.');
+  const n=parseFloat(s);return isNaN(n)?NaN:Math.abs(n);
+}
+function impDaysApart(a,b){return Math.abs((new Date(a)-new Date(b))/86400000);}
+
+// Confronta la riga con il registro: 'dup' = già presente, 'maybe' = da controllare
+function impDuplicate(r){
+  for(const e of rows){
+    if(Math.abs(e.importo-r.importo)>0.005)continue;
+    if(e.data===r.data&&impSame(e.from,r.from)&&impSame(e.to,r.to))return{level:'dup',ref:e};
+    if(impDaysApart(e.data,r.data)<=3&&(impSame(e.to,r.to)||impSame(e.from,r.from)))return{level:'maybe',ref:e};
+  }
+  return{level:'ok',ref:null};
+}
+function impFindNome(n){return nomi.find(x=>impSame(x.name,n));}
+
+// Trasforma le righe grezze del foglio in righe validate + esito duplicati
+function impBuild(matrix){
+  const hi={},head=(matrix[0]||[]).map(impNorm);
+  const want={importa:['importa'],data:['data'],from:['da','from'],to:['a','to','verso'],desc:['descrizione','desc','causale'],
+    c1:['cat1','categoria1'],c2:['cat2','categoria2'],c3:['cat3','categoria3'],importo:['importo','amount'],
+    valuta:['valuta','currency'],tipoDa:['tipoda'],tipoA:['tipoa'],note:['note']};
+  for(const k in want){const i=head.findIndex(h=>want[k].includes(h));if(i>=0)hi[k]=i;}
+  if(hi.data===undefined||hi.from===undefined||hi.to===undefined||hi.importo===undefined)
+    throw new Error('Intestazioni non riconosciute. Servono almeno: Data, Da, A, Importo.');
+  const out=[];
+  for(let i=1;i<matrix.length;i++){
+    const g=k=>hi[k]===undefined?'':matrix[i][hi[k]];
+    const flag=String(g('importa')||'SI').trim().toUpperCase();
+    const data=impDate(g('data')),from=String(g('from')||'').trim(),to=String(g('to')||'').trim(),importo=impAmount(g('importo'));
+    if(!data&&!from&&!to)continue;                       // riga vuota o riga totali
+    const r={data,from,to,desc:String(g('desc')||'').trim(),
+      c1:String(g('c1')||'').trim()||'-',c2:String(g('c2')||'').trim()||'-',c3:String(g('c3')||'').trim()||'-',
+      importo,tipoDa:String(g('tipoDa')||'').trim(),tipoA:String(g('tipoA')||'').trim(),
+      note:String(g('note')||'').trim(),riga:i+1,errore:'',dup:{level:'ok'},sel:false};
+    if(!data)r.errore='data non valida';
+    else if(!from||!to)r.errore='Da/A mancante';
+    else if(impSame(from,to))r.errore='Da e A coincidono';
+    else if(isNaN(importo)||importo<=0)r.errore='importo non valido';
+    else{
+      const nf=impFindNome(from),nt=impFindNome(to);
+      const cf=nf?(nf.valuta||'EUR'):'EUR',ct=nt?(nt.valuta||'EUR'):'EUR';
+      if(nf&&nt&&cf!==ct)r.errore='cambio valuta: da inserire a mano';
+      r.valuta=cf;
+      r.dup=impDuplicate(r);
+    }
+    r.sel=!r.errore&&r.dup.level!=='dup'&&flag!=='NO';
+    r.escluso=flag==='NO';
+    out.push(r);
+  }
+  return out;
+}
+
+async function onImportFileSelected(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;
+  const area=document.getElementById('importArea');
+  area.innerHTML='<div class="import-msg">⏳ Lettura di '+f.name+'…</div>';
+  try{
+    let matrix;
+    if(/\.csv$/i.test(f.name)){
+      const txt=await f.text(),sep=(txt.split('\n')[0].match(/;/g)||[]).length>=(txt.split('\n')[0].match(/,/g)||[]).length?';':',';
+      matrix=txt.split(/\r?\n/).filter(l=>l.trim()).map(l=>l.split(sep).map(c=>c.replace(/^"|"$/g,'').trim()));
+    }else{
+      const XLSX=await import(XLSX_CDN);
+      const wb=XLSX.read(await f.arrayBuffer(),{cellDates:true});
+      const sheet=wb.Sheets['Movimenti']||wb.Sheets[wb.SheetNames[0]];
+      matrix=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true});
+    }
+    importPreview=impBuild(matrix);
+    renderImportPreview(f.name);
+  }catch(e){
+    area.innerHTML=`<div class="import-msg err">❌ ${e.message||'file non leggibile'}</div>`;
+  }
+}
+
+function importNewEntities(){
+  const seen=new Map();
+  importPreview.filter(r=>r.sel&&!r.errore).forEach(r=>{
+    [[r.from,r.tipoDa],[r.to,r.tipoA]].forEach(([n,t])=>{
+      if(n&&!impFindNome(n)&&!seen.has(impNorm(n)))seen.set(impNorm(n),{name:n,tipo:t||''});
+    });
+  });
+  return[...seen.values()];
+}
+function importNewCats(){
+  const out=[];
+  importPreview.filter(r=>r.sel&&!r.errore).forEach(r=>{
+    if(r.c1!=='-'&&!c1.includes(r.c1))out.push('Cat.1 '+r.c1);
+    if(r.c2!=='-'&&r.c1!=='-'&&!(c2Map[r.c1]||[]).includes(r.c2))out.push(`Cat.2 ${r.c1} › ${r.c2}`);
+    if(r.c3!=='-'&&r.c2!=='-'&&!(c3Map[c3k(r.c1,r.c2)]||[]).includes(r.c3))out.push(`Cat.3 ${r.c1} › ${r.c2} › ${r.c3}`);
+  });
+  return[...new Set(out)];
+}
+
+function renderImportPreview(fname){
+  const area=document.getElementById('importArea');
+  if(!importPreview.length){area.innerHTML='<div class="import-msg err">Nessuna riga trovata nel foglio.</div>';return;}
+  const nErr=importPreview.filter(r=>r.errore).length,nDup=importPreview.filter(r=>r.dup.level==='dup').length,
+        nMaybe=importPreview.filter(r=>r.dup.level==='maybe'&&!r.errore).length,nSel=importPreview.filter(r=>r.sel).length;
+  const tot=importPreview.filter(r=>r.sel).reduce((s,r)=>s+r.importo,0);
+  let html=`<div class="import-summary"><strong>${fname}</strong> · ${importPreview.length} righe lette ·
+    <span class="imp-ok">${nSel} da importare</span>${nDup?` · <span class="imp-dup">${nDup} già presenti</span>`:''}${nMaybe?` · <span class="imp-maybe">${nMaybe} da controllare</span>`:''}${nErr?` · <span class="imp-err">${nErr} con errori</span>`:''}
+    · totale selezionato ${fmtAmt(tot,'EUR')}</div>`;
+  const ents=importNewEntities(),cats=importNewCats();
+  if(ents.length)html+=`<div class="import-msg">➕ Entità nuove che verranno create: ${ents.map(e=>`<strong>${e.name}</strong>${e.tipo?` <em>(${e.tipo})</em>`:' <em>(senza tipo)</em>'}`).join(', ')}</div>`;
+  if(cats.length)html+=`<div class="import-msg">➕ Categorie nuove: ${cats.map(c=>`<strong>${c}</strong>`).join(' · ')}</div>`;
+  html+=`<div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da → A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Esito</th></tr></thead><tbody>`;
+  importPreview.forEach((r,i)=>{
+    let stato='<span class="imp-ok">✓ nuovo</span>',cls='';
+    if(r.errore){stato=`<span class="imp-err">✕ ${r.errore}</span>`;cls='imp-row-err';}
+    else if(r.dup.level==='dup'){stato=`<span class="imp-dup">= già presente (${fmtDate(r.dup.ref.data)} ${r.dup.ref.desc||''})</span>`;cls='imp-row-dup';}
+    else if(r.dup.level==='maybe'){stato=`<span class="imp-maybe">⚠ simile a ${fmtDate(r.dup.ref.data)} ${r.dup.ref.to} ${fmtAmt(r.dup.ref.importo,r.dup.ref.valuta||'EUR')}</span>`;cls='imp-row-maybe';}
+    else if(r.escluso){stato='<span class="imp-dup">escluso nel file (NO)</span>';}
+    html+=`<tr class="${cls}"><td><input type="checkbox" ${r.sel?'checked':''} ${r.errore?'disabled':''} onchange="toggleImportRow(${i},this.checked)"></td>
+      <td>${r.data?fmtDate(r.data):'—'}</td><td>${r.from} → <strong>${r.to}</strong></td><td>${r.desc||''}</td>
+      <td>${[r.c1,r.c2,r.c3].filter(x=>x&&x!=='-').join(' › ')||'—'}</td>
+      <td class="td-num">${isNaN(r.importo)?'—':fmtAmt(r.importo,r.valuta||'EUR')}</td><td>${stato}</td></tr>`;
+  });
+  html+=`</tbody></table></div>
+    <div class="backup-actions" style="margin-top:12px;">
+      <button class="btn-backup save" onclick="confirmImport()">✅ Importa ${nSel} movimenti</button>
+      <button class="btn-sm grey" onclick="cancelImport()">✕ Annulla</button>
+    </div>`;
+  area.innerHTML=html;
+}
+function toggleImportRow(i,checked){importPreview[i].sel=checked;renderImportPreview(document.querySelector('.import-summary strong').textContent);}
+function cancelImport(){importPreview=[];document.getElementById('importArea').innerHTML='';}
+
+async function confirmImport(){
+  const sel=importPreview.filter(r=>r.sel&&!r.errore);
+  if(!sel.length){alert('Nessuna riga selezionata');return;}
+  const ents=importNewEntities(),cats=importNewCats();
+  if(!confirm(`Importare ${sel.length} movimenti?${ents.length?`\n\nEntità nuove: ${ents.map(e=>e.name).join(', ')}`:''}${cats.length?`\nCategorie nuove: ${cats.length}`:''}`))return;
+  // anagrafiche mancanti
+  ents.forEach(e=>{if(!impFindNome(e.name))nomi.push({name:e.name,tipo:e.tipo||'',valuta:'EUR'});});
+  sel.forEach(r=>{
+    if(r.c1!=='-'&&!c1.includes(r.c1))c1.push(r.c1);
+    if(r.c1!=='-'&&r.c2!=='-'){if(!c2Map[r.c1])c2Map[r.c1]=[];if(!c2Map[r.c1].includes(r.c2))c2Map[r.c1].push(r.c2);}
+    if(r.c2!=='-'&&r.c3!=='-'){const k=c3k(r.c1,r.c2);if(!c3Map[k])c3Map[k]=[];if(!c3Map[k].includes(r.c3))c3Map[k].push(r.c3);}
+  });
+  sel.forEach(r=>{
+    rows.push({data:r.data,from:impFindNome(r.from).name,to:impFindNome(r.to).name,desc:r.desc,
+      c1:r.c1,c2:r.c2,c3:r.c3,importo:r.importo,valuta:getNomeValuta(r.from)||'EUR',docs:[]});
+  });
+  rows.sort((a,b)=>a.data.localeCompare(b.data));
+  await saveToFirebase();
+  importPreview=[];
+  document.getElementById('importArea').innerHTML=`<div class="import-msg ok">✅ Importati ${sel.length} movimenti${ents.length?`, create ${ents.length} entità`:''}. Vai al Registro per vederli.</div>`;
+  syncSelects();syncTipoSel();syncEntitySel();rebuildDD();render();
+}
+
 function salvaBackup(){const json=JSON.stringify({version:'3.1-mensile',date:new Date().toISOString(),nomi,c1,c2Map,c3Map,rows,savedReports,refCurr},null,2);const blob=new Blob([json],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`caveau_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
 function stampaPDF(){window.print();}
 
@@ -1483,6 +1683,7 @@ Object.assign(window,{
   onEntitySelChange,clearEntityFilter,filterByEntity,
   onTipoSelChange,clearTipoFilter,onValutaSelChange,clearValutaFilter,
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
+  onImportFileSelected,toggleImportRow,confirmImport,cancelImport,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
   onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
   syncRptEstrC2,syncRptEstrC3,syncRptCatC2,syncRptCatC3,
