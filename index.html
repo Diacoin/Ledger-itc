@@ -268,8 +268,14 @@
   .import-table tr.imp-row-dup td{background:rgba(138,143,152,.10);}
   .import-table tr.imp-row-maybe td{background:rgba(230,126,34,.08);}
   .import-table tr.imp-row-err td{background:rgba(192,57,43,.08);}
-  .imp-sel{font-size:11px;padding:3px 4px;border:1px solid var(--input-border);border-radius:5px;background:var(--input-bg);color:var(--text);max-width:150px;margin-bottom:2px;}
+  /* le tendine stanno una sotto l'altra: in una sola riga la cella le schiacciava */
+  .imp-sel{display:block;font-size:11px;padding:3px 4px;border:1px solid var(--input-border);border-radius:5px;background:var(--input-bg);color:var(--text);width:100%;min-width:120px;margin-bottom:3px;}
   .imp-sel-tipo{font-size:10px;color:#e67e22;border-color:#e67e22;}
+  .imp-cat-cell{min-width:140px;}
+  .imp-cat-cell .imp-sel:nth-child(1){border-left:3px solid #9c27b0;}
+  .imp-cat-cell .imp-sel:nth-child(2){border-left:3px solid #e67e22;}
+  .imp-cat-cell .imp-sel:nth-child(3){border-left:3px solid #16a085;}
+  .import-table{min-width:880px;}
   .imp-inp{font-size:11px;padding:3px 5px;border:1px solid var(--input-border);border-radius:5px;background:var(--input-bg);color:var(--text);width:100%;box-sizing:border-box;}
   .imp-inp-num{max-width:92px;text-align:right;}
   .backup-status.ok{background:#e6f4ea;color:#34a853;display:block;}
@@ -1643,7 +1649,7 @@ function pdfParseICard(lines){
     const parti=d.split(/\s*,\s*/).map(s=>s.trim()).filter(Boolean);
     let controparte=parti[0]||'',causale=parti.slice(1).join(', ');
     // le commissioni non hanno una controparte: sono della banca stessa
-    if(tipo==='Fee'){causale=d;controparte='iCard';}
+    if(tipo==='Fee'){causale=('Fee '+d).replace(/\s+/g,' ').trim();controparte='iCard';}
     return{data:b.data,tipo,controparte,causale,debit,credit,grezza:blocco.replace(/\s+/g,' ').trim()};
   }).filter(r=>r.data&&(r.debit>0||r.credit>0));
 }
@@ -1744,7 +1750,7 @@ function pdfRowCells(i){
     <td><input type="date" class="imp-inp" value="${r.data}" onchange="pdfSetTesto(${i},'data',this.value)"></td>
     <td>${pdfEntSel(i,'from')}</td><td>${pdfEntSel(i,'to')}</td>
     <td><input type="text" class="imp-inp" style="min-width:150px" value="${pdfEsc(r.desc)}" title="${pdfEsc(r.grezza)}" onchange="pdfSetTesto(${i},'desc',this.value)"></td>
-    <td id="pdfcat-${i}">${pdfCatCell(i)}</td>
+    <td id="pdfcat-${i}" class="imp-cat-cell">${pdfCatCell(i)}</td>
     <td class="td-num"><input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)"></td>
     <td>${nota}</td>`;
 }
