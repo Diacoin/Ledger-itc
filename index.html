@@ -1032,7 +1032,7 @@ function goTo(p){
   if(p==='categorie'){renderC1Page();syncParentSelects();renderC2Page();syncC2ForC3();renderC3Page();}
   if(p==='report'){syncReportSelects();renderSavedReports();}
   if(p==='storage')calcStorageUsage();
-  if(p==='backup')syncPdfConti();
+  if(p==='backup'){syncPdfConti();pdfMostraBozza();}
 }
 
 // ── SUMMARY ───────────────────────────────────────────
@@ -1746,6 +1746,49 @@ async function onPdfFileSelected(input){
   }catch(e){area.innerHTML=`<div class="import-msg err">❌ ${e.message||'PDF non leggibile'}</div>`;}
 }
 
+// ── Bozza dell'anteprima ──────────────────────────────
+// Il lavoro di revisione può essere lungo: viene salvato nel browser a ogni
+// modifica, così un reload (o una chiusura per sbaglio) non lo butta via.
+function pdfChiaveBozza(){return 'pdfBozza_'+(currentUser?currentUser.uid:'anon');}
+function pdfSalvaBozza(){
+  try{
+    if(!pdfRighe.length){localStorage.removeItem(pdfChiaveBozza());return;}
+    const b={v:1,quando:new Date().toISOString(),file:pdfFileName,nLines:pdfNLines,
+      banca:pdfBancaRilevata,conto:pdfContoUsato,righe:pdfRighe};
+    const s=JSON.stringify(b);
+    if(s.length>4000000)return;                       // oltre il limite: meglio non salvare nulla
+    localStorage.setItem(pdfChiaveBozza(),s);
+  }catch(e){console.warn('bozza non salvata',e);}
+}
+function pdfLeggiBozza(){
+  try{const s=localStorage.getItem(pdfChiaveBozza());if(!s)return null;
+    const b=JSON.parse(s);return b&&Array.isArray(b.righe)&&b.righe.length?b:null;}catch(e){return null;}
+}
+function pdfScartaBozza(){try{localStorage.removeItem(pdfChiaveBozza());}catch(e){}
+  const a=document.getElementById('pdfArea');if(a&&!pdfRighe.length)a.innerHTML='';}
+// Banner di ripresa, mostrato entrando nella pagina se c'è una bozza in sospeso
+function pdfMostraBozza(){
+  if(pdfRighe.length)return;
+  const b=pdfLeggiBozza(),area=document.getElementById('pdfArea');
+  if(!b||!area)return;
+  const q=new Date(b.quando),quando=`${String(q.getDate()).padStart(2,'0')}/${String(q.getMonth()+1).padStart(2,'0')} alle ${String(q.getHours()).padStart(2,'0')}:${String(q.getMinutes()).padStart(2,'0')}`;
+  const pronte=b.righe.filter(r=>r.sel&&!r.errore).length;
+  area.innerHTML=`<div class="import-msg">📌 Hai un'elaborazione lasciata a metà: <strong>${pdfEsc(b.file||'estratto')}</strong> · ${b.righe.length} righe (${pronte} pronte da inserire) · conto <strong>${pdfEsc(b.conto||'?')}</strong> · salvata il ${quando}.</div>
+    <div class="backup-actions" style="margin-top:8px;">
+      <button class="btn-backup save" onclick="pdfRiprendiBozza()">↩️ Riprendi da dove eri</button>
+      <button class="btn-sm grey" onclick="pdfScartaBozza()">✕ Scarta</button>
+    </div>`;
+}
+function pdfRiprendiBozza(){
+  const b=pdfLeggiBozza();if(!b)return;
+  pdfRighe=b.righe;pdfFileName=b.file||'';pdfNLines=b.nLines||0;
+  pdfBancaRilevata=b.banca||'';pdfContoUsato=b.conto||'';
+  const sel=document.getElementById('pdfContoSel');if(sel&&pdfContoUsato)sel.value=pdfContoUsato;
+  // i duplicati vanno ricalcolati: il registro può essere cambiato nel frattempo
+  pdfRighe.forEach(r=>{r.dup=impDuplicate(r);if(r.dup.level==='dup')r.sel=false;});
+  renderPdfPreview();
+}
+
 // ── Anteprima modificabile: si correggono qui categorie e controparti,
 //    con gli stessi menu a tendina del registro, senza passare dall'Excel.
 let pdfFileName='',pdfNLines=0,pdfBancaRilevata='',pdfContoUsato='';
@@ -1824,6 +1867,7 @@ function renderPdfPreview(fname,nLines){
     <button class="btn-sm grey" onclick="cancelPdf()">✕ Annulla</button></div>`;
   area.innerHTML=html;
   aggiornaPdfSommario();
+  pdfSalvaBozza();
 }
 function aggiornaPdfSommario(){
   const el=document.getElementById('pdfSommario');if(!el)return;
@@ -1835,10 +1879,12 @@ function aggiornaPdfSommario(){
   el.innerHTML=`<div class="import-summary"><strong>${pdfEsc(pdfFileName)}</strong> · ${pdfNLines} righe di testo · <span class="imp-ok">${pdfRighe.length} movimenti riconosciuti</span>
     ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}${nErr?` · <span class="imp-err">${nErr} in valuta estera, non importabili</span>`:''}
     <br><strong>${sel.length} selezionati</strong> · entrate ${fmtAmt(tE,'EUR')} · uscite ${fmtAmt(tU,'EUR')} — confronta con il saldo dell'estratto</div>`;
+  pdfSalvaBozza();
 }
 function pdfRefreshRow(i){
   const tr=document.getElementById('pdfrow-'+i);if(!tr)return;
   tr.className=pdfRowClass(i);tr.innerHTML=pdfRowCells(i);
+  pdfSalvaBozza();
 }
 function pdfToggleRow(i,v){pdfRighe[i].sel=v;aggiornaPdfSommario();}
 
@@ -1941,9 +1987,9 @@ function pdfSetTesto(i,campo,v){
   const r=pdfRighe[i];
   if(campo==='importo'){r.importo=Math.abs(parseFloat(v)||0);r.dup=impDuplicate(r);aggiornaPdfSommario();}
   else if(campo==='data'){r.data=v;r.dup=impDuplicate(r);pdfRefreshRow(i);aggiornaPdfSommario();}
-  else r[campo]=v;
+  else{r[campo]=v;pdfSalvaBozza();}
 }
-function cancelPdf(){pdfRighe=[];pdfFileName='';pdfContoUsato='';pdfBancaRilevata='';document.getElementById('pdfArea').innerHTML='';}
+function cancelPdf(){pdfRighe=[];pdfFileName='';pdfContoUsato='';pdfBancaRilevata='';pdfScartaBozza();document.getElementById('pdfArea').innerHTML='';}
 
 // Cambiando il conto le righe già lette vanno spostate sul nuovo conto,
 // altrimenti resterebbero agganciate a quello di prima.
@@ -1968,7 +2014,7 @@ async function importaPdfDiretto(){
   importPreview=sel.map(r=>({data:r.data,from:r.from,to:r.to,desc:r.desc,c1:r.c1||'-',c2:r.c2||'-',c3:r.c3||'-',
     importo:r.importo,tipoDa:r.tipoDa,tipoA:r.tipoA,valuta:r.valuta||'EUR',errore:'',dup:r.dup,sel:true}));
   await confirmImport('pdfArea');
-  if(!importPreview.length){pdfRighe=[];}          // andato a buon fine
+  if(!importPreview.length){pdfRighe=[];pdfFileName='';pdfScartaBozza();}   // andato a buon fine
 }
 
 async function scaricaExcelDaPdf(){
@@ -2192,6 +2238,7 @@ Object.assign(window,{
   onRestoreFileSelected,confirmRestore,cancelRestore,
   onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,importaPdfDiretto,pdfCambiaConto,
   pdfToggleRow,pdfSetEnt,pdfSetCat,pdfSetTesto,pdfSetTipo,pdfSetEuro,pdfStimaValute,
+  pdfRiprendiBozza,pdfScartaBozza,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
   onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
   syncRptEstrC2,syncRptEstrC3,syncRptCatC2,syncRptCatC3,
