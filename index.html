@@ -770,12 +770,15 @@
     <div class="backup-box">
       <h3>📄 Converti estratto conto PDF → Excel</h3>
       <p>Carica il PDF dell'estratto: viene letto qui nel browser (non esce dal tuo computer), le categorie vengono dedotte dai movimenti già registrati e ottieni il file Excel da rivedere e poi importare qui sotto.</p>
-      <div class="backup-actions" style="align-items:center;gap:10px;flex-wrap:wrap;">
-        <select id="pdfBankSel" class="entity-select" style="max-width:200px;">
-          <option value="icard">iCard</option>
-          <option value="auto">Rileva automaticamente</option>
-        </select>
-        <select id="pdfContoSel" class="entity-select" style="max-width:220px;"></select>
+      <div class="backup-actions" style="align-items:flex-end;gap:10px;flex-wrap:wrap;">
+        <label style="font-size:11px;color:var(--text3);display:block;">Formato dell'estratto<br>
+          <select id="pdfBankSel" class="entity-select" style="max-width:200px;">
+            <option value="auto">Rileva automaticamente</option>
+            <option value="icard">iCard</option>
+            <option value="redotpay">RedotPay</option>
+          </select></label>
+        <label style="font-size:11px;color:var(--text3);display:block;">Conto su cui registrare i movimenti<br>
+          <select id="pdfContoSel" class="entity-select" style="max-width:220px;" onchange="pdfCambiaConto(this.value)"></select></label>
         <button class="btn-backup convert" onclick="document.getElementById('pdfFileInput').click()">📄 Scegli PDF</button>
         <input type="file" id="pdfFileInput" style="display:none" accept=".pdf" onchange="onPdfFileSelected(this)">
       </div>
@@ -1654,6 +1657,28 @@ function pdfParseICard(lines){
   }).filter(r=>r.data&&(r.debit>0||r.credit>0));
 }
 
+// Parser RedotPay ("CONSOLIDATED MONTHLY STATEMENT" di Red Dot Technology):
+// una riga per movimento, "Mmm GG, AAAA  Descrizione  -12,34 VAL".
+// Il segno meno e' l'uscita; gli importi in valuta diversa da quella del conto
+// restano fuori perche' l'estratto non riporta il controvalore addebitato.
+function pdfParseRedotPay(lines){
+  const re=/^([A-Za-z]{3})\s+(\d{1,2}),\s*(\d{4})\s+(.+?)\s+(-?[\d,]+\.\d{2})\s+([A-Z]{3})$/;
+  const out=[];
+  for(const raw of lines){
+    const l=raw.replace(/\s+/g,' ').trim(),m=l.match(re);
+    if(!m)continue;
+    const mese=MESI_EN[m[1].toLowerCase()];if(!mese)continue;
+    const uscita=m[5].trim().startsWith('-'),imp=impAmount(m[5]);
+    if(!imp)continue;
+    out.push({data:`${m[3]}-${mese}-${m[2].padStart(2,'0')}`,tipo:'Card payment',
+      controparte:m[4].trim(),causale:m[4].trim(),
+      debit:uscita?imp:NaN,credit:uscita?NaN:imp,valuta:m[6],grezza:l});
+  }
+  return out;
+}
+
+const PDF_PARSER={icard:pdfParseICard,redotpay:pdfParseRedotPay};
+
 // Aggancia il testo del PDF a un'entità esistente; a parità, vince quella più usata
 function pdfMatchEntita(testo){
   if(!testo)return null;
@@ -1688,22 +1713,31 @@ async function onPdfFileSelected(input){
   area.innerHTML='<div class="import-msg">⏳ Lettura di '+f.name+'…</div>';
   try{
     const lines=await pdfToLines(f);
+    const testo=lines.join(' ');
     let banca=document.getElementById('pdfBankSel').value;
-    if(banca==='auto')banca=/icard/i.test(lines.join(' '))?'icard':'';
-    if(banca!=='icard')throw new Error('Banca non riconosciuta. Al momento è supportato solo il formato iCard: scegli la banca a mano o segnalami un estratto di esempio per aggiungere il formato.');
-    const conto=document.getElementById('pdfContoSel').value;
-    const grezze=pdfParseICard(lines);
+    if(banca==='auto'){
+      if(/redotpay|red dot technology/i.test(testo))banca='redotpay';
+      else if(/icard/i.test(testo))banca='icard';
+      else banca='';
+    }
+    if(!PDF_PARSER[banca])throw new Error('Formato non riconosciuto. Sono supportati iCard e RedotPay: se questo estratto è di un\'altra banca mandamelo e aggiungo il formato (l\'alternativa è compilare a mano il file Excel di import).');
+    const conto=document.getElementById('pdfContoSel').value,valConto=getNomeValuta(conto)||'EUR';
+    pdfBancaRilevata=banca;pdfContoUsato=conto;
+    const grezze=PDF_PARSER[banca](lines);
     if(!grezze.length)throw new Error('Nessun movimento riconosciuto nel PDF. Il layout potrebbe essere cambiato.');
     pdfRighe=grezze.map(g=>{
       const entita=pdfMatchEntita(g.controparte),cat=pdfCategorieStoriche(entita);
-      const uscita=g.debit>0;
+      const uscita=g.debit>0,val=g.valuta||'EUR';
       const r={data:g.data,from:uscita?conto:(entita||g.controparte||'?'),to:uscita?(entita||g.controparte||'?'):conto,
-        desc:(g.causale||g.controparte||g.tipo||'').slice(0,60),importo:uscita?g.debit:g.credit,valuta:'EUR',
+        desc:(g.causale||g.controparte||g.tipo||'').slice(0,60),importo:uscita?g.debit:g.credit,valuta:val,
         c1:cat?cat.c1:'-',c2:cat?cat.c2:'-',c3:cat?cat.c3:'-',tipoDa:'',tipoA:'',
         nuova:!entita,sicura:!!(cat&&cat.sicura),storico:cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico',
-        raw:g.controparte,grezza:g.grezza};
+        raw:g.controparte,grezza:g.grezza,errore:''};
+      // spesa in valuta estera: l'estratto mostra l'importo originale, non quanto e'
+      // stato addebitato sul conto, quindi la riga non e' importabile cosi' com'e'
+      if(val!==valConto)r.errore=`importo in ${val}: l'estratto non riporta il controvalore in ${valConto}`;
       r.dup=impDuplicate(r);
-      r.sel=r.dup.level!=='dup';
+      r.sel=r.dup.level!=='dup'&&!r.errore;
       return r;
     });
     renderPdfPreview(f.name,lines.length);
@@ -1712,7 +1746,7 @@ async function onPdfFileSelected(input){
 
 // ── Anteprima modificabile: si correggono qui categorie e controparti,
 //    con gli stessi menu a tendina del registro, senza passare dall'Excel.
-let pdfFileName='',pdfNLines=0;
+let pdfFileName='',pdfNLines=0,pdfBancaRilevata='',pdfContoUsato='';
 function pdfEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 const NEW_OPT='__NUOVA__';
 function pdfOpts(lista,valore,vuoto){
@@ -1748,24 +1782,31 @@ function pdfCatCell(i){
 }
 function pdfRowCells(i){
   const r=pdfRighe[i];
-  const nota=r.dup.level==='dup'?`<span class="imp-dup">già presente (${fmtDate(r.dup.ref.data)})</span>`
-    :r.dup.level==='maybe'?`<span class="imp-maybe">simile al ${fmtDate(r.dup.ref.data)}</span>`
+  const nota=r.errore?`<span class="imp-err">✕ ${r.errore}</span>`
+    :r.dup.level==='dup'?`<span class="imp-dup">già presente (${fmtDate(r.dup.ref.data)})</span>`
+    :r.dup.level==='maybe'?`<span class="imp-maybe">possibile doppione</span><br><span style="font-size:10px;color:var(--text3)">nel registro: ${fmtDate(r.dup.ref.data)} ${pdfEsc(r.dup.ref.from)} → ${pdfEsc(r.dup.ref.to)} ${fmtAmt(r.dup.ref.importo,r.dup.ref.valuta||'EUR')}</span>`
     :r.nuova?`<span class="imp-maybe">controparte nuova</span>`
     :`<span class="${r.sicura?'imp-ok':'imp-maybe'}">${r.storico}</span>`;
-  return `<td><input type="checkbox" ${r.sel?'checked':''} onchange="pdfToggleRow(${i},this.checked)"></td>
+  return `<td><input type="checkbox" ${r.sel?'checked':''} ${r.errore?'disabled':''} onchange="pdfToggleRow(${i},this.checked)"></td>
     <td><input type="date" class="imp-inp" value="${r.data}" onchange="pdfSetTesto(${i},'data',this.value)"></td>
     <td>${pdfEntSel(i,'from')}</td><td>${pdfEntSel(i,'to')}</td>
     <td><input type="text" class="imp-inp" style="min-width:150px" value="${pdfEsc(r.desc)}" title="${pdfEsc(r.grezza)}" onchange="pdfSetTesto(${i},'desc',this.value)"></td>
     <td id="pdfcat-${i}" class="imp-cat-cell">${pdfCatCell(i)}</td>
-    <td class="td-num"><input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)"></td>
+    <td class="td-num"><input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)">${r.valuta&&r.valuta!=='EUR'?`<br><span style="font-size:10px;color:#c0392b">${pdfEsc(r.valuta)}</span>`:''}</td>
     <td>${nota}</td>`;
 }
-function pdfRowClass(i){const r=pdfRighe[i];return r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova||r.dup.level==='maybe'?'imp-row-maybe':'');}
+function pdfRowClass(i){const r=pdfRighe[i];return r.errore?'imp-row-err':r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova||r.dup.level==='maybe'?'imp-row-maybe':'');}
 
 function renderPdfPreview(fname,nLines){
   if(fname!==undefined){pdfFileName=fname;pdfNLines=nLines;}
   const area=document.getElementById('pdfArea');if(!area)return;
+  // l'estratto di una banca registrato su un altro conto e' quasi sempre un errore
+  const conto=document.getElementById('pdfContoSel').value;
+  const disallineato=pdfBancaRilevata&&!impNorm(conto).includes(impNorm(pdfBancaRilevata));
+  const nMaybe=pdfRighe.filter(r=>r.dup.level==='maybe').length;
   let html=`<div id="pdfSommario"></div>
+    ${disallineato?`<div class="import-msg err">⚠️ L'estratto è stato riconosciuto come <strong>${pdfEsc(pdfBancaRilevata)}</strong> ma i movimenti verrebbero registrati sul conto <strong>${pdfEsc(conto)}</strong>. Se non è voluto, cambia il conto qui sopra e ricarica il PDF.</div>`:''}
+    ${nMaybe?`<div class="import-msg">⚠️ ${nMaybe} righe assomigliano a movimenti già nel registro (stesso importo, entro 3 giorni, stessa controparte) ma non sono identiche — di solito perché cambia la data o il conto. Non le escludo io: controlla la nota a destra e togli la spunta se sono doppioni.</div>`:''}
     <div class="import-msg">Correggi qui quello che serve: le tendine sono le stesse del registro. Se una voce manca, scegli <strong>➕ Nuova…</strong> in fondo alla tendina: entità e categorie vengono create subito in archivio, senza passare da Nomi o Categorie. Le entità marcate <strong>NUOVA</strong> sono quelle lette dal PDF e non ancora in archivio: assegna il tipo, sostituiscile con una esistente, oppure lasciale così e verranno create all'inserimento.</div>
     <div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Note</th></tr></thead><tbody>`;
   pdfRighe.forEach((r,i)=>{html+=`<tr id="pdfrow-${i}" class="${pdfRowClass(i)}">${pdfRowCells(i)}</tr>`;});
@@ -1781,9 +1822,10 @@ function aggiornaPdfSommario(){
   const conto=document.getElementById('pdfContoSel').value;
   const sel=pdfRighe.filter(r=>r.sel);
   const tE=sel.filter(r=>r.to===conto).reduce((s,r)=>s+r.importo,0),tU=sel.filter(r=>r.from===conto).reduce((s,r)=>s+r.importo,0);
-  const nDup=pdfRighe.filter(r=>r.dup.level==='dup').length,nDub=pdfRighe.filter(r=>!r.sicura||r.nuova).length;
+  const nDup=pdfRighe.filter(r=>r.dup.level==='dup').length,nDub=pdfRighe.filter(r=>!r.sicura||r.nuova).length,
+        nErr=pdfRighe.filter(r=>r.errore).length;
   el.innerHTML=`<div class="import-summary"><strong>${pdfEsc(pdfFileName)}</strong> · ${pdfNLines} righe di testo · <span class="imp-ok">${pdfRighe.length} movimenti riconosciuti</span>
-    ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}
+    ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}${nErr?` · <span class="imp-err">${nErr} in valuta estera, non importabili</span>`:''}
     <br><strong>${sel.length} selezionati</strong> · entrate ${fmtAmt(tE,'EUR')} · uscite ${fmtAmt(tU,'EUR')} — confronta con il saldo dell'estratto</div>`;
 }
 function pdfRefreshRow(i){
@@ -1858,16 +1900,30 @@ function pdfSetTesto(i,campo,v){
   else if(campo==='data'){r.data=v;r.dup=impDuplicate(r);pdfRefreshRow(i);aggiornaPdfSommario();}
   else r[campo]=v;
 }
-function cancelPdf(){pdfRighe=[];pdfFileName='';document.getElementById('pdfArea').innerHTML='';}
+function cancelPdf(){pdfRighe=[];pdfFileName='';pdfContoUsato='';pdfBancaRilevata='';document.getElementById('pdfArea').innerHTML='';}
+
+// Cambiando il conto le righe già lette vanno spostate sul nuovo conto,
+// altrimenti resterebbero agganciate a quello di prima.
+function pdfCambiaConto(nuovo){
+  if(!pdfRighe.length||!pdfContoUsato||nuovo===pdfContoUsato)return;
+  pdfRighe.forEach(r=>{
+    if(r.from===pdfContoUsato)r.from=nuovo;
+    if(r.to===pdfContoUsato)r.to=nuovo;
+    r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
+    r.dup=impDuplicate(r);
+  });
+  pdfContoUsato=nuovo;
+  renderPdfPreview();
+}
 
 // Inserimento diretto: le righe corrette passano per lo stesso percorso dell'import Excel
 async function importaPdfDiretto(){
-  const sel=pdfRighe.filter(r=>r.sel);
+  const sel=pdfRighe.filter(r=>r.sel&&!r.errore);
   if(!sel.length){alert('Nessuna riga selezionata');return;}
   const senzaCat=sel.filter(r=>!r.c1||r.c1==='-').length;
   if(senzaCat&&!confirm(`${senzaCat} righe non hanno la Cat.1. Inserirle comunque senza categoria?`))return;
   importPreview=sel.map(r=>({data:r.data,from:r.from,to:r.to,desc:r.desc,c1:r.c1||'-',c2:r.c2||'-',c3:r.c3||'-',
-    importo:r.importo,tipoDa:r.tipoDa,tipoA:r.tipoA,valuta:'EUR',errore:'',dup:r.dup,sel:true}));
+    importo:r.importo,tipoDa:r.tipoDa,tipoA:r.tipoA,valuta:r.valuta||'EUR',errore:'',dup:r.dup,sel:true}));
   await confirmImport('pdfArea');
   if(!importPreview.length){pdfRighe=[];}          // andato a buon fine
 }
@@ -1881,10 +1937,11 @@ async function scaricaExcelDaPdf(){
     const note=[];
     if(r.dup.level==='dup')note.push('GIA PRESENTE nel registro ('+fmtDate(r.dup.ref.data)+')');
     else if(r.dup.level==='maybe')note.push('SIMILE a movimento del '+fmtDate(r.dup.ref.data));
+    if(r.errore)note.push(r.errore.toUpperCase());
     if(r.nuova)note.push('CONTROPARTE NUOVA: compila Tipo Da/Tipo A');
     if(!r.sicura&&!r.nuova)note.push('CATEGORIA DA CONFERMARE ('+r.storico+')');
     note.push('PDF: '+(r.grezza||'').slice(0,90));
-    aoa.push([r.sel?'SI':'NO',r.data,r.from,r.to,r.desc,r.c1,r.c2,r.c3,r.importo,'EUR',r.tipoDa||'',r.tipoA||'',note.join(' · ')]);
+    aoa.push([r.sel&&!r.errore?'SI':'NO',r.data,r.from,r.to,r.desc,r.c1,r.c2,r.c3,r.importo,r.valuta||'EUR',r.tipoDa||'',r.tipoA||'',note.join(' · ')]);
   });
   const ws=XLSX.utils.aoa_to_sheet(aoa);
   ws['!cols']=[{wch:9},{wch:12},{wch:18},{wch:24},{wch:30},{wch:14},{wch:14},{wch:14},{wch:11},{wch:7},{wch:11},{wch:11},{wch:60}];
@@ -2090,7 +2147,7 @@ Object.assign(window,{
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
   onImportFileSelected,toggleImportRow,confirmImport,cancelImport,
   onRestoreFileSelected,confirmRestore,cancelRestore,
-  onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,importaPdfDiretto,
+  onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,importaPdfDiretto,pdfCambiaConto,
   pdfToggleRow,pdfSetEnt,pdfSetCat,pdfSetTesto,pdfSetTipo,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
   onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
