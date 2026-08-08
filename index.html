@@ -818,6 +818,7 @@ let editingIdx=null,editingNomeIdx=null;
 let sortField='data',sortDir=1,filterOpen=false;
 let currentUser=null,activeReportIdx=null,refCurr='EUR';
 let fxRates={EUR:1,GBP:0.853,AED:3.972};
+let fxTutti=null;                       // mappa completa base EUR, per la stima delle spese in valuta
 let insertPendingDocs=[],editPendingDocs=[],editRemovedPaths=new Set();
 
 const VOID='__VOID__';
@@ -847,9 +848,9 @@ function fmtYearMonth(ym){if(!ym)return'';const[y,m]=ym.split('-');return`${MESI
 
 // ── FX ────────────────────────────────────────────────
 async function fetchFxRates(force=false){
-  try{const ck='fxRates_v2',ct='fxRatesTime',now=Date.now();if(!force){try{const c=localStorage.getItem(ck),t=parseInt(localStorage.getItem(ct)||'0');if(c&&(now-t)<4*3600*1000){fxRates=JSON.parse(c);updateFxDisplay();return;}}catch(e){}}
+  try{const ck='fxRates_v2',ct='fxRatesTime',now=Date.now();if(!force){try{const c=localStorage.getItem(ck),t=parseInt(localStorage.getItem(ct)||'0');if(c&&(now-t)<4*3600*1000){fxRates=JSON.parse(c);try{fxTutti=JSON.parse(localStorage.getItem('fxAll_v1')||'null');}catch(e2){}updateFxDisplay();return;}}catch(e){}}
   const res=await fetch('https://open.er-api.com/v6/latest/EUR'),data=await res.json();
-  if(data.rates){fxRates={EUR:1,GBP:data.rates.GBP,AED:data.rates.AED};try{localStorage.setItem(ck,JSON.stringify(fxRates));localStorage.setItem(ct,String(now));}catch(e){}updateFxDisplay();}}catch(e){console.warn('FX fail',e);updateFxDisplay();}
+  if(data.rates){fxTutti=data.rates;fxRates={EUR:1,GBP:data.rates.GBP,AED:data.rates.AED};try{localStorage.setItem(ck,JSON.stringify(fxRates));localStorage.setItem('fxAll_v1',JSON.stringify(data.rates));localStorage.setItem(ct,String(now));}catch(e){}updateFxDisplay();}}catch(e){console.warn('FX fail',e);updateFxDisplay();}
 }
 function updateFxDisplay(){const el=document.getElementById('fxRateDisplay');if(!el)return;el.innerHTML=`1 EUR = ${fxRates.GBP?.toFixed(4)||'—'} GBP<br>1 EUR = ${fxRates.AED?.toFixed(4)||'—'} AED<br>1 GBP = ${(fxRates.AED/fxRates.GBP)?.toFixed(4)||'—'} AED`;}
 function getRate(f,t){if(f===t)return 1;return(fxRates[t]||1)/(fxRates[f]||1);}
@@ -1735,7 +1736,8 @@ async function onPdfFileSelected(input){
         raw:g.controparte,grezza:g.grezza,errore:''};
       // spesa in valuta estera: l'estratto mostra l'importo originale, non quanto e'
       // stato addebitato sul conto, quindi la riga non e' importabile cosi' com'e'
-      if(val!==valConto)r.errore=`importo in ${val}: l'estratto non riporta il controvalore in ${valConto}`;
+      if(val!==valConto){r.valutaOrig=val;r.importoOrig=r.importo;r.descBase=r.desc;
+        r.errore=`importo in ${val}: scrivi il controvalore in ${valConto}`;}
       r.dup=impDuplicate(r);
       r.sel=r.dup.level!=='dup'&&!r.errore;
       return r;
@@ -1792,7 +1794,10 @@ function pdfRowCells(i){
     <td>${pdfEntSel(i,'from')}</td><td>${pdfEntSel(i,'to')}</td>
     <td><input type="text" class="imp-inp" style="min-width:150px" value="${pdfEsc(r.desc)}" title="${pdfEsc(r.grezza)}" onchange="pdfSetTesto(${i},'desc',this.value)"></td>
     <td id="pdfcat-${i}" class="imp-cat-cell">${pdfCatCell(i)}</td>
-    <td class="td-num"><input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)">${r.valuta&&r.valuta!=='EUR'?`<br><span style="font-size:10px;color:#c0392b">${pdfEsc(r.valuta)}</span>`:''}</td>
+    <td class="td-num">${r.valutaOrig&&r.errore
+      ?`<div style="font-size:11px;color:#c0392b;white-space:nowrap;">${fmtAmt(r.importoOrig,r.valutaOrig)}</div>
+         <input type="number" step="0.01" class="imp-inp imp-inp-num" placeholder="${pdfEsc(getNomeValuta(pdfContoUsato)||'EUR')} ?" title="Quanto ti è stato addebitato sul conto" onchange="pdfSetEuro(${i},this.value)">`
+      :`<input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)">${r.valutaOrig?`<br><span style="font-size:10px;color:var(--text3)">orig. ${fmtAmt(r.importoOrig,r.valutaOrig)}</span>`:''}`}</td>
     <td>${nota}</td>`;
 }
 function pdfRowClass(i){const r=pdfRighe[i];return r.errore?'imp-row-err':r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova||r.dup.level==='maybe'?'imp-row-maybe':'');}
@@ -1806,12 +1811,15 @@ function renderPdfPreview(fname,nLines){
   const nMaybe=pdfRighe.filter(r=>r.dup.level==='maybe').length;
   let html=`<div id="pdfSommario"></div>
     ${disallineato?`<div class="import-msg err">⚠️ L'estratto è stato riconosciuto come <strong>${pdfEsc(pdfBancaRilevata)}</strong> ma i movimenti verrebbero registrati sul conto <strong>${pdfEsc(conto)}</strong>. Se non è voluto, cambia il conto qui sopra e ricarica il PDF.</div>`:''}
+    ${pdfRighe.some(r=>r.valutaOrig&&r.errore)?`<div class="import-msg err">💱 Alcune spese sono in valuta estera e l'estratto non dice quanto è stato addebitato sul conto. Scrivi l'importo nel campo sotto la cifra rossa (lo trovi nell'app della banca) e la riga si sblocca; oppure usa il pulsante di stima in fondo, che applica il cambio di oggi. L'importo originale resta scritto nella descrizione.</div>`:''}
     ${nMaybe?`<div class="import-msg">⚠️ ${nMaybe} righe assomigliano a movimenti già nel registro (stesso importo, entro 3 giorni, stessa controparte) ma non sono identiche — di solito perché cambia la data o il conto. Non le escludo io: controlla la nota a destra e togli la spunta se sono doppioni.</div>`:''}
     <div class="import-msg">Correggi qui quello che serve: le tendine sono le stesse del registro. Se una voce manca, scegli <strong>➕ Nuova…</strong> in fondo alla tendina: entità e categorie vengono create subito in archivio, senza passare da Nomi o Categorie. Le entità marcate <strong>NUOVA</strong> sono quelle lette dal PDF e non ancora in archivio: assegna il tipo, sostituiscile con una esistente, oppure lasciale così e verranno create all'inserimento.</div>
     <div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Note</th></tr></thead><tbody>`;
   pdfRighe.forEach((r,i)=>{html+=`<tr id="pdfrow-${i}" class="${pdfRowClass(i)}">${pdfRowCells(i)}</tr>`;});
+  const nBloccate=pdfRighe.filter(r=>r.valutaOrig&&r.errore).length;
   html+=`</tbody></table></div><div class="backup-actions" style="margin-top:12px;">
     <button class="btn-backup save" onclick="importaPdfDiretto()">✅ Inserisci nel registro</button>
+    ${nBloccate?`<button class="btn-backup restore" onclick="pdfStimaValute()">💱 Stima le ${nBloccate} in valuta estera</button>`:''}
     <button class="btn-backup convert" onclick="scaricaExcelDaPdf()">⬇️ Scarica Excel</button>
     <button class="btn-sm grey" onclick="cancelPdf()">✕ Annulla</button></div>`;
   area.innerHTML=html;
@@ -1833,6 +1841,41 @@ function pdfRefreshRow(i){
   tr.className=pdfRowClass(i);tr.innerHTML=pdfRowCells(i);
 }
 function pdfToggleRow(i,v){pdfRighe[i].sel=v;aggiornaPdfSommario();}
+
+// ── Spese in valuta estera ────────────────────────────
+// L'estratto riporta solo l'importo originale. Qui si scrive quanto è stato
+// davvero addebitato sul conto: la riga si sblocca e l'importo originale
+// resta scritto nella descrizione, così il movimento resta verificabile.
+function pdfSetEuro(i,v,stima){
+  const r=pdfRighe[i];if(!r.valutaOrig)return;
+  const valConto=getNomeValuta(pdfContoUsato)||'EUR';
+  const n=Math.abs(parseFloat(String(v).replace(',','.'))||0);
+  if(n>0){
+    r.importo=n;r.valuta=valConto;r.errore='';
+    r.desc=`${r.descBase} (${fmtAmt(r.importoOrig,r.valutaOrig)}${stima?', stima':''})`;
+    r.dup=impDuplicate(r);r.sel=true;
+  }else{
+    r.importo=r.importoOrig;r.valuta=r.valutaOrig;r.desc=r.descBase;
+    r.errore=`importo in ${r.valutaOrig}: scrivi il controvalore in ${valConto}`;
+    r.sel=false;
+  }
+  pdfRefreshRow(i);aggiornaPdfSommario();
+}
+// Riempie i controvalori mancanti col cambio di OGGI: è una stima, non il
+// cambio applicato dalla banca il giorno dell'operazione.
+function pdfStimaValute(){
+  const valConto=getNomeValuta(pdfContoUsato)||'EUR';
+  if(valConto!=='EUR'){alert('La stima automatica funziona solo su conti in EUR: per gli altri scrivi il controvalore a mano.');return;}
+  if(!fxTutti){alert('Cambi non disponibili (serve la connessione). Scrivi i controvalori a mano.');return;}
+  const daFare=pdfRighe.map((r,i)=>[r,i]).filter(([r])=>r.valutaOrig&&r.errore);
+  const senzaCambio=[...new Set(daFare.filter(([r])=>!fxTutti[r.valutaOrig]).map(([r])=>r.valutaOrig))];
+  const fatti=daFare.filter(([r])=>fxTutti[r.valutaOrig]);
+  if(!fatti.length){alert('Nessuna riga da stimare'+(senzaCambio.length?`: cambio non disponibile per ${senzaCambio.join(', ')}`:'.'));return;}
+  if(!confirm(`Stimare ${fatti.length} righe al cambio di oggi?\n\nNon è il cambio applicato il giorno della spesa: controlla gli importi sull'app della banca e correggili dove serve.\nL'importo originale resta scritto nella descrizione.`))return;
+  fatti.forEach(([r,i])=>pdfSetEuro(i,(r.importoOrig/fxTutti[r.valutaOrig]).toFixed(2),true));
+  renderPdfPreview();
+  if(senzaCambio.length)alert(`Restano da compilare a mano: cambio non disponibile per ${senzaCambio.join(', ')}.`);
+}
 
 // Creazione al volo dall'anteprima: niente giro dalla pagina Nomi/Categorie
 async function pdfSetTipo(i,campo,v){
@@ -2148,7 +2191,7 @@ Object.assign(window,{
   onImportFileSelected,toggleImportRow,confirmImport,cancelImport,
   onRestoreFileSelected,confirmRestore,cancelRestore,
   onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,importaPdfDiretto,pdfCambiaConto,
-  pdfToggleRow,pdfSetEnt,pdfSetCat,pdfSetTesto,pdfSetTipo,
+  pdfToggleRow,pdfSetEnt,pdfSetCat,pdfSetTesto,pdfSetTipo,pdfSetEuro,pdfStimaValute,
   openSettings,closeSettings,closeSettingsOutside,toggleDark,setRefCurr,
   onRptTypeChange,runReport,saveReport,deleteReport,loadReport,newReport,printReport,reportDrill,
   syncRptEstrC2,syncRptEstrC3,syncRptCatC2,syncRptCatC3,
