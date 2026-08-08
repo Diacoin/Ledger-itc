@@ -793,6 +793,11 @@
       </div>
       <div id="importArea"></div>
     </div>
+    <div class="backup-box" id="anteprimaBox">
+      <h3>🔍 Anteprima da rivedere</h3>
+      <p>Qui finiscono i movimenti letti dal PDF o dall'Excel: si correggono riga per riga e poi si inseriscono nel registro.</p>
+      <div id="anteprimaArea"><div class="import-msg">Nessuna elaborazione in corso: carica un PDF o un Excel qui sopra.</div></div>
+    </div>
     <div class="backup-box">
       <h3>☁️ Sincronizzazione</h3>
       <p>I tuoi dati sono automaticamente sincronizzati su Firebase Realtime Database.</p>
@@ -1742,6 +1747,7 @@ async function onPdfFileSelected(input){
       r.sel=r.dup.level!=='dup'&&!r.errore;
       return r;
     });
+    document.getElementById('pdfArea').innerHTML='';
     renderPdfPreview(f.name,lines.length);
   }catch(e){area.innerHTML=`<div class="import-msg err">❌ ${e.message||'PDF non leggibile'}</div>`;}
 }
@@ -1765,11 +1771,11 @@ function pdfLeggiBozza(){
     const b=JSON.parse(s);return b&&Array.isArray(b.righe)&&b.righe.length?b:null;}catch(e){return null;}
 }
 function pdfScartaBozza(){try{localStorage.removeItem(pdfChiaveBozza());}catch(e){}
-  const a=document.getElementById('pdfArea');if(a&&!pdfRighe.length)a.innerHTML='';}
+  const a=document.getElementById('anteprimaArea');if(a&&!pdfRighe.length)a.innerHTML='<div class="import-msg">Nessuna elaborazione in corso: carica un PDF o un Excel qui sopra.</div>';}
 // Banner di ripresa, mostrato entrando nella pagina se c'è una bozza in sospeso
 function pdfMostraBozza(){
   if(pdfRighe.length)return;
-  const b=pdfLeggiBozza(),area=document.getElementById('pdfArea');
+  const b=pdfLeggiBozza(),area=document.getElementById('anteprimaArea');
   if(!b||!area)return;
   const q=new Date(b.quando),quando=`${String(q.getDate()).padStart(2,'0')}/${String(q.getMonth()+1).padStart(2,'0')} alle ${String(q.getHours()).padStart(2,'0')}:${String(q.getMinutes()).padStart(2,'0')}`;
   const pronte=b.righe.filter(r=>r.sel&&!r.errore).length;
@@ -1847,7 +1853,7 @@ function pdfRowClass(i){const r=pdfRighe[i];return r.errore?'imp-row-err':r.dup.
 
 function renderPdfPreview(fname,nLines){
   if(fname!==undefined){pdfFileName=fname;pdfNLines=nLines;}
-  const area=document.getElementById('pdfArea');if(!area)return;
+  const area=document.getElementById('anteprimaArea');if(!area)return;
   // l'estratto di una banca registrato su un altro conto e' quasi sempre un errore
   const conto=document.getElementById('pdfContoSel').value;
   const disallineato=pdfBancaRilevata&&!impNorm(conto).includes(impNorm(pdfBancaRilevata));
@@ -1989,7 +1995,7 @@ function pdfSetTesto(i,campo,v){
   else if(campo==='data'){r.data=v;r.dup=impDuplicate(r);pdfRefreshRow(i);aggiornaPdfSommario();}
   else{r[campo]=v;pdfSalvaBozza();}
 }
-function cancelPdf(){pdfRighe=[];pdfFileName='';pdfContoUsato='';pdfBancaRilevata='';pdfScartaBozza();document.getElementById('pdfArea').innerHTML='';}
+function cancelPdf(){pdfRighe=[];pdfFileName='';pdfContoUsato='';pdfBancaRilevata='';pdfScartaBozza();}
 
 // Cambiando il conto le righe già lette vanno spostate sul nuovo conto,
 // altrimenti resterebbero agganciate a quello di prima.
@@ -2013,7 +2019,7 @@ async function importaPdfDiretto(){
   if(senzaCat&&!confirm(`${senzaCat} righe non hanno la Cat.1. Inserirle comunque senza categoria?`))return;
   importPreview=sel.map(r=>({data:r.data,from:r.from,to:r.to,desc:r.desc,c1:r.c1||'-',c2:r.c2||'-',c3:r.c3||'-',
     importo:r.importo,tipoDa:r.tipoDa,tipoA:r.tipoA,valuta:r.valuta||'EUR',errore:'',dup:r.dup,sel:true}));
-  await confirmImport('pdfArea');
+  await confirmImport('anteprimaArea');
   if(!importPreview.length){pdfRighe=[];pdfFileName='';pdfScartaBozza();}   // andato a buon fine
 }
 
@@ -2104,7 +2110,9 @@ function impBuild(matrix){
     const r={data,from,to,desc:String(g('desc')||'').trim(),
       c1:String(g('c1')||'').trim()||'-',c2:String(g('c2')||'').trim()||'-',c3:String(g('c3')||'').trim()||'-',
       importo,tipoDa:String(g('tipoDa')||'').trim(),tipoA:String(g('tipoA')||'').trim(),
-      note:String(g('note')||'').trim(),riga:i+1,errore:'',dup:{level:'ok'},sel:false};
+      note:String(g('note')||'').trim(),riga:i+1,errore:'',dup:{level:'ok'},sel:false,
+      nuova:false,sicura:true,storico:'',raw:'',grezza:''};
+    r.descBase=r.desc;
     if(!data)r.errore='data non valida';
     else if(!from||!to)r.errore='Da/A mancante';
     else if(impSame(from,to))r.errore='Da e A coincidono';
@@ -2112,8 +2120,15 @@ function impBuild(matrix){
     else{
       const nf=impFindNome(from),nt=impFindNome(to);
       const cf=nf?(nf.valuta||'EUR'):'EUR',ct=nt?(nt.valuta||'EUR'):'EUR';
+      const valFile=String(g('valuta')||'').trim().toUpperCase();
       if(nf&&nt&&cf!==ct)r.errore='cambio valuta: da inserire a mano';
-      r.valuta=cf;
+      r.valuta=valFile||cf;
+      // valuta del file diversa da quella del conto: importo non confrontabile,
+      // si sblocca scrivendo il controvalore (stessa logica dell'anteprima PDF)
+      if(valFile&&valFile!==cf&&!r.errore){
+        r.valutaOrig=valFile;r.importoOrig=importo;r.descBase=r.desc;
+        r.errore=`importo in ${valFile}: scrivi il controvalore in ${cf}`;
+      }
       r.dup=impDuplicate(r);
     }
     r.sel=!r.errore&&r.dup.level!=='dup'&&flag!=='NO';
@@ -2138,8 +2153,25 @@ async function onImportFileSelected(input){
       const sheet=wb.Sheets['Movimenti']||wb.Sheets[wb.SheetNames[0]];
       matrix=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true});
     }
-    importPreview=impBuild(matrix);
-    renderImportPreview(f.name);
+    const righe=impBuild(matrix);
+    if(!righe.length)throw new Error('Nessuna riga trovata nel foglio.');
+    // conto di riferimento: l'entita' bancaria che compare piu' spesso nel file
+    const conteggio={};
+    righe.forEach(r=>{[r.from,r.to].forEach(n=>{const e=impFindNome(n);
+      if(e&&(e.tipo||'').toLowerCase().includes('bank'))conteggio[e.name]=(conteggio[e.name]||0)+1;});});
+    const conto=Object.entries(conteggio).sort((a,b)=>b[1]-a[1])[0];
+    pdfRighe=righe;pdfFileName=f.name;pdfNLines=matrix.length-1;
+    pdfBancaRilevata='';pdfContoUsato=conto?conto[0]:(document.getElementById('pdfContoSel').value||'');
+    // storico e affidabilita' della classificazione, come per il PDF
+    pdfRighe.forEach(r=>{
+      const altra=r.from===pdfContoUsato?r.to:r.from,ent=impFindNome(altra);
+      r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
+      const cat=ent?pdfCategorieStoriche(ent.name):null;
+      r.storico=cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico';
+      r.sicura=!(r.c1==='-'||!r.c1);
+    });
+    area.innerHTML='';
+    renderPdfPreview(f.name,matrix.length-1);
   }catch(e){
     area.innerHTML=`<div class="import-msg err">❌ ${e.message||'file non leggibile'}</div>`;
   }
@@ -2164,39 +2196,7 @@ function importNewCats(){
   return[...new Set(out)];
 }
 
-function renderImportPreview(fname){
-  const area=document.getElementById('importArea');
-  if(!importPreview.length){area.innerHTML='<div class="import-msg err">Nessuna riga trovata nel foglio.</div>';return;}
-  const nErr=importPreview.filter(r=>r.errore).length,nDup=importPreview.filter(r=>r.dup.level==='dup').length,
-        nMaybe=importPreview.filter(r=>r.dup.level==='maybe'&&!r.errore).length,nSel=importPreview.filter(r=>r.sel).length;
-  const tot=importPreview.filter(r=>r.sel).reduce((s,r)=>s+r.importo,0);
-  let html=`<div class="import-summary"><strong>${fname}</strong> · ${importPreview.length} righe lette ·
-    <span class="imp-ok">${nSel} da importare</span>${nDup?` · <span class="imp-dup">${nDup} già presenti</span>`:''}${nMaybe?` · <span class="imp-maybe">${nMaybe} da controllare</span>`:''}${nErr?` · <span class="imp-err">${nErr} con errori</span>`:''}
-    · totale selezionato ${fmtAmt(tot,'EUR')}</div>`;
-  const ents=importNewEntities(),cats=importNewCats();
-  if(ents.length)html+=`<div class="import-msg">➕ Entità nuove che verranno create: ${ents.map(e=>`<strong>${e.name}</strong>${e.tipo?` <em>(${e.tipo})</em>`:' <em>(senza tipo)</em>'}`).join(', ')}</div>`;
-  if(cats.length)html+=`<div class="import-msg">➕ Categorie nuove: ${cats.map(c=>`<strong>${c}</strong>`).join(' · ')}</div>`;
-  html+=`<div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da → A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Esito</th></tr></thead><tbody>`;
-  importPreview.forEach((r,i)=>{
-    let stato='<span class="imp-ok">✓ nuovo</span>',cls='';
-    if(r.errore){stato=`<span class="imp-err">✕ ${r.errore}</span>`;cls='imp-row-err';}
-    else if(r.dup.level==='dup'){stato=`<span class="imp-dup">= già presente (${fmtDate(r.dup.ref.data)} ${r.dup.ref.desc||''})</span>`;cls='imp-row-dup';}
-    else if(r.dup.level==='maybe'){stato=`<span class="imp-maybe">⚠ simile a ${fmtDate(r.dup.ref.data)} ${r.dup.ref.to} ${fmtAmt(r.dup.ref.importo,r.dup.ref.valuta||'EUR')}</span>`;cls='imp-row-maybe';}
-    else if(r.escluso){stato='<span class="imp-dup">escluso nel file (NO)</span>';}
-    html+=`<tr class="${cls}"><td><input type="checkbox" ${r.sel?'checked':''} ${r.errore?'disabled':''} onchange="toggleImportRow(${i},this.checked)"></td>
-      <td>${r.data?fmtDate(r.data):'—'}</td><td>${r.from} → <strong>${r.to}</strong></td><td>${r.desc||''}</td>
-      <td>${[r.c1,r.c2,r.c3].filter(x=>x&&x!=='-').join(' › ')||'—'}</td>
-      <td class="td-num">${isNaN(r.importo)?'—':fmtAmt(r.importo,r.valuta||'EUR')}</td><td>${stato}</td></tr>`;
-  });
-  html+=`</tbody></table></div>
-    <div class="backup-actions" style="margin-top:12px;">
-      <button class="btn-backup save" onclick="confirmImport()">✅ Importa ${nSel} movimenti</button>
-      <button class="btn-sm grey" onclick="cancelImport()">✕ Annulla</button>
-    </div>`;
-  area.innerHTML=html;
-}
-function toggleImportRow(i,checked){importPreview[i].sel=checked;renderImportPreview(document.querySelector('.import-summary strong').textContent);}
-function cancelImport(){importPreview=[];document.getElementById('importArea').innerHTML='';}
+// L'anteprima dell'Excel e' la stessa del PDF: vedi renderPdfPreview().
 
 async function confirmImport(areaId){
   const sel=importPreview.filter(r=>r.sel&&!r.errore);
@@ -2234,7 +2234,7 @@ Object.assign(window,{
   onEntitySelChange,clearEntityFilter,filterByEntity,
   onTipoSelChange,clearTipoFilter,onValutaSelChange,clearValutaFilter,
   toggleFilterPanel,stampaPDF,salvaBackup,stampaCategorie,
-  onImportFileSelected,toggleImportRow,confirmImport,cancelImport,
+  onImportFileSelected,confirmImport,
   onRestoreFileSelected,confirmRestore,cancelRestore,
   onPdfFileSelected,scaricaExcelDaPdf,cancelPdf,syncPdfConti,importaPdfDiretto,pdfCambiaConto,
   pdfToggleRow,pdfSetEnt,pdfSetCat,pdfSetTesto,pdfSetTipo,pdfSetEuro,pdfStimaValute,
