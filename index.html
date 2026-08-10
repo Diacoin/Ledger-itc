@@ -518,7 +518,6 @@
     text-transform:uppercase;color:#7D8B99;opacity:0;animation:qrise .6s ease 1.5s forwards}
   #q-intro .salta{position:absolute;bottom:26px;right:28px;background:none;border:0;
     color:#7D8B99;font-family:var(--mono);font-size:11px;letter-spacing:.1em;cursor:pointer}
-
 </style>
 </head>
 <body>
@@ -602,62 +601,6 @@
       <div style="line-height:1.2;">
         <div class="q-nome">QUADRA</div>
         <div class="q-utente"><span class="a">ILTUO</span><span class="b">CAVEAU</span></div>
-      </div>
-    <div id="loginError" class="login-error" style="display:none"></div>
-    <div class="login-form">
-      <input type="email" class="login-input" id="loginEmail" placeholder="Email" autocomplete="email">
-      <input type="password" class="login-input" id="loginPassword" placeholder="Password" autocomplete="current-password">
-      <button class="login-btn" id="loginBtn">🔒 Accedi</button>
-    </div>
-    <div style="text-align:center;color:var(--text3);font-size:13px;margin-top:16px;display:none" id="loginLoading">Caricamento...</div>
-  </div>
-</div>
-
-<div id="app">
-  <div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
-    <div class="settings-panel">
-      <h3>⚙️ Impostazioni</h3>
-      <div class="settings-row">
-        <label>🌙 Tema scuro</label>
-        <div class="toggle-wrap">
-          <span class="toggle-label" id="themeLabel">Chiaro</span>
-          <label class="toggle"><input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)"><span class="toggle-slider"></span></label>
-        </div>
-      </div>
-      <div class="settings-row">
-        <label>💱 Valuta di riferimento</label>
-        <select class="settings-select" id="refCurrSel" onchange="setRefCurr(this.value)">
-          <option value="EUR">€ Euro</option><option value="GBP">£ Sterlina</option><option value="AED">AED Dirham</option>
-        </select>
-      </div>
-      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
-        <label>📡 Tassi FX</label>
-        <div id="fxRateDisplay" style="font-size:11px;color:var(--text3);line-height:1.7;"></div>
-        <button onclick="fetchFxRates(true)" style="background:#e8f0fe;color:#1a73e8;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:bold;">🔄 Aggiorna tassi</button>
-      </div>
-      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
-        <label>☁️ Storage Firebase</label>
-        <div class="storage-meter" style="width:100%;">
-          <div class="storage-bar-wrap"><div class="storage-bar green" id="settingsStorageBar" style="width:0%"></div></div>
-          <div class="storage-text" id="settingsStorageText">Calcolo in corso...</div>
-        </div>
-      </div>
-      <button class="btn-close-settings" onclick="closeSettings()">Chiudi</button>
-    </div>
-  </div>
-
-  <div class="app-header">
-    <div class="logo-wrap">
-      <svg width="52" height="52" viewBox="0 0 52 52">
-        <ellipse cx="26" cy="30" rx="22" ry="10" fill="none" stroke="#1a3a8f" stroke-width="2.2" stroke-dasharray="100 8" transform="rotate(-18 26 30)"/>
-        <circle cx="13" cy="7" r="4.5" fill="#1a5fbf"/><circle cx="24" cy="3.5" r="3" fill="#2980d9"/>
-        <circle cx="34" cy="5" r="2" fill="#5ba4e8"/><circle cx="41" cy="9" r="1.4" fill="#7ec0f5"/>
-        <path d="M20 38 C18 38 15 35 15 28 C15 20 19 14 26 14 C33 14 37 20 37 28 C37 35 34 38 32 38 Z" fill="url(#hg)"/>
-        <defs><linearGradient id="hg" x1="15" y1="14" x2="37" y2="40"><stop offset="0%" stop-color="#2060c0"/><stop offset="100%" stop-color="#0a2a7a"/></linearGradient></defs>
-      </svg>
-      <div style="line-height:1.15;">
-        <div style="font-size:17px;font-weight:900;letter-spacing:.5px;"><span style="color:#1a5fbf;">ILTUO</span><span style="color:#e67e22;">CAVEAU</span></div>
-        <div style="font-size:9px;color:#7a9abf;letter-spacing:1.5px;font-style:italic;">Conoscenza, Azione, Libertà</div>
       </div>
     </div>
     <div class="header-right">
