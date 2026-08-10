@@ -518,6 +518,88 @@
     text-transform:uppercase;color:#7D8B99;opacity:0;animation:qrise .6s ease 1.5s forwards}
   #q-intro .salta{position:absolute;bottom:26px;right:28px;background:none;border:0;
     color:#7D8B99;font-family:var(--mono);font-size:11px;letter-spacing:.1em;cursor:pointer}
+
+  /* ═════════════ QUADRA — parita' con la demo ═════════════ */
+
+  /* titoli di pagina: a sinistra, senza decorazioni */
+  h2{text-align:left!important;color:var(--text)!important;font-size:26px;
+     font-weight:600;margin:0 0 4px;letter-spacing:-.015em;}
+  h3{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text);}
+
+  /* riepilogo: una striscia sola, non tre blocchi colorati */
+  .summary{gap:0!important;border:1px solid var(--border);margin:18px 0 16px!important;
+    border-radius:3px;overflow:hidden;}
+  .summary .card{flex:1;min-width:0;background:none!important;color:var(--text)!important;
+    border-radius:0!important;border-right:1px solid var(--border);
+    padding:11px 15px!important;text-align:left!important;}
+  .summary .card:last-child{border-right:0;}
+  .summary .card label{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--text3)!important;opacity:1;margin-bottom:4px;}
+  .summary .card span{font-family:var(--mono);font-size:19px;font-weight:500;
+    font-variant-numeric:tabular-nums;color:var(--text);}
+  .summary .card.in span{color:var(--ok);}
+  .summary .card.out span{color:var(--ko);}
+  .summary .card.saldo-pos span{color:var(--acc);}
+  .summary .card.saldo-neg span{color:var(--acc2);}
+
+  /* barra filtri e pannelli */
+  .filter-toggle-bar{background:var(--surface);border:1px solid var(--border);
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text2);padding:10px 14px;}
+  .filter-toggle-left{font-family:var(--mono);}
+  .filter-active-badge{background:var(--acc)!important;color:var(--bg)!important;
+    font-family:var(--mono);font-size:10px;letter-spacing:.06em;border-radius:2px;}
+  .filter-panel{background:var(--surface);}
+  .filter-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--text3);}
+
+  /* fascia di inserimento */
+  .insert-box{background:var(--surface)!important;border:1px solid var(--border)!important;
+    border-left:2px solid var(--acc)!important;}
+  .insert-box-title{font-family:var(--mono)!important;font-size:10px!important;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--acc)!important;font-weight:500!important;}
+
+  /* comandi: mono, squadrati, senza fondi pieni tranne l'azione principale */
+  .btn-add,.btn-save,.login-btn{background:var(--acc)!important;color:var(--bg)!important;
+    font-family:var(--mono)!important;font-size:11px!important;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:600!important;border-radius:3px!important;box-shadow:none!important;}
+  .btn-action,.btn-backup,.btn-sm,.btn-cancel,.btn-pick-docs,.btn-doc-del,.btn-nome-edit,
+  .btn-nome-del,.btn-at,.btn-row-edit,.btn-row-del{
+    background:none!important;color:var(--text2)!important;border:1px solid var(--border)!important;
+    font-family:var(--mono)!important;font-size:10.5px!important;letter-spacing:.08em;
+    border-radius:3px!important;box-shadow:none!important;}
+  .btn-action:hover,.btn-backup:hover,.btn-sm:hover{border-color:var(--acc)!important;color:var(--acc)!important;}
+  .btn-action.purple,.btn-action.red,.btn-logout{color:var(--ko)!important;border-color:var(--ko)!important;}
+  .btn-settings{background:none!important;border:1px solid var(--border)!important;color:var(--text2)!important;}
+  .btn-backup.save{border-color:var(--acc)!important;color:var(--acc)!important;}
+  .btn-backup.restore,.btn-backup.danger{border-color:var(--acc2)!important;color:var(--acc2)!important;}
+  .btn-backup.convert{border-color:var(--ok)!important;color:var(--ok)!important;}
+
+  /* campi */
+  input,select,textarea{border:1px solid var(--input-border)!important;
+    font-family:var(--sans);font-size:12.5px;}
+  input[type=date],input[type=number],.imp-inp-num{font-family:var(--mono);}
+  .controls input,.controls select{padding:7px 9px;}
+
+  /* banner entita' e tessere varie */
+  .entity-banner{background:var(--surface2)!important;color:var(--text)!important;
+    border:1px solid var(--acc);border-radius:3px;font-family:var(--mono);font-size:12px;}
+  .tag-item,.nome-tipo-badge,.void-badge,.fx-tag,.cur-eur,.cur-gbp,.cur-aed{
+    border-radius:2px!important;font-family:var(--mono);font-size:10px;letter-spacing:.05em;}
+
+  /* tabella: come nella demo */
+  table{border-collapse:collapse;}
+  thead th{position:sticky;top:0;z-index:5;}
+  tbody tr{border-bottom:1px solid var(--border);}
+  .empty{color:var(--text3);font-size:13px;padding:36px;text-align:center;}
+
+  /* report */
+  .report-table th{font-family:var(--mono);}
+  .report-type-badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;border-radius:2px;}
+  .report-saved-item{border-radius:3px;}
+
+  /* pagine piu' larghe, come la demo */
+  .page{max-width:1600px;margin:0 auto;}
 </style>
 </head>
 <body>
@@ -550,7 +632,7 @@
     <div class="login-form">
       <input type="email" class="login-input" id="loginEmail" placeholder="Email" autocomplete="email">
       <input type="password" class="login-input" id="loginPassword" placeholder="Password" autocomplete="current-password">
-      <button class="login-btn" id="loginBtn">🔒 Accedi</button>
+      <button class="login-btn" id="loginBtn">Accedi</button>
     </div>
     <div style="text-align:center;color:var(--text3);font-size:13px;margin-top:16px;display:none" id="loginLoading">Caricamento...</div>
   </div>
@@ -559,27 +641,27 @@
 <div id="app">
   <div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
     <div class="settings-panel">
-      <h3>⚙️ Impostazioni</h3>
+      <h3>Impostazioni</h3>
       <div class="settings-row">
-        <label>🌙 Tema scuro</label>
+        <label>Tema scuro</label>
         <div class="toggle-wrap">
           <span class="toggle-label" id="themeLabel">Chiaro</span>
           <label class="toggle"><input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)"><span class="toggle-slider"></span></label>
         </div>
       </div>
       <div class="settings-row">
-        <label>💱 Valuta di riferimento</label>
+        <label>Valuta di riferimento</label>
         <select class="settings-select" id="refCurrSel" onchange="setRefCurr(this.value)">
           <option value="EUR">€ Euro</option><option value="GBP">£ Sterlina</option><option value="AED">AED Dirham</option>
         </select>
       </div>
       <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
-        <label>📡 Tassi FX</label>
+        <label>Tassi FX</label>
         <div id="fxRateDisplay" style="font-size:11px;color:var(--text3);line-height:1.7;"></div>
-        <button onclick="fetchFxRates(true)" style="background:#e8f0fe;color:#1a73e8;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:bold;">🔄 Aggiorna tassi</button>
+        <button onclick="fetchFxRates(true)" style="background:#e8f0fe;color:#1a73e8;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:bold;">Aggiorna tassi</button>
       </div>
       <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
-        <label>☁️ Storage Firebase</label>
+        <label>Storage Firebase</label>
         <div class="storage-meter" style="width:100%;">
           <div class="storage-bar-wrap"><div class="storage-bar green" id="settingsStorageBar" style="width:0%"></div></div>
           <div class="storage-text" id="settingsStorageText">Calcolo in corso...</div>
@@ -604,9 +686,9 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="user-info">👤 <span id="userEmail"></span></div>
-      <button class="btn-action purple" onclick="stampaPDF()">🖨️ PDF</button>
-      <button class="btn-settings" onclick="openSettings()">⚙️</button>
+      <div class="user-info"><span id="userEmail"></span></div>
+      <button class="btn-action purple" onclick="stampaPDF()">PDF</button>
+      <button class="btn-settings" onclick="openSettings()"></button>
       <button class="btn-logout" onclick="handleLogout()">Esci</button>
     </div>
   </div>
@@ -620,42 +702,42 @@
   </nav>
 
   <div class="page active" id="page-registro">
-    <h2>💸 Registro Movimenti</h2>
+    <h2>Registro Movimenti</h2>
     <div class="entity-banner" id="entityBanner">
       <span id="entityBannerLabel"></span>
-      <button onclick="clearEntityFilter()">✕ Rimuovi filtro</button>
+      <button onclick="clearEntityFilter()">Rimuovi filtro</button>
     </div>
     <div id="summaryArea"></div>
     <div class="filter-toggle-bar" id="filterToggleBar" onclick="toggleFilterPanel()">
-      <div class="filter-toggle-left">🔍 Filtri <span class="filter-active-badge" id="filterBadge">0 attivi</span></div>
+      <div class="filter-toggle-left">Filtri <span class="filter-active-badge" id="filterBadge">0 attivi</span></div>
       <div class="filter-toggle-right"><span class="filter-chevron" id="filterChevron">▼</span></div>
     </div>
     <div class="filter-panel" id="filterPanel">
       <div class="filter-row">
-        <span class="filter-label">👤 Entità:</span>
+        <span class="filter-label">Entità:</span>
         <div class="entity-filter-wrap">
           <select class="entity-select" id="entitySel" onchange="onEntitySelChange()"><option value="">— Tutti —</option></select>
-          <button class="btn-sm grey" onclick="clearEntityFilter()">✕</button>
+          <button class="btn-sm grey" onclick="clearEntityFilter()"></button>
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">🏷️ Tipo:</span>
+        <span class="filter-label">Tipo:</span>
         <div class="entity-filter-wrap">
           <select class="tipo-select" id="tipoSel" onchange="onTipoSelChange()"><option value="">— Tutti i tipi —</option></select>
-          <button class="btn-sm grey" onclick="clearTipoFilter()">✕</button>
+          <button class="btn-sm grey" onclick="clearTipoFilter()"></button>
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">💱 Valuta:</span>
+        <span class="filter-label">Valuta:</span>
         <div class="entity-filter-wrap">
           <select class="val-select" id="valutaSel" onchange="onValutaSelChange()">
             <option value="">— Tutte —</option><option value="EUR">€ Euro</option><option value="GBP">£ Sterlina</option><option value="AED">AED Dirham</option>
           </select>
-          <button class="btn-sm grey" onclick="clearValutaFilter()">✕</button>
+          <button class="btn-sm grey" onclick="clearValutaFilter()"></button>
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">↕️ Segno:</span>
+        <span class="filter-label">↕Segno:</span>
         <div class="entity-filter-wrap">
           <select class="tipo-select" id="dirSel" onchange="onDirSelChange()">
             <option value="">— Entrate e uscite —</option>
@@ -668,24 +750,24 @@
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">📅 Periodo:</span>
+        <span class="filter-label">Periodo:</span>
         <div class="date-range">
           <input type="date" id="dateFrom" onchange="onDateFilterChange()" oninput="onDateFilterChange()">
           <span>→</span>
           <input type="date" id="dateTo" onchange="onDateFilterChange()" oninput="onDateFilterChange()">
-          <button class="btn-sm red" onclick="clearDate()">✕</button>
+          <button class="btn-sm red" onclick="clearDate()"></button>
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">🏷️ Cat:</span>
+        <span class="filter-label">Cat:</span>
         <div class="multi-select-wrap"><div class="mst" id="trC1" onclick="toggleDD('ddC1',event)">Tutte cat.1</div><div class="dropdown-panel" id="ddC1"></div></div>
         <div class="multi-select-wrap"><div class="mst" id="trC2" onclick="toggleDD('ddC2',event)">Tutte cat.2</div><div class="dropdown-panel" id="ddC2"></div></div>
         <div class="multi-select-wrap"><div class="mst" id="trC3" onclick="toggleDD('ddC3',event)">Tutte cat.3</div><div class="dropdown-panel" id="ddC3"></div></div>
       </div>
-      <div class="filter-reset-row"><button class="btn-sm grey" onclick="clearFilters()">✕ Reset filtri</button></div>
+      <div class="filter-reset-row"><button class="btn-sm grey" onclick="clearFilters()">Reset filtri</button></div>
     </div>
     <div class="insert-box">
-      <div class="insert-box-title">➕ Nuovo Movimento</div>
+      <div class="insert-box-title">Nuovo Movimento</div>
       <div class="controls">
         <input type="date" id="data"/>
         <select id="selFrom" onchange="onFromChange()"><option value="">— From —</option></select>
@@ -700,7 +782,7 @@
         <button class="btn-add" onclick="aggiungi()">+ Aggiungi</button>
       </div>
       <div class="fx-row" id="fxRow" style="display:none">
-        <span class="fx-label">💱 Exchange:</span>
+        <span class="fx-label">Exchange:</span>
         <span id="fxFromLabel" style="font-size:12px;font-weight:bold;color:var(--text2);"></span>
         <span style="color:var(--text3);font-size:13px;">→</span>
         <input type="number" id="importoTo" placeholder="Importo ricevuto" min="0" step="0.01" style="flex:1;min-width:100px;padding:5px 8px;border:1px solid #e67e22;border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);" oninput="onImportoToChange()">
@@ -713,12 +795,12 @@
            ondragleave="onDragLeave('insertDocsArea')"
            ondrop="onDropInsert(event)">
         <div class="docs-area-header">
-          <span class="docs-area-label">📎 Documenti allegati (opzionale, anche multipli)</span>
+          <span class="docs-area-label">Documenti allegati (opzionale, anche multipli)</span>
           <button class="btn-pick-docs" onclick="document.getElementById('insertFileInput').click()">+ Aggiungi file</button>
           <input type="file" id="insertFileInput" style="display:none" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="onInsertFilesSelected(this)">
         </div>
         <div class="pending-docs-list" id="insertPendingList"></div>
-        <div class="drop-hint">📂 Trascina qui i file · PDF, immagini, Word, Excel · max 10MB cad.</div>
+        <div class="drop-hint">Trascina qui i file · PDF, immagini, Word, Excel · max 10MB cad.</div>
       </div>
     </div>
     <table>
@@ -737,18 +819,18 @@
 
   <!-- REPORT -->
   <div class="page" id="page-report">
-    <h2>📊 Report</h2>
+    <h2>Report</h2>
     <div class="report-layout">
       <div class="report-sidebar">
         <div class="report-saved-list">
-          <div class="report-saved-title">📁 Report Salvati</div>
+          <div class="report-saved-title">Report Salvati</div>
           <div id="reportSavedList"><div class="report-empty-saved">Nessun report salvato</div></div>
         </div>
         <button class="btn-report run" style="width:100%;margin-top:4px;" onclick="newReport()">+ Nuovo Report</button>
       </div>
       <div class="report-main">
         <div class="report-config-box">
-          <div class="report-config-title">⚙️ Configurazione Report</div>
+          <div class="report-config-title">Configurazione Report</div>
           <div class="report-name-row">
             <span class="report-field-label" style="min-width:80px;font-size:12px;font-weight:bold;color:var(--text2);">Nome:</span>
             <input type="text" class="report-name-input" id="rptName" placeholder="Nome report...">
@@ -756,13 +838,13 @@
           <div class="report-field-row">
             <span class="report-field-label">Tipo:</span>
             <select class="report-select" id="rptType" onchange="onRptTypeChange()">
-              <option value="estratto">📄 Estratto conto entità</option>
-              <option value="categoria">🏷️ Riepilogo per categoria</option>
-              <option value="tipo">👥 Riepilogo per tipo</option>
-              <option value="date">📅 Movimenti per periodo</option>
-              <option value="saldo">📈 Saldo per entità</option>
-              <option value="fx">💱 Report Exchange FX</option>
-              <option value="mensile">📆 Subtotali per mese</option>
+              <option value="estratto">Estratto conto entità</option>
+              <option value="categoria">Riepilogo per categoria</option>
+              <option value="tipo">Riepilogo per tipo</option>
+              <option value="date">Movimenti per periodo</option>
+              <option value="saldo">Saldo per entità</option>
+              <option value="fx">Report Exchange FX</option>
+              <option value="mensile">Subtotali per mese</option>
             </select>
           </div>
           <div id="rptParams">
@@ -798,8 +880,8 @@
               <div class="report-field-row">
                 <span class="report-field-label">Dettaglio:</span>
                 <select class="report-select" id="rptMensileMode">
-                  <option value="subtotali">📋 Subtotali per categoria + totale mese</option>
-                  <option value="totali">📊 Solo totali per mese</option>
+                  <option value="subtotali">Subtotali per categoria + totale mese</option>
+                  <option value="totali">Solo totali per mese</option>
                 </select>
               </div>
               <div class="report-field-row">
@@ -815,8 +897,8 @@
           </div>
           <div class="report-actions">
             <button class="btn-report run" onclick="runReport()">▶ Genera</button>
-            <button class="btn-report save" onclick="saveReport()">💾 Salva</button>
-            <button class="btn-report print" onclick="printReport()">🖨️ Stampa</button>
+            <button class="btn-report save" onclick="saveReport()">Salva</button>
+            <button class="btn-report print" onclick="printReport()">Stampa</button>
           </div>
         </div>
         <div class="report-output" id="reportOutput" style="display:none">
@@ -840,7 +922,7 @@
 
     <div id="nomiAvviso"></div>
     <div class="archivio-box">
-      <div class="insert-box-title" style="color:#1a73e8;font-size:13px;font-weight:bold;margin-bottom:10px;">➕ Nuovo Nome</div>
+      <div class="insert-box-title" style="color:#1a73e8;font-size:13px;font-weight:bold;margin-bottom:10px;">Nuovo Nome</div>
       <div class="tag-add" style="margin-top:0;margin-bottom:0;">
         <input type="text" id="inputNome" placeholder="Nome..." onkeydown="if(event.key==='Enter')addNome()"/>
         <input type="text" id="inputNomeTipo" placeholder="Tipo..." list="tipoSuggest"/>
@@ -863,17 +945,17 @@
 
   <!-- CATEGORIE -->
   <div class="page" id="page-categorie">
-    <h2>🏷️ Archivio Categorie</h2>
+    <h2>Archivio Categorie</h2>
     <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
-      <button onclick="stampaCategorie()" style="padding:8px 18px;background:#607d8b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;">🖨️ Stampa Categorie</button>
+      <button onclick="stampaCategorie()" style="padding:8px 18px;background:#607d8b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;">Stampa Categorie</button>
     </div>
     <div class="archivio-box">
-      <h3>🟣 Categoria 1</h3>
+      <h3>Categoria 1</h3>
       <div class="tag-list" id="c1List"></div>
       <div class="tag-add"><input type="text" id="inputC1" placeholder="Nuova cat.1..." onkeydown="if(event.key==='Enter')addC1()"/><button class="btn-at c1" onclick="addC1()">+ Aggiungi</button></div>
     </div>
     <div class="archivio-box">
-      <h3>🟠 Categoria 2</h3>
+      <h3>Categoria 2</h3>
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
         <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
         <select class="sel-parent" id="c1ForC2" onchange="renderC2Page()"><option value="">— Seleziona —</option></select>
@@ -882,7 +964,7 @@
       <div class="tag-add" id="c2AddRow" style="display:none"><input type="text" id="inputC2" placeholder="Nuova cat.2..." onkeydown="if(event.key==='Enter')addC2()"/><button class="btn-at c2" onclick="addC2()">+ Aggiungi</button></div>
     </div>
     <div class="archivio-box">
-      <h3>🟢 Categoria 3</h3>
+      <h3>Categoria 3</h3>
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
         <label style="font-size:13px;font-weight:bold;color:var(--text2)">Cat.1:</label>
         <select class="sel-parent" id="c1ForC3" onchange="syncC2ForC3();renderC3Page()"><option value="">— Seleziona —</option></select>
@@ -903,13 +985,13 @@
     </div>
 
     <div class="archivio-box">
-      <h3>📊 Spazio utilizzato</h3>
+      <h3>Spazio utilizzato</h3>
       <div id="storageSummary" style="color:var(--text3);font-size:13px;">Calcolo in corso...</div>
       <div class="storage-big-bar-wrap"><div class="storage-big-bar green" id="storageBigBar" style="width:0%"></div></div>
       <div class="storage-grid" id="storageGrid"></div>
     </div>
     <div class="archivio-box">
-      <h3>📁 Documenti archiviati</h3>
+      <h3>Documenti archiviati</h3>
       <div id="docsListWrap"><div style="color:var(--text4);font-style:italic;font-size:13px;">Caricamento...</div></div>
     </div>
   </div>
@@ -940,21 +1022,21 @@
     </div>
 
     <div class="backup-box">
-      <h3>⬇️ Esporta dati locali</h3>
+      <h3>Esporta dati locali</h3>
       <p>Scarica i dati in formato JSON.</p>
-      <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">💾 Scarica JSON</button></div>
+      <div class="backup-actions"><button class="btn-backup save" onclick="salvaBackup()">Scarica JSON</button></div>
     </div>
     <div class="backup-box">
-      <h3>♻️ Ripristina da backup JSON</h3>
+      <h3>Ripristina da backup JSON</h3>
       <p><strong>Attenzione:</strong> il ripristino <strong>sostituisce tutti i dati</strong> (movimenti, nomi, categorie, report salvati) con quelli del file. Prima di procedere viene scaricato automaticamente un backup della situazione attuale.</p>
       <div class="backup-actions">
-        <button class="btn-backup restore" onclick="document.getElementById('restoreFileInput').click()">♻️ Scegli file JSON</button>
+        <button class="btn-backup restore" onclick="document.getElementById('restoreFileInput').click()">Scegli file JSON</button>
         <input type="file" id="restoreFileInput" style="display:none" accept=".json" onchange="onRestoreFileSelected(this)">
       </div>
       <div id="restoreArea"></div>
     </div>
     <div class="backup-box">
-      <h3>📄 Converti estratto conto PDF → Excel</h3>
+      <h3>Converti estratto conto PDF → Excel</h3>
       <p>Carica il PDF dell'estratto: viene letto qui nel browser (non esce dal tuo computer), le categorie vengono dedotte dai movimenti già registrati e ottieni il file Excel da rivedere e poi importare qui sotto.</p>
       <div class="backup-actions" style="align-items:flex-end;gap:10px;flex-wrap:wrap;">
         <label style="font-size:11px;color:var(--text3);display:block;">Formato dell'estratto<br>
@@ -965,29 +1047,29 @@
           </select></label>
         <label style="font-size:11px;color:var(--text3);display:block;">Conto su cui registrare i movimenti<br>
           <select id="pdfContoSel" class="entity-select" style="max-width:220px;" onchange="pdfCambiaConto(this.value)"></select></label>
-        <button class="btn-backup convert" onclick="document.getElementById('pdfFileInput').click()">📄 Scegli PDF</button>
+        <button class="btn-backup convert" onclick="document.getElementById('pdfFileInput').click()">Scegli PDF</button>
         <input type="file" id="pdfFileInput" style="display:none" accept=".pdf" onchange="onPdfFileSelected(this)">
       </div>
       <div id="pdfArea"></div>
     </div>
     <div class="backup-box">
-      <h3>📥 Importa movimenti da Excel</h3>
+      <h3>Importa movimenti da Excel</h3>
       <p>Carica il file <strong>IMPORT_*.xlsx</strong> revisionato (foglio <em>Movimenti</em>). Prima dell'inserimento vedi un'anteprima con i possibili duplicati già segnalati. Accetta anche .csv.</p>
       <div class="backup-actions">
-        <button class="btn-backup save" onclick="document.getElementById('importFileInput').click()">📂 Scegli file</button>
+        <button class="btn-backup save" onclick="document.getElementById('importFileInput').click()">Scegli file</button>
         <input type="file" id="importFileInput" style="display:none" accept=".xlsx,.xls,.csv" onchange="onImportFileSelected(this)">
       </div>
       <div id="importArea"></div>
     </div>
     <div class="backup-box" id="anteprimaBox">
-      <h3>🔍 Anteprima da rivedere</h3>
+      <h3>Anteprima da rivedere</h3>
       <p>Qui finiscono i movimenti letti dal PDF o dall'Excel: si correggono riga per riga e poi si inseriscono nel registro.</p>
       <div id="anteprimaArea"><div class="import-msg">Nessuna elaborazione in corso: carica un PDF o un Excel qui sopra.</div></div>
     </div>
     <div class="backup-box">
-      <h3>☁️ Sincronizzazione</h3>
+      <h3>Sincronizzazione</h3>
       <p>I tuoi dati sono automaticamente sincronizzati su Firebase Realtime Database.</p>
-      <div class="backup-status ok" style="display:block">✅ Sincronizzato con Firebase</div>
+      <div class="backup-status ok" style="display:block">Sincronizzato con Firebase</div>
     </div>
   </div>
 </div>
@@ -1207,7 +1289,9 @@ window.onEditFilesSelected=onEditFilesSelected;window.editRemoveExisting=editRem
 
 // ── THEME ─────────────────────────────────────────────
 function toggleDark(on){document.body.classList.toggle('dark',on);document.getElementById('themeLabel').textContent=on?'Scuro':'Chiaro';try{localStorage.setItem('theme',on?'dark':'light');}catch(e){}}
-try{if((localStorage.getItem('theme')||'dark')==='dark'){document.body.classList.add('dark');document.getElementById('darkToggle').checked=true;document.getElementById('themeLabel').textContent='Scuro';}}catch(e){}
+try{if(!localStorage.getItem('quadraTema')){localStorage.setItem('theme','dark');
+  localStorage.setItem('quadraTema','1');}
+if((localStorage.getItem('theme')||'dark')==='dark'){document.body.classList.add('dark');document.getElementById('darkToggle').checked=true;document.getElementById('themeLabel').textContent='Scuro';}}catch(e){}
 function openSettings(){updateFxDisplay();document.getElementById('refCurrSel').value=refCurr;calcStorageUsage();document.getElementById('settingsOverlay').classList.add('open');}
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');}
 function closeSettingsOutside(e){if(e.target===document.getElementById('settingsOverlay'))closeSettings();}
