@@ -201,6 +201,36 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .stato.ko{border-color:var(--ko);color:var(--ko)}
 .costruzione{border:1px dashed var(--bd2);border-radius:3px;padding:30px;text-align:center;
   color:var(--fg3);font-size:13px;margin-top:20px}
+
+/* ── anagrafiche ── */
+.sottoschede{display:flex;gap:2px;margin:16px 0 0;border-bottom:1px solid var(--bd)}
+.sottoschede button{background:none;border:0;border-bottom:2px solid transparent;
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--fg3);padding:9px 14px;cursor:pointer}
+.sottoschede button.on{color:var(--acc);border-bottom-color:var(--acc)}
+.nota{border:1px solid var(--acc2);border-radius:3px;padding:10px 13px;margin-top:14px;
+  font-size:12.5px;color:var(--fg2);background:rgba(232,163,61,.08)}
+.nota b{color:var(--acc2)}
+.colonne{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.col{border:1px solid var(--bd);display:flex;flex-direction:column;min-height:320px}
+.col-tit{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:9px 12px;border-bottom:1px solid var(--bd);background:var(--surf2)}
+.col-tit .ctx{color:var(--fg3);letter-spacing:.06em;margin-left:6px;text-transform:none}
+.voce{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--bd);
+  cursor:pointer;font-size:13px}
+.voce:hover{background:var(--surf2)}
+.voce.sel{background:var(--surf2);box-shadow:inset 3px 0 0 var(--acc)}
+.voce .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.voce .cnt{font-family:var(--mono);font-size:10.5px;color:var(--fg3)}
+.voce .az{display:flex;gap:2px;opacity:0}
+.voce:hover .az{opacity:1}
+.voce .az button{background:none;border:0;color:var(--fg3);cursor:pointer;font-size:12px;padding:1px 4px}
+.voce .az button:hover{color:var(--acc)}
+.voce .az button.x:hover{color:var(--ko)}
+.agg{display:flex;gap:6px;padding:10px 12px;margin-top:auto;border-top:1px solid var(--bd)}
+.agg .ed{flex:1}
+.spento{color:var(--fg3);font-size:12.5px;padding:14px 12px}
+@media(max-width:900px){.colonne{grid-template-columns:1fr}}
 @media(max-width:820px){.contenuto{padding:16px 14px 60px}th{top:0}}
 </style>
 </head>
@@ -315,8 +345,52 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
       </div>
     </div>
 
-    <div class="pagina" id="pg-anagrafiche"><h2>Anagrafiche</h2>
-      <div class="costruzione">Blocco 4 &mdash; soggetti e categorie in scrittura.</div></div>
+    <div class="pagina" id="pg-anagrafiche">
+      <h2>Anagrafiche</h2>
+      <div class="sottoschede">
+        <button class="on" id="tabSogg" onclick="sottoAna('soggetti')">Soggetti</button>
+        <button id="tabCat" onclick="sottoAna('categorie')">Categorie</button>
+      </div>
+
+      <div id="ana-soggetti">
+        <div class="barra">
+          <input type="search" id="qSogg" placeholder="Cerca un soggetto…" oninput="disegnaSoggetti()">
+          <select id="fSoggTipo" onchange="disegnaSoggetti()"></select>
+          <label><input type="checkbox" id="fSenzaTipo" onchange="disegnaSoggetti()"> Solo senza tipo</label>
+          <button class="bt primario" onclick="nuovoSogg()">+ Nuovo soggetto</button>
+          <span class="esito" id="esitoSogg"></span>
+        </div>
+        <div id="avvisoTipi"></div>
+        <div class="tbl">
+          <table><thead><tr>
+            <th>Soggetto</th><th>Tipo</th><th>Valuta</th>
+            <th class="num">Movimenti</th><th class="num">Totale mosso</th><th></th>
+          </tr></thead><tbody id="corpoSogg"></tbody></table>
+        </div>
+      </div>
+
+      <div id="ana-categorie" style="display:none">
+        <p class="sotto">Tre livelli: <span class="c1">Gruppo</span> &rsaquo;
+          <span class="c2">Categoria</span> &rsaquo; <span class="c3">Voce</span>.
+          Scegli a sinistra per aprire il livello successivo. Rinominare aggiorna anche i movimenti.</p>
+        <div class="colonne">
+          <div class="col"><div class="col-tit c1">Gruppi</div><div id="listaC1"></div>
+            <div class="agg"><input class="ed" id="nuovoC1" placeholder="nuovo gruppo"
+              onkeydown="if(event.key==='Enter')aggiungiCat(1)">
+              <button class="bt" onclick="aggiungiCat(1)">+</button></div></div>
+          <div class="col"><div class="col-tit c2">Categorie <span id="ctxC1" class="ctx"></span></div>
+            <div id="listaC2"></div>
+            <div class="agg" id="aggC2"><input class="ed" id="nuovoC2" placeholder="nuova categoria"
+              onkeydown="if(event.key==='Enter')aggiungiCat(2)">
+              <button class="bt" onclick="aggiungiCat(2)">+</button></div></div>
+          <div class="col"><div class="col-tit c3">Voci <span id="ctxC2" class="ctx"></span></div>
+            <div id="listaC3"></div>
+            <div class="agg" id="aggC3"><input class="ed" id="nuovoC3" placeholder="nuova voce"
+              onkeydown="if(event.key==='Enter')aggiungiCat(3)">
+              <button class="bt" onclick="aggiungiCat(3)">+</button></div></div>
+        </div>
+      </div>
+    </div>
     <div class="pagina" id="pg-utilita"><h2>Utilit&agrave;</h2>
       <div class="costruzione">Blocco 3 &mdash; import degli estratti, backup e ripristino.</div></div>
     <div class="pagina" id="pg-report"><h2>Report</h2>
@@ -690,11 +764,253 @@ async function caricaDocumenti(r){
   }
 }
 
+/* ══════════════ anagrafiche: soggetti ══════════════ */
+let editSogg=null, nuovoSoggetto=false, selC1='', selC2='';
+
+function usoSogg(n){
+  const r=rows.filter(x=>x.from===n||x.to===n);
+  return {n:r.length, tot:r.reduce((s,x)=>s+(+x.importo||0),0)};
+}
+window.sottoAna=q=>{
+  const sogg=q==='soggetti';
+  $('ana-soggetti').style.display=sogg?'':'none';
+  $('ana-categorie').style.display=sogg?'none':'';
+  $('tabSogg').classList.toggle('on',sogg);
+  $('tabCat').classList.toggle('on',!sogg);
+  sogg?disegnaSoggetti():disegnaCategorie();
+};
+window.disegnaSoggetti=()=>{
+  const q=($('qSogg').value||'').toLowerCase().trim(),
+        tp=$('fSoggTipo').value, soloSenza=$('fSenzaTipo').checked;
+  const tipi=[...new Set(nomi.map(n=>(n.tipo||'').trim()).filter(Boolean))].sort();
+  if($('fSoggTipo').options.length!==tipi.length+1)
+    $('fSoggTipo').innerHTML='<option value="">Tutti i tipi</option>'+
+      tipi.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  $('fSoggTipo').value=tp;
+
+  const senza=nomi.filter(n=>!(n.tipo||'').trim());
+  $('avvisoTipi').innerHTML=senza.length?
+    `<div class="nota"><b>${senza.length} ${senza.length===1?'soggetto senza tipo':'soggetti senza tipo'}:</b>
+     ${senza.map(n=>esc(n.name)).join(', ')}.<br>
+     Senza tipo non compaiono nel filtro per tipo e, se sono conti, i loro trasferimenti
+     non vengono riconosciuti nei report.</div>`:'';
+
+  const lista=nomi.map((n,i)=>({...n,i}))
+    .filter(n=>(!q||n.name.toLowerCase().includes(q))&&
+               (!tp||(n.tipo||'')===tp)&&(!soloSenza||!(n.tipo||'').trim()))
+    .sort((a,b)=>a.name.localeCompare(b.name,'it'));
+
+  let html=nuovoSoggetto?fasciaSogg(null):'';
+  lista.forEach(n=>{
+    if(n.i===editSogg){ html+=fasciaSogg(n.i); return; }
+    const u=usoSogg(n.name);
+    html+=`<tr ondblclick="apriSogg(${n.i})">
+      <td>${sogg(n.name)}</td>
+      <td class="dt">${n.tipo?esc(n.tipo):'<span style="color:var(--acc2)">— manca —</span>'}</td>
+      <td class="dt">${esc(n.valuta||'EUR')}</td>
+      <td class="num">${u.n}</td>
+      <td class="num dt">${u.n?fmtImp(u.tot):''}</td>
+      <td class="att"><button class="matita" onclick="event.stopPropagation();apriSogg(${n.i})">&#9998;</button></td>
+    </tr>`;
+  });
+  $('corpoSogg').innerHTML=html||'<tr><td colspan="6" class="vuoto">Nessun soggetto con questi filtri.</td></tr>';
+  $('esitoSogg').innerHTML=`<b>${lista.length}</b> di ${nomi.length} soggetti`;
+};
+function fasciaSogg(i){
+  const n=i===null?{name:'',tipo:'',valuta:'EUR'}:nomi[i];
+  const tipi=[...new Set(nomi.map(x=>(x.tipo||'').trim()).filter(Boolean))].sort();
+  const u=i===null?{n:0}:usoSogg(n.name);
+  return `<tr class="edit${i===null?' nuova':''}">
+    <td colspan="6">
+      ${i===null?'<div class="ed-tit">NUOVO SOGGETTO</div>':''}
+      <div class="ed-riga">
+        <div style="flex:1.6;min-width:0"><span class="ed-lab">NOME</span>
+          <input class="ed" id="sg-nome" value="${esc(n.name)}" placeholder="come compare nel registro"></div>
+        <div style="flex:1;min-width:0"><span class="ed-lab">TIPO</span>
+          <input class="ed" id="sg-tipo" value="${esc(n.tipo||'')}" list="listaTipi" placeholder="Bank, Vendor, Family…">
+          <datalist id="listaTipi">${tipi.map(t=>`<option value="${esc(t)}">`).join('')}</datalist></div>
+        <div style="width:96px"><span class="ed-lab">VALUTA</span>
+          <select class="ed" id="sg-val">${opz(['EUR','GBP','AED'],n.valuta||'EUR')}</select></div>
+      </div>
+      ${u.n?`<div class="sotto" style="font-size:12px;margin-top:8px">Usato in <b>${u.n}</b>
+        ${u.n===1?'movimento':'movimenti'}: rinominandolo vengono aggiornati anche quelli.</div>`:''}
+    </td></tr>
+    <tr class="edit-2"><td colspan="6"><div class="ed-azioni">
+      ${i===null?'':`<button class="bt pericolo" style="margin-right:auto" onclick="eliminaSogg(${i})">Elimina</button>`}
+      <button class="bt" onclick="chiudiSogg()">Annulla · Esc</button>
+      <button class="bt primario" onclick="${i===null?'salvaNuovoSogg()':'salvaSogg('+i+')'}">
+        ${i===null?'Inserisci':'Salva'} · Invio</button>
+    </div></td></tr>`;
+}
+window.apriSogg=i=>{ nuovoSoggetto=false; editSogg=i; disegnaSoggetti();
+  setTimeout(()=>{const e=$('sg-nome');if(e){e.focus();e.select();}},30); };
+window.nuovoSogg=()=>{ editSogg=null; nuovoSoggetto=true; disegnaSoggetti();
+  setTimeout(()=>{const e=$('sg-nome');if(e)e.focus();},30); };
+window.chiudiSogg=()=>{ editSogg=null; nuovoSoggetto=false; disegnaSoggetti(); };
+window.salvaSogg=async i=>{
+  const nome=$('sg-nome').value.trim(), tipo=$('sg-tipo').value.trim(), val=$('sg-val').value||'EUR';
+  if(!nome){alert('Il nome non puo essere vuoto.');return;}
+  const vecchio=nomi[i].name;
+  if(nome!==vecchio&&nomi.some((x,j)=>j!==i&&x.name.toLowerCase()===nome.toLowerCase())){
+    alert('Esiste gia un soggetto con questo nome.');return;
+  }
+  let toccati=0;
+  if(nome!==vecchio){
+    rows.forEach(r=>{
+      if(r.from===vecchio){r.from=nome;r.valuta=val;toccati++;}
+      if(r.to===vecchio){r.to=nome;if(r.isExchange)r.valutaTo=val;toccati++;}
+    });
+  }
+  nomi[i]={...nomi[i],name:nome,tipo,valuta:val};
+  editSogg=null; disegnaSoggetti(); preparaFiltri(); disegna();
+  avviso(toccati?`Salvato, ${toccati} riferimenti aggiornati`:'Salvato','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+window.salvaNuovoSogg=async()=>{
+  const nome=$('sg-nome').value.trim(), tipo=$('sg-tipo').value.trim(), val=$('sg-val').value||'EUR';
+  if(!nome){alert('Il nome non puo essere vuoto.');return;}
+  if(nomi.some(x=>x.name.toLowerCase()===nome.toLowerCase())){alert('Esiste gia un soggetto con questo nome.');return;}
+  nomi.push({name:nome,tipo,valuta:val});
+  nuovoSoggetto=false; disegnaSoggetti(); preparaFiltri();
+  avviso('Soggetto inserito','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+window.eliminaSogg=async i=>{
+  const n=nomi[i], u=usoSogg(n.name);
+  if(u.n){
+    alert(`"${n.name}" e usato in ${u.n} ${u.n===1?'movimento':'movimenti'} e non si puo eliminare.\n\n`+
+      'Rinominalo, oppure cambia i movimenti che lo usano e riprova.');
+    return;
+  }
+  if(!confirm(`Eliminare il soggetto "${n.name}"?`))return;
+  nomi.splice(i,1); editSogg=null; disegnaSoggetti(); preparaFiltri();
+  avviso('Soggetto eliminato','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+
+/* ══════════════ anagrafiche: categorie ══════════════ */
+function usoCat(liv,v){
+  if(liv===1)return rows.filter(r=>r.c1===v).length;
+  if(liv===2)return rows.filter(r=>r.c1===selC1&&r.c2===v).length;
+  return rows.filter(r=>r.c1===selC1&&r.c2===selC2&&r.c3===v).length;
+}
+function vociHtml(liv,lista,sel){
+  if(!lista.length)return '<div class="spento">Nessuna voce.</div>';
+  return lista.slice().sort((a,b)=>a.localeCompare(b,'it')).map(v=>{
+    const u=usoCat(liv,v);
+    return `<div class="voce${v===sel?' sel':''}" onclick="scegliCat(${liv},'${esc(v).replace(/'/g,"\\'")}')">
+      <span class="nm c${liv}">${esc(v)}</span>
+      <span class="cnt">${u||''}</span>
+      <span class="az">
+        <button title="Rinomina" onclick="event.stopPropagation();rinominaCat(${liv},'${esc(v).replace(/'/g,"\\'")}')">&#9998;</button>
+        <button class="x" title="Elimina" onclick="event.stopPropagation();eliminaCat(${liv},'${esc(v).replace(/'/g,"\\'")}')">&times;</button>
+      </span></div>`;
+  }).join('');
+}
+window.disegnaCategorie=()=>{
+  $('listaC1').innerHTML=vociHtml(1,c1,selC1);
+  $('ctxC1').textContent=selC1?'di '+selC1:'';
+  $('ctxC2').textContent=selC2?'di '+selC2:'';
+  if(selC1){
+    $('listaC2').innerHTML=vociHtml(2,c2Map[selC1]||[],selC2);
+    $('aggC2').style.display='flex';
+  }else{
+    $('listaC2').innerHTML='<div class="spento">Scegli prima un gruppo.</div>';
+    $('aggC2').style.display='none';
+  }
+  if(selC1&&selC2){
+    $('listaC3').innerHTML=vociHtml(3,c3Map[c3k(selC1,selC2)]||[],'');
+    $('aggC3').style.display='flex';
+  }else{
+    $('listaC3').innerHTML='<div class="spento">Scegli prima una categoria.</div>';
+    $('aggC3').style.display='none';
+  }
+};
+window.scegliCat=(liv,v)=>{
+  if(liv===1){ selC1=(selC1===v?'':v); selC2=''; }
+  else if(liv===2){ selC2=(selC2===v?'':v); }
+  disegnaCategorie();
+};
+window.aggiungiCat=async liv=>{
+  const campo=$(liv===1?'nuovoC1':liv===2?'nuovoC2':'nuovoC3');
+  const v=campo.value.trim(); if(!v)return;
+  if(liv===1){
+    if(c1.some(x=>x.toLowerCase()===v.toLowerCase())){alert('Gruppo gia presente.');return;}
+    c1.push(v);
+  }else if(liv===2){
+    c2Map[selC1]=c2Map[selC1]||[];
+    if(c2Map[selC1].some(x=>x.toLowerCase()===v.toLowerCase())){alert('Categoria gia presente.');return;}
+    c2Map[selC1].push(v);
+  }else{
+    const k=c3k(selC1,selC2); c3Map[k]=c3Map[k]||[];
+    if(c3Map[k].some(x=>x.toLowerCase()===v.toLowerCase())){alert('Voce gia presente.');return;}
+    c3Map[k].push(v);
+  }
+  campo.value=''; disegnaCategorie(); preparaFiltri();
+  avviso('Aggiunta','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+window.rinominaCat=async(liv,v)=>{
+  const u=usoCat(liv,v);
+  const nuovo=(prompt(`Nuovo nome per "${v}"`+(u?` (aggiorna anche ${u} ${u===1?'movimento':'movimenti'})`:''),v)||'').trim();
+  if(!nuovo||nuovo===v)return;
+  if(liv===1){
+    if(c1.some(x=>x.toLowerCase()===nuovo.toLowerCase())){alert('Esiste gia un gruppo con questo nome.');return;}
+    c1[c1.indexOf(v)]=nuovo;
+    if(c2Map[v]){ c2Map[nuovo]=c2Map[v]; delete c2Map[v]; }
+    Object.keys(c3Map).forEach(k=>{ if(k.startsWith(v+'|')){
+      c3Map[nuovo+'|'+k.slice(v.length+1)]=c3Map[k]; delete c3Map[k]; }});
+    rows.forEach(r=>{ if(r.c1===v)r.c1=nuovo; });
+    if(selC1===v)selC1=nuovo;
+  }else if(liv===2){
+    const l=c2Map[selC1]||[];
+    if(l.some(x=>x.toLowerCase()===nuovo.toLowerCase())){alert('Esiste gia una categoria con questo nome.');return;}
+    l[l.indexOf(v)]=nuovo;
+    const vecchia=c3k(selC1,v), nuova=c3k(selC1,nuovo);
+    if(c3Map[vecchia]){ c3Map[nuova]=c3Map[vecchia]; delete c3Map[vecchia]; }
+    rows.forEach(r=>{ if(r.c1===selC1&&r.c2===v)r.c2=nuovo; });
+    if(selC2===v)selC2=nuovo;
+  }else{
+    const k=c3k(selC1,selC2), l=c3Map[k]||[];
+    if(l.some(x=>x.toLowerCase()===nuovo.toLowerCase())){alert('Esiste gia una voce con questo nome.');return;}
+    l[l.indexOf(v)]=nuovo;
+    rows.forEach(r=>{ if(r.c1===selC1&&r.c2===selC2&&r.c3===v)r.c3=nuovo; });
+  }
+  disegnaCategorie(); preparaFiltri(); disegna();
+  avviso(u?`Rinominata, ${u} ${u===1?'movimento aggiornato':'movimenti aggiornati'}`:'Rinominata','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+window.eliminaCat=async(liv,v)=>{
+  const u=usoCat(liv,v);
+  if(u){
+    alert(`"${v}" e usata in ${u} ${u===1?'movimento':'movimenti'} e non si puo eliminare.\n\n`+
+      'Rinominala, oppure cambia i movimenti che la usano e riprova.');
+    return;
+  }
+  const dentro = liv===1 ? (c2Map[v]||[]).length : liv===2 ? (c3Map[c3k(selC1,v)]||[]).length : 0;
+  if(!confirm(`Eliminare "${v}"?`+(dentro?`\n\nContiene ${dentro} voci, che spariranno con lei.`:'')))return;
+  if(liv===1){
+    c1=c1.filter(x=>x!==v); delete c2Map[v];
+    Object.keys(c3Map).forEach(k=>{ if(k.startsWith(v+'|'))delete c3Map[k]; });
+    if(selC1===v){selC1='';selC2='';}
+  }else if(liv===2){
+    c2Map[selC1]=(c2Map[selC1]||[]).filter(x=>x!==v);
+    delete c3Map[c3k(selC1,v)];
+    if(selC2===v)selC2='';
+  }else{
+    const k=c3k(selC1,selC2); c3Map[k]=(c3Map[k]||[]).filter(x=>x!==v);
+  }
+  disegnaCategorie(); preparaFiltri();
+  avviso('Eliminata','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+
 /* ══════════════ navigazione e visualizzazione ══════════════ */
 window.vai=id=>{
   document.querySelectorAll('.pagina').forEach(p=>p.classList.remove('on'));
   const el=$('pg-'+id); if(el)el.classList.add('on');
   document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===id));
+  if(id==='anagrafiche'){ disegnaSoggetti(); disegnaCategorie(); }
   window.scrollTo(0,0);
 };
 window.apriMenu=()=>$('swMenu').classList.toggle('on');
@@ -716,6 +1032,11 @@ window.tema=()=>{
 }catch(e){} })();
 
 document.addEventListener('keydown',e=>{
+  const inEd=e.target.classList&&e.target.classList.contains('ed');
+  if(nuovoSoggetto){ if(e.key==='Escape')window.chiudiSogg();
+    if(e.key==='Enter'&&inEd)window.salvaNuovoSogg(); return; }
+  if(editSogg!==null){ if(e.key==='Escape')window.chiudiSogg();
+    if(e.key==='Enter'&&inEd)window.salvaSogg(editSogg); return; }
   if(NUOVO){ if(e.key==='Escape')window.chiudiNuovo();
     if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('ed'))window.salvaNuovo(); return; }
   if(EDIT===null)return;
