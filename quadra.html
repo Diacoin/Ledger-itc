@@ -144,7 +144,7 @@ h2{font-size:26px;font-weight:600;letter-spacing:-.015em}
 table{width:100%;border-collapse:collapse;font-size:var(--tbl-fs)}
 th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--fg2);text-align:left;padding:9px 10px;white-space:nowrap;background:var(--surf2);
-  border-bottom:2px solid var(--bd2);position:sticky;top:72px;z-index:5}
+  border-bottom:2px solid var(--bd2)}
 th.ord{cursor:pointer;user-select:none}th.ord:hover{color:var(--acc)}
 td{padding:0 10px;height:var(--row-h);vertical-align:middle;border-bottom:1px solid var(--bd)}
 tbody tr:hover{background:var(--surf2)}
@@ -231,7 +231,7 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .agg .ed{flex:1}
 .spento{color:var(--fg3);font-size:12.5px;padding:14px 12px}
 @media(max-width:900px){.colonne{grid-template-columns:1fr}}
-@media(max-width:820px){.contenuto{padding:16px 14px 60px}th{top:0}}
+@media(max-width:820px){.contenuto{padding:16px 14px 60px}}
 </style>
 </head>
 <body>
@@ -309,7 +309,8 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
       <h2>Registro movimenti</h2>
       <div class="barra">
         <input type="search" id="q" placeholder="Cerca soggetto, descrizione, categoria…" oninput="disegna()">
-        <select id="fSogg" onchange="disegna()"></select>
+        <input type="search" id="fSogg" list="elencoSoggetti" placeholder="Soggetto (anche parziale)" oninput="disegna()">
+        <datalist id="elencoSoggetti"></datalist>
         <select id="fSeg" onchange="disegna()">
           <option value="">Entrate e uscite</option>
           <option value="entrata">Solo entrate</option>
@@ -428,6 +429,13 @@ function fmtImp(n,v){
   s[0]=s[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
   return (n<0?'-':'')+s[0]+','+s[1]+(v&&v!=='EUR'?' '+v:'');
 }
+function norm(t){return String(t==null?'':t).normalize('NFD')
+  .replace(/[̀-ͯ]/g,'').toLowerCase();}
+function contiene(testo,cerca){
+  const t=norm(testo), q=norm(cerca).trim();
+  if(!q)return true;
+  return q.split(/\s+/).every(p=>t.includes(p));   // tutte le parti, in qualsiasi ordine
+}
 function tipoDi(n){const x=nomi.find(y=>y.name===n);return x?(x.tipo||''):'';}
 function valutaDi(n){const x=nomi.find(y=>y.name===n);return x?(x.valuta||'EUR'):'EUR';}
 function isBanca(n){return /bank/i.test(tipoDi(n));}
@@ -506,8 +514,7 @@ async function salva(){
 /* ══════════════ filtri ══════════════ */
 function preparaFiltri(){
   const ns=[...nomi].map(n=>n.name).sort((a,b)=>a.localeCompare(b,'it'));
-  $('fSogg').innerHTML='<option value="">Tutti i soggetti</option>'+
-    ns.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  $('elencoSoggetti').innerHTML=ns.map(n=>`<option value="${esc(n)}">`).join('');
   const tipi=[...new Set(nomi.map(n=>(n.tipo||'').trim()).filter(Boolean))].sort();
   $('fTipo').innerHTML='<option value="">Tutti i tipi</option>'+
     tipi.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
@@ -540,13 +547,13 @@ window.azzeraFiltri=()=>{
   $('fGiro').checked=false; catFiltro(1,true); disegna();
 };
 function filtrate(){
-  const q=($('q').value||'').toLowerCase().trim(),
+  const q=($('q').value||''),
         sg=$('fSogg').value, seg=$('fSeg').value, tp=$('fTipo').value, vl=$('fVal').value,
         k1=$('fC1').value, k2=$('fC2').value, k3=$('fC3').value,
         da=$('fDa').value, a=$('fA').value, ng=$('fGiro').checked;
   return rows.filter(r=>{
     if(ng&&isGiro(r))return false;
-    if(sg&&r.from!==sg&&r.to!==sg)return false;
+    if(sg&&!contiene(r.from,sg)&&!contiene(r.to,sg))return false;
     if(tp&&tipoDi(r.from)!==tp&&tipoDi(r.to)!==tp)return false;
     if(vl&&(r.valuta||'EUR')!==vl)return false;
     if(k1&&r.c1!==k1)return false;
@@ -557,8 +564,9 @@ function filtrate(){
     if(seg==='entrata'&&segnoDi(r)!=='entrata')return false;
     if(seg==='uscita'&&segnoDi(r)==='entrata')return false;
     if(q){
-      const t=(r.from+' '+r.to+' '+(r.desc||'')+' '+(r.c1||'')+' '+(r.c2||'')+' '+(r.c3||'')).toLowerCase();
-      if(!t.includes(q))return false;
+      const t=r.from+' '+r.to+' '+(r.desc||'')+' '+(r.c1||'')+' '+(r.c2||'')+' '+(r.c3||'')+
+              ' '+tipoDi(r.from)+' '+tipoDi(r.to);
+      if(!contiene(t,q))return false;
     }
     return true;
   });
@@ -780,7 +788,7 @@ window.sottoAna=q=>{
   sogg?disegnaSoggetti():disegnaCategorie();
 };
 window.disegnaSoggetti=()=>{
-  const q=($('qSogg').value||'').toLowerCase().trim(),
+  const q=($('qSogg').value||''),
         tp=$('fSoggTipo').value, soloSenza=$('fSenzaTipo').checked;
   const tipi=[...new Set(nomi.map(n=>(n.tipo||'').trim()).filter(Boolean))].sort();
   if($('fSoggTipo').options.length!==tipi.length+1)
@@ -796,7 +804,7 @@ window.disegnaSoggetti=()=>{
      non vengono riconosciuti nei report.</div>`:'';
 
   const lista=nomi.map((n,i)=>({...n,i}))
-    .filter(n=>(!q||n.name.toLowerCase().includes(q))&&
+    .filter(n=>(!q||contiene(n.name+' '+(n.tipo||''),q))&&
                (!tp||(n.tipo||'')===tp)&&(!soloSenza||!(n.tipo||'').trim()))
     .sort((a,b)=>a.name.localeCompare(b.name,'it'));
 
