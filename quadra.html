@@ -203,6 +203,10 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
   color:var(--fg3);font-size:13px;margin-top:20px}
 
 /* ── report ── */
+.rep-nome{color:var(--fg);font-weight:600}
+.rep-tipo{color:var(--acc);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;border:1px solid var(--acc);border-radius:2px;padding:1px 6px;margin-left:7px}
+.rep-auto{color:var(--fg3);font-size:10.5px;letter-spacing:.06em;margin-left:8px}
 #rSalvati{min-width:210px;font-weight:600}
 #rSalvati:disabled{color:var(--fg3);font-weight:400}
 #btElimina{padding:7px 11px;line-height:1}
@@ -914,10 +918,16 @@ function meta(p,n,esclusi,extra){
   const periodo=(p.da||p.a)?`${p.da?fmtData(p.da):'inizio'} → ${p.a?fmtData(p.a):'oggi'}`:'tutto lo storico';
   const cat=[p.c1,p.c2,p.c3].filter(Boolean).join(' › ');
   const st=senzaTipo(rows);
-  $('rMeta').innerHTML=`<b>${n}</b> movimenti · ${periodo}${cat?' · '+esc(cat):''}`+
+  // il report si esegue da solo: qui si dichiara sempre cosa si sta guardando
+  const nomeAperto = (reportAttivo!==null && savedReports[reportAttivo]) ? savedReports[reportAttivo].name : '';
+  const titolo = nomeAperto
+    ? `<b class="rep-nome">${esc(nomeAperto)}</b><span class="rep-tipo">${esc(NOMI_REPORT[p.tipo]||p.tipo)}</span>`
+    : `<b class="rep-nome">${esc(NOMI_REPORT[p.tipo]||p.tipo)}</b>`;
+  $('rMeta').innerHTML=titolo+` · <b>${n}</b> movimenti · ${periodo}`+
+    (cat?' · '+esc(cat):'')+
     (esclusi?` · ${esclusi} trasferimenti esclusi`:'')+(extra?' · '+extra:'')+
-    (st.length&&p.noGiro?` · <span class="att">attenzione: ${st.length} soggetti senza tipo,
-      i loro trasferimenti non sono riconoscibili</span>`:'');
+    ` <span class="rep-auto">si ricalcola a ogni modifica dei filtri</span>`+
+    (st.length&&p.noGiro?`<br><span class="att">attenzione: ${st.length} soggetti senza tipo, i loro trasferimenti non sono riconoscibili</span>`:'');
 }
 function cellaDrill(v,cur,dir,f){
   if(!v)return '<td class="num"></td>';
