@@ -203,14 +203,9 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
   color:var(--fg3);font-size:13px;margin-top:20px}
 
 /* ── report ── */
-.salvati{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
-.salvati .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);
-  border-radius:3px;padding:5px 9px;font-size:12px;cursor:pointer;background:var(--surf)}
-.salvati .chip:hover{border-color:var(--acc)}
-.salvati .chip.on{border-color:var(--acc);color:var(--acc);background:var(--surf2)}
-.salvati .chip small{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--fg3)}
-.salvati .chip button{background:none;border:0;color:var(--fg3);cursor:pointer;font-size:13px;padding:0 2px}
-.salvati .chip button:hover{color:var(--ko)}
+#rSalvati{min-width:210px;font-weight:600}
+#rSalvati:disabled{color:var(--fg3);font-weight:400}
+#btElimina{padding:7px 11px;line-height:1}
 .rmeta{font-family:var(--mono);font-size:11.5px;color:var(--fg2);margin-top:14px}
 .rmeta b{color:var(--fg)}
 .rmeta .att{color:var(--acc2);cursor:default}
@@ -425,8 +420,11 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
       <div class="costruzione">Blocco 3 &mdash; import degli estratti, backup e ripristino.</div></div>
     <div class="pagina" id="pg-report">
       <h2>Report</h2>
-      <div id="salvati" class="salvati"></div>
       <div class="barra">
+        <select id="rSalvati" onchange="apriReport(this.value)" title="Report salvati"></select>
+        <button class="bt" id="btElimina" onclick="eliminaReport()" style="display:none"
+          title="Elimina il report aperto">&times;</button>
+        <span class="sep"></span>
         <select id="rTipo" onchange="cambiaTipoReport()">
           <option value="categoria">Per categoria</option>
           <option value="mensile">Subtotali per mese</option>
@@ -1177,14 +1175,31 @@ function repFx(p,d){
   return h+'</tbody>';
 }
 
-/* ── report salvati ── */
+/* ── report salvati ──
+   In una tendina raggruppata per tipo: a trenta report una fila di pastiglie
+   diventerebbe un muro, una tendina regge qualsiasi numero. */
+const NOMI_REPORT={categoria:'Per categoria',mensile:'Subtotali per mese',periodo:'Per periodo',
+  estratto:'Estratto conto',tipo:'Per tipo',saldo:'Saldo dei soggetti',fx:'Cambio valuta'};
 function disegnaSalvati(){
-  const el=$('salvati'); if(!el)return;
-  el.innerHTML=savedReports.length? savedReports.map((r,i)=>
-    `<span class="chip${reportAttivo===i?' on':''}" onclick="apriReport(${i})">
-      ${esc(r.name)} <small>${esc(r.type)}</small>
-      <button title="Elimina" onclick="event.stopPropagation();eliminaReport(${i})">&times;</button></span>`).join('')
-    : '<span class="doc-vuoto">Nessun report salvato: imposta i filtri, dai un nome e premi Salva.</span>';
+  const el=$('rSalvati'); if(!el)return;
+  const n=savedReports.length;
+  if(!n){
+    el.innerHTML='<option value="">Nessun report salvato</option>';
+    el.disabled=true; $('btElimina').style.display='none'; return;
+  }
+  el.disabled=false;
+  const perTipo={};
+  savedReports.forEach((r,i)=>{ const t=r.type||'categoria'; (perTipo[t]=perTipo[t]||[]).push({r,i}); });
+  let h=`<option value="">Report salvati (${n})</option>`;
+  Object.keys(perTipo).sort((a,b)=>(NOMI_REPORT[a]||a).localeCompare(NOMI_REPORT[b]||b,'it')).forEach(t=>{
+    h+=`<optgroup label="${esc(NOMI_REPORT[t]||t)}">`+
+      perTipo[t].sort((a,b)=>a.r.name.localeCompare(b.r.name,'it'))
+        .map(({r,i})=>`<option value="${i}"${reportAttivo===i?' selected':''}>${esc(r.name)}</option>`).join('')+
+      '</optgroup>';
+  });
+  el.innerHTML=h;
+  el.value=reportAttivo===null?'':String(reportAttivo);
+  $('btElimina').style.display=reportAttivo===null?'none':'';
 }
 window.salvaReport=async()=>{
   const nome=$('rNome').value.trim();
@@ -1197,7 +1212,9 @@ window.salvaReport=async()=>{
   try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
 };
 window.apriReport=i=>{
-  const r=savedReports[i], p=r.params||{};
+  if(i===''||i===null||i===undefined)return;
+  i=+i; const r=savedReports[i]; if(!r)return;
+  const p=r.params||{};
   reportAttivo=i;
   $('rTipo').value=r.type||p.tipo||'categoria';
   $('rNome').value=r.name||'';
@@ -1217,9 +1234,11 @@ window.apriReport=i=>{
   $('rGiro').checked=p.noGiro!==false;
   campiPerTipo(); disegnaSalvati(); eseguiReport();
 };
-window.eliminaReport=async i=>{
+window.eliminaReport=async()=>{
+  const i=reportAttivo;
+  if(i===null||!savedReports[i])return;
   if(!confirm(`Eliminare il report "${savedReports[i].name}"?`))return;
-  savedReports.splice(i,1); if(reportAttivo===i)reportAttivo=null;
+  savedReports.splice(i,1); reportAttivo=null; $('rNome').value='';
   disegnaSalvati(); avviso('Report eliminato','ok');
   try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
 };
