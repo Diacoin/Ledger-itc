@@ -342,6 +342,52 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .azioni-ut{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
 .bt.rischio{border-color:var(--acc2);color:var(--acc2)}
 .bt.rischio:hover{background:var(--acc2);color:#1a1206}
+
+/* ── utilita': anteprima degli estratti ── */
+.campi-riga{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:13px}
+.campi-riga label{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--fg3);display:block}
+.campi-riga select{display:block;margin-top:5px;min-width:190px;background:var(--surf2);
+  border:1px solid var(--bd2);color:var(--fg);font-family:var(--sans);font-size:12.5px;
+  letter-spacing:0;text-transform:none;padding:7px 9px;border-radius:3px}
+#anteprimaArea{margin-top:22px}
+.import-msg{border:1px solid var(--bd2);border-left-width:2px;border-radius:3px;
+  background:var(--surf2);color:var(--fg2);font-size:12.5px;line-height:1.55;
+  padding:11px 14px;margin-top:13px}
+.import-msg strong{color:var(--fg)}
+.import-msg.err{border-left-color:var(--ko);color:var(--ko)}
+.import-msg.err strong{color:var(--ko)}
+.import-msg.ok{border-left-color:var(--ok)}
+.import-summary{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 10px;
+  font-family:var(--mono);font-size:11.5px;color:var(--fg2)}
+.import-summary strong{color:var(--fg)}
+.import-table-wrap{overflow:auto;max-height:62vh;border:1px solid var(--bd);border-radius:3px}
+.import-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.import-table th{position:sticky;top:0;z-index:3;background:var(--surf2);text-align:left;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--fg3);font-weight:500;padding:9px 8px;border-bottom:1px solid var(--bd2);white-space:nowrap}
+.import-table td{padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top;color:var(--fg2)}
+.import-table td.td-num{text-align:right;font-family:var(--mono);color:var(--fg);white-space:nowrap}
+.import-table tr.imp-dup{background:rgba(255,107,94,.10)}
+.import-table tr.imp-maybe{background:rgba(232,163,61,.10)}
+.import-table tr.imp-err{background:rgba(255,107,94,.16)}
+.imp-inp,.imp-sel{width:100%;min-width:118px;background:var(--surf);border:1px solid var(--bd);
+  color:var(--fg);font-family:var(--sans);font-size:12px;padding:5px 7px;border-radius:3px}
+.imp-inp-num{font-family:var(--mono);text-align:right;min-width:92px}
+.imp-sel-tipo{min-width:104px}
+.imp-cat-cell{display:flex;flex-direction:column;gap:4px;min-width:150px}
+.imp-cat-cell .imp-sel{border-left:2px solid var(--cat1)}
+.imp-cat-cell .imp-sel:nth-child(2){border-left-color:var(--cat2)}
+.imp-cat-cell .imp-sel:nth-child(3){border-left-color:var(--cat3)}
+/* i comandi generati dal motore portano i nomi di classe dell'app di origine */
+.btn-backup,.btn-sm{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;padding:8px 13px;border-radius:3px;cursor:pointer;
+  border:1px solid var(--bd2);background:none;color:var(--fg2)}
+.btn-backup:hover,.btn-sm:hover{border-color:var(--acc);color:var(--acc)}
+.btn-backup.save{border-color:var(--acc);color:var(--acc)}
+.btn-backup.convert{border-color:var(--ok);color:var(--ok)}
+.btn-backup.restore,.btn-backup.danger{border-color:var(--acc2);color:var(--acc2)}
+.backup-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
 </style>
 </head>
 <body>
@@ -529,8 +575,40 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
           <div id="utRipristino"></div>
         </section>
       </div>
-      <div class="costruzione">Conversione degli estratti conto PDF, import da Excel e archivio
-        dei documenti: in arrivo nei prossimi blocchi.</div>
+      <div class="griglia-ut">
+        <section class="riquadro">
+          <h3>Estratto conto PDF</h3>
+          <p>Il PDF viene letto qui dentro, nel browser: non esce dal tuo computer.
+             Le categorie vengono dedotte dai movimenti gi&agrave; registrati, e prima di
+             salvare vedi l'anteprima riga per riga.</p>
+          <div class="campi-riga">
+            <label>Formato dell'estratto
+              <select id="pdfBankSel">
+                <option value="auto">Riconoscilo da solo</option>
+                <option value="icard">iCard</option>
+                <option value="redotpay">RedotPay</option>
+              </select></label>
+            <label>Conto su cui registrare
+              <select id="pdfContoSel" onchange="pdfCambiaConto(this.value)"></select></label>
+          </div>
+          <button class="bt primario" onclick="scegliPdf()">Scegli il PDF</button>
+          <input type="file" id="pdfFileInput" accept=".pdf,application/pdf"
+                 style="display:none" onchange="onPdfFileSelected(this)">
+          <div id="pdfArea"></div>
+        </section>
+        <section class="riquadro">
+          <h3>Movimenti da Excel o CSV</h3>
+          <p>Carica il file revisionato (foglio <b>Movimenti</b>). Vale la stessa anteprima
+             del PDF: duplicati segnalati, categorie modificabili, righe escludibili una
+             per una prima di scrivere nel registro.</p>
+          <button class="bt" onclick="scegliExcel()">Scegli il file</button>
+          <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv"
+                 style="display:none" onchange="onImportFileSelected(this)">
+          <div id="importArea"></div>
+        </section>
+      </div>
+      <div id="anteprimaArea"></div>
+
     </div>
     <div class="pagina" id="pg-report">
       <h2>Report</h2>
@@ -1866,6 +1944,7 @@ window.scaricaBackup=()=>{
   avviso('Backup scaricato','ok');
 };
 window.aggiornaUtilita=()=>{
+  syncPdfConti();
   const c=$('utConta'); if(!c)return;
   const date=rows.map(r=>r.data).filter(Boolean).sort();
   const peso=Math.round(JSON.stringify(insieme()).length/1024);
@@ -1924,6 +2003,672 @@ window.confermaRipristino=async()=>{
     '</b> movimenti. La copia dei dati precedenti e nella cartella dei download.</div>';
   avviso('Ripristino completato','ok');
 };
+
+/* ══════════════ utilita': estratti PDF e import da Excel ══════════════
+   Il motore e' quello collaudato di IlTuoCaveau, trapiantato senza riscritture.
+   Questi adattatori traducono i nomi di contorno dell'app di origine in quelli
+   di QUADRA: cosi' il codice sotto resta identico all'originale. */
+const fmtDate=fmtData;
+const getNomeValuta=valutaDi;
+function fmtAmt(a,c){return fmtImp(a,c);}
+function render(){disegna();}
+function rebuildDD(){preparaFiltri();}
+function syncSelects(){}
+function syncEntitySel(){}
+function syncTipoSel(){}
+async function saveToFirebase(){ await salva(); }
+window.scegliPdf=()=>{const i=$('pdfFileInput');if(i)i.click();};
+window.scegliExcel=()=>{const i=$('importFileInput');if(i)i.click();};
+
+const PDFJS_CDN='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.min.mjs';
+const PDFJS_WORKER='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.worker.min.mjs';
+const MESI_EN={jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+let pdfRighe=[];
+
+function syncPdfConti(){
+  const sel=document.getElementById('pdfContoSel');if(!sel)return;
+  const banks=nomi.filter(n=>(n.tipo||'').toLowerCase().includes('bank')).map(n=>n.name).sort();
+  const lista=banks.length?banks:nomi.map(n=>n.name).sort();
+  sel.innerHTML=lista.map(n=>`<option value="${n}" ${/icard/i.test(n)&&n.indexOf('£')<0?'selected':''}>${n}</option>`).join('');
+}
+
+// Ricostruisce le righe di testo dal PDF raggruppando per coordinata verticale
+async function pdfToLines(file){
+  const pdfjs=await import(PDFJS_CDN);
+  pdfjs.GlobalWorkerOptions.workerSrc=PDFJS_WORKER;
+  const doc=await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  const lines=[];
+  for(let p=1;p<=doc.numPages;p++){
+    const page=await doc.getPage(p),tc=await page.getTextContent(),byY={};
+    tc.items.forEach(it=>{
+      if(!it.str||!it.str.trim())return;
+      const y=Math.round(it.transform[5]),x=it.transform[4];
+      const k=Object.keys(byY).find(v=>Math.abs(v-y)<=2)||y;
+      (byY[k]=byY[k]||[]).push({x,s:it.str});
+    });
+    Object.keys(byY).sort((a,b)=>b-a).forEach(y=>{
+      lines.push(byY[y].sort((a,b)=>a.x-b.x).map(i=>i.s).join(' ').replace(/\s+/g,' ').trim());
+    });
+  }
+  return lines;
+}
+
+// Le colonne del PDF possono toccarsi: "1.00001100.00" = tasso 1.0000 + importo 1100.00
+function pdfFixCols(s){return s.replace(/(\d\.\d{4})(?=\d)/g,'$1 ');}
+
+// Il tipo operazione può andare a capo nella cella ("Outgoing bank" / "trans"):
+// si cerca su tutto il blocco e vince la corrispondenza che compare per prima,
+// così "Fee for funds disbursement" resta una Fee e non un Funds Disbursement.
+// I gap ammessi ([\s\S]{0,80}) servono perché fra le due parole può finirci
+// il resto della riga: "… Mobile Funds SORAYA MANFERDINI … 18:32 Disbursement".
+const PDF_TIPI=[[/online[\s\S]{0,20}?payment/i,'Online payment'],[/card[\s\S]{0,20}?payment/i,'Card payment'],
+  [/\bfee\b/i,'Fee'],[/funds[\s\S]{0,80}?disbursement/i,'Funds Disbursement'],
+  [/outgoing[\s\S]{0,60}?bank/i,'Outgoing bank transfer'],[/received[\s\S]{0,60}?bank/i,'Received bank transfer'],
+  [/incoming[\s\S]{0,60}?bank/i,'Incoming bank transfer'],[/atm[\s\S]{0,20}?withdrawal/i,'ATM withdrawal'],
+  [/currency[\s\S]{0,20}?exchange/i,'Currency exchange'],[/\brefund\b/i,'Refund']];
+function pdfTipo(t){
+  let best=null;
+  for(const[re,label]of PDF_TIPI){const m=re.exec(t);if(m&&(!best||m.index<best.i))best={i:m.index,len:m[0].length,label};}
+  return best;
+}
+
+// Parser iCard: righe che iniziano con "GG Mmm AAAA", importi in coda (Debit, Credit)
+function pdfParseICard(lines){
+  const blocchi=[];let cur=null;
+  const skip=/^(Statement|Date Ordered|Account |Name:|Address:|IBAN|Opening balance|Closing balance|© ?\d{4}|\d+ ?\/ ?\d+$|Fee -|Funds Disbursement -|Online payment -|Outgoing bank transfer -|Received bank transfer )/i;
+  for(const raw of lines){
+    const l=pdfFixCols(raw);
+    const m=l.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})\b/);
+    if(m&&MESI_EN[m[2].toLowerCase()]){
+      if(cur)blocchi.push(cur);
+      cur={data:`${m[3]}-${MESI_EN[m[2].toLowerCase()]}-${m[1].padStart(2,'0')}`,prima:l,resto:''};
+    }else if(cur&&!skip.test(l))cur.resto+=' '+l;
+  }
+  if(cur)blocchi.push(cur);
+  return blocchi.map(b=>{
+    // gli importi (Debit, Credit) stanno in coda alla prima riga
+    const imp=[...b.prima.matchAll(/(\d[\d,]*\.\d{2})\s*EUR/g)].map(x=>impAmount(x[1]));
+    const debit=imp.length>=2?imp[imp.length-2]:NaN,credit=imp.length>=2?imp[imp.length-1]:NaN;
+    // via data e canale PRIMA di cercare il tipo: "Card" è il canale, non l'operazione
+    const blocco=b.prima+' '+b.resto;
+    let d=blocco.replace(/^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}\s*/,'').replace(/^(Card|System|Mobile|Web|ATM|POS)\b/i,'');
+    const t=pdfTipo(d),tipo=t?t.label:'';
+    if(t)t.label.split(/\s+/).forEach(w=>{d=d.replace(new RegExp('\\b'+w+'\\b','ig'),' ');});
+    d=d.replace(/\btrans\b/ig,' ')                       // coda di "bank trans" andata a capo
+       .replace(/\d\.\d{4}/g,' ')                        // tasso di cambio
+       .replace(/-?[\d,]+\.\d{2}\s*EUR/g,' ')            // importi
+       .replace(/\b[A-Z]{2}\d{2}[A-Z0-9]{10,}\b/g,' ')   // IBAN / coordinate
+       .replace(/\*\d{3,4}/g,' ')                        // maschera carta
+       .replace(/\b\d{1,2}:\d{2}\b/g,' ')                // orari
+       .replace(/\s+/g,' ').trim();
+    const parti=d.split(/\s*,\s*/).map(s=>s.trim()).filter(Boolean);
+    let controparte=parti[0]||'',causale=parti.slice(1).join(', ');
+    // le commissioni non hanno una controparte: sono della banca stessa
+    if(tipo==='Fee'){causale=('Fee '+d).replace(/\s+/g,' ').trim();controparte='iCard';}
+    return{data:b.data,tipo,controparte,causale,debit,credit,grezza:blocco.replace(/\s+/g,' ').trim()};
+  }).filter(r=>r.data&&(r.debit>0||r.credit>0));
+}
+
+// Parser RedotPay ("CONSOLIDATED MONTHLY STATEMENT" di Red Dot Technology):
+// una riga per movimento, "Mmm GG, AAAA  Descrizione  -12,34 VAL".
+// Il segno meno e' l'uscita; gli importi in valuta diversa da quella del conto
+// restano fuori perche' l'estratto non riporta il controvalore addebitato.
+function pdfParseRedotPay(lines){
+  const re=/^([A-Za-z]{3})\s+(\d{1,2}),\s*(\d{4})\s+(.+?)\s+(-?[\d,]+\.\d{2})\s+([A-Z]{3})$/;
+  const out=[];
+  for(const raw of lines){
+    const l=raw.replace(/\s+/g,' ').trim(),m=l.match(re);
+    if(!m)continue;
+    const mese=MESI_EN[m[1].toLowerCase()];if(!mese)continue;
+    const uscita=m[5].trim().startsWith('-'),imp=impAmount(m[5]);
+    if(!imp)continue;
+    out.push({data:`${m[3]}-${mese}-${m[2].padStart(2,'0')}`,tipo:'Card payment',
+      controparte:m[4].trim(),causale:m[4].trim(),
+      debit:uscita?imp:NaN,credit:uscita?NaN:imp,valuta:m[6],grezza:l});
+  }
+  return out;
+}
+
+const PDF_PARSER={icard:pdfParseICard,redotpay:pdfParseRedotPay};
+
+// Aggancia il testo del PDF a un'entità esistente; a parità, vince quella più usata
+function pdfMatchEntita(testo){
+  if(!testo)return null;
+  const t=impNorm(testo);if(!t)return null;
+  const uso={};rows.forEach(r=>{uso[r.from]=(uso[r.from]||0)+1;uso[r.to]=(uso[r.to]||0)+1;});
+  const cand=nomi.filter(n=>{const e=impNorm(n.name);return e&&(e===t||t.includes(e)||e.includes(t));});
+  if(!cand.length)return null;
+  cand.sort((a,b)=>{
+    const ea=impNorm(a.name)===t?1:0,eb=impNorm(b.name)===t?1:0;
+    if(ea!==eb)return eb-ea;
+    return (uso[b.name]||0)-(uso[a.name]||0);
+  });
+  return cand[0].name;
+}
+// Classificazione più ricorrente per quella controparte
+function pdfCategorieStoriche(entita){
+  if(!entita)return null;
+  const conta={};
+  rows.forEach(r=>{
+    if(r.from!==entita&&r.to!==entita)return;
+    const k=[r.c1||'-',r.c2||'-',r.c3||'-'].join('|');conta[k]=(conta[k]||0)+1;
+  });
+  const tot=Object.values(conta).reduce((s,v)=>s+v,0);if(!tot)return null;
+  const best=Object.entries(conta).sort((a,b)=>b[1]-a[1])[0];
+  const[c1v,c2v,c3v]=best[0].split('|');
+  return{c1:c1v,c2:c2v,c3:c3v,n:best[1],tot,sicura:best[1]/tot>=0.6};
+}
+
+async function onPdfFileSelected(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;
+  const area=document.getElementById('pdfArea');
+  area.innerHTML='<div class="import-msg">Lettura di '+f.name+'…</div>';
+  try{
+    const lines=await pdfToLines(f);
+    const testo=lines.join(' ');
+    let banca=document.getElementById('pdfBankSel').value;
+    if(banca==='auto'){
+      if(/redotpay|red dot technology/i.test(testo))banca='redotpay';
+      else if(/icard/i.test(testo))banca='icard';
+      else banca='';
+    }
+    if(!PDF_PARSER[banca])throw new Error('Formato non riconosciuto. Sono supportati iCard e RedotPay: se questo estratto è di un\'altra banca mandamelo e aggiungo il formato (l\'alternativa è compilare a mano il file Excel di import).');
+    const conto=document.getElementById('pdfContoSel').value,valConto=getNomeValuta(conto)||'EUR';
+    pdfBancaRilevata=banca;pdfContoUsato=conto;
+    const grezze=PDF_PARSER[banca](lines);
+    if(!grezze.length)throw new Error('Nessun movimento riconosciuto nel PDF. Il layout potrebbe essere cambiato.');
+    pdfRighe=grezze.map(g=>{
+      const entita=pdfMatchEntita(g.controparte),cat=pdfCategorieStoriche(entita);
+      const uscita=g.debit>0,val=g.valuta||'EUR';
+      const r={data:g.data,from:uscita?conto:(entita||g.controparte||'?'),to:uscita?(entita||g.controparte||'?'):conto,
+        desc:(g.causale||g.controparte||g.tipo||'').slice(0,60),importo:uscita?g.debit:g.credit,valuta:val,
+        c1:cat?cat.c1:'-',c2:cat?cat.c2:'-',c3:cat?cat.c3:'-',tipoDa:'',tipoA:'',
+        nuova:!entita,sicura:!!(cat&&cat.sicura),storico:cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico',
+        raw:g.controparte,grezza:g.grezza,errore:''};
+      // spesa in valuta estera: l'estratto mostra l'importo originale, non quanto e'
+      // stato addebitato sul conto, quindi la riga non e' importabile cosi' com'e'
+      if(val!==valConto){r.valutaOrig=val;r.importoOrig=r.importo;r.descBase=r.desc;
+        r.errore=`importo in ${val}: scrivi il controvalore in ${valConto}`;}
+      r.dup=impDuplicate(r);
+      r.sel=r.dup.level!=='dup'&&!r.errore;
+      return r;
+    });
+    document.getElementById('pdfArea').innerHTML='';
+    renderPdfPreview(f.name,lines.length);
+  }catch(e){area.innerHTML=`<div class="import-msg err">${e.message||'PDF non leggibile'}</div>`;}
+}
+
+// ── Bozza dell'anteprima ──────────────────────────────
+// Il lavoro di revisione può essere lungo: viene salvato nel browser a ogni
+// modifica, così un reload (o una chiusura per sbaglio) non lo butta via.
+function pdfChiaveBozza(){return 'pdfBozza_'+(currentUser?currentUser.uid:'anon');}
+function pdfSalvaBozza(){
+  try{
+    if(!pdfRighe.length){localStorage.removeItem(pdfChiaveBozza());return;}
+    const b={v:1,quando:new Date().toISOString(),file:pdfFileName,nLines:pdfNLines,
+      banca:pdfBancaRilevata,conto:pdfContoUsato,righe:pdfRighe};
+    const s=JSON.stringify(b);
+    if(s.length>4000000)return;                       // oltre il limite: meglio non salvare nulla
+    localStorage.setItem(pdfChiaveBozza(),s);
+  }catch(e){console.warn('bozza non salvata',e);}
+}
+function pdfLeggiBozza(){
+  try{const s=localStorage.getItem(pdfChiaveBozza());if(!s)return null;
+    const b=JSON.parse(s);return b&&Array.isArray(b.righe)&&b.righe.length?b:null;}catch(e){return null;}
+}
+function pdfScartaBozza(){try{localStorage.removeItem(pdfChiaveBozza());}catch(e){}
+  const a=document.getElementById('anteprimaArea');if(a&&!pdfRighe.length)a.innerHTML='<div class="import-msg">Nessuna elaborazione in corso: carica un PDF o un Excel qui sopra.</div>';}
+// Banner di ripresa, mostrato entrando nella pagina se c'è una bozza in sospeso
+function pdfMostraBozza(){
+  if(pdfRighe.length)return;
+  const b=pdfLeggiBozza(),area=document.getElementById('anteprimaArea');
+  if(!b||!area)return;
+  const q=new Date(b.quando),quando=`${String(q.getDate()).padStart(2,'0')}/${String(q.getMonth()+1).padStart(2,'0')} alle ${String(q.getHours()).padStart(2,'0')}:${String(q.getMinutes()).padStart(2,'0')}`;
+  const pronte=b.righe.filter(r=>r.sel&&!r.errore).length;
+  area.innerHTML=`<div class="import-msg">📌 Hai un'elaborazione lasciata a metà: <strong>${pdfEsc(b.file||'estratto')}</strong> · ${b.righe.length} righe (${pronte} pronte da inserire) · conto <strong>${pdfEsc(b.conto||'?')}</strong> · salvata il ${quando}.</div>
+    <div class="backup-actions" style="margin-top:8px;">
+      <button class="btn-backup save" onclick="pdfRiprendiBozza()">↩Riprendi da dove eri</button>
+      <button class="btn-sm grey" onclick="pdfScartaBozza()">✕ Scarta</button>
+    </div>`;
+}
+function pdfRiprendiBozza(){
+  const b=pdfLeggiBozza();if(!b)return;
+  pdfRighe=b.righe;pdfFileName=b.file||'';pdfNLines=b.nLines||0;
+  pdfBancaRilevata=b.banca||'';pdfContoUsato=b.conto||'';
+  const sel=document.getElementById('pdfContoSel');if(sel&&pdfContoUsato)sel.value=pdfContoUsato;
+  // i duplicati vanno ricalcolati: il registro può essere cambiato nel frattempo
+  pdfRighe.forEach(r=>{r.dup=impDuplicate(r);if(r.dup.level==='dup')r.sel=false;});
+  renderPdfPreview();
+}
+
+// ── Anteprima modificabile: si correggono qui categorie e controparti,
+//    con gli stessi menu a tendina del registro, senza passare dall'Excel.
+let pdfFileName='',pdfNLines=0,pdfBancaRilevata='',pdfContoUsato='';
+function pdfEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+const NEW_OPT='__NUOVA__';
+function pdfOpts(lista,valore,vuoto){
+  const v=valore==null?'':valore,set=[...lista];
+  if(v&&v!=='-'&&!set.includes(v))set.unshift(v);
+  return `<option value="-">${vuoto}</option>`+set.map(o=>`<option value="${pdfEsc(o)}" ${o===v?'selected':''}>${pdfEsc(o)}</option>`).join('')
+    +`<option value="${NEW_OPT}">Nuova…</option>`;
+}
+function pdfEntSel(i,campo){
+  const r=pdfRighe[i],v=r[campo],ns=nomi.map(n=>n.name).sort((a,b)=>a.localeCompare(b,'it'));
+  const esistente=impFindNome(v),nuova=!esistente;
+  let html=`<select class="imp-sel" onchange="pdfSetEnt(${i},'${campo}',this.value)">`;
+  if(nuova&&v)html+=`<option value="${pdfEsc(v)}" selected>${pdfEsc(v)} — NUOVA</option>`;
+  html+=ns.map(n=>`<option value="${pdfEsc(n)}" ${!nuova&&n===v?'selected':''}>${pdfEsc(n)}</option>`).join('')
+    +`<option value="${NEW_OPT}">Nuova entità…</option></select>`;
+  // il tipo si chiede sia per le entità da creare sia per quelle esistenti che non ce l'hanno
+  const senzaTipo=esistente&&!(esistente.tipo||'').trim();
+  if((nuova&&v)||senzaTipo){
+    const tipi=[...new Set(nomi.map(n=>(n.tipo||'').trim()).filter(Boolean))].sort();
+    const tv=esistente?(esistente.tipo||''):(campo==='from'?r.tipoDa:r.tipoA);
+    html+=`<select class="imp-sel imp-sel-tipo" onchange="pdfSetTipo(${i},'${campo}',this.value)"><option value="">tipo…</option>`+
+      tipi.map(t=>`<option value="${pdfEsc(t)}" ${t===tv?'selected':''}>${pdfEsc(t)}</option>`).join('')+
+      `<option value="${NEW_OPT}">Nuovo tipo…</option></select>`;
+  }
+  return html;
+}
+function pdfCatCell(i){
+  const r=pdfRighe[i];
+  const l2=(c2Map[r.c1]||[]),l3=(c3Map[c3k(r.c1,r.c2)]||[]);
+  return `<select class="imp-sel" onchange="pdfSetCat(${i},1,this.value)">${pdfOpts(c1,r.c1,'— Cat.1 —')}</select>
+    <select class="imp-sel" onchange="pdfSetCat(${i},2,this.value)">${pdfOpts(l2,r.c2,'— Cat.2 —')}</select>
+    <select class="imp-sel" onchange="pdfSetCat(${i},3,this.value)">${pdfOpts(l3,r.c3,'— Cat.3 —')}</select>`;
+}
+function pdfRowCells(i){
+  const r=pdfRighe[i];
+  const nota=r.errore?`<span class="imp-err">✕ ${r.errore}</span>`
+    :r.dup.level==='dup'?`<span class="imp-dup">già presente (${fmtDate(r.dup.ref.data)})</span>`
+    :r.dup.level==='maybe'?`<span class="imp-maybe">possibile doppione</span><br><span style="font-size:10px;color:var(--text3)">nel registro: ${fmtDate(r.dup.ref.data)} ${pdfEsc(r.dup.ref.from)} → ${pdfEsc(r.dup.ref.to)} ${fmtAmt(r.dup.ref.importo,r.dup.ref.valuta||'EUR')}</span>`
+    :r.nuova?`<span class="imp-maybe">controparte nuova</span>`
+    :`<span class="${r.sicura?'imp-ok':'imp-maybe'}">${r.storico}</span>`;
+  return `<td><input type="checkbox" ${r.sel?'checked':''} ${r.errore?'disabled':''} onchange="pdfToggleRow(${i},this.checked)"></td>
+    <td><input type="date" class="imp-inp" value="${r.data}" onchange="pdfSetTesto(${i},'data',this.value)"></td>
+    <td>${pdfEntSel(i,'from')}</td><td>${pdfEntSel(i,'to')}</td>
+    <td><input type="text" class="imp-inp" style="min-width:150px" value="${pdfEsc(r.desc)}" title="${pdfEsc(r.grezza)}" onchange="pdfSetTesto(${i},'desc',this.value)"></td>
+    <td id="pdfcat-${i}" class="imp-cat-cell">${pdfCatCell(i)}</td>
+    <td class="td-num">${r.valutaOrig&&r.errore
+      ?`<div style="font-size:11px;color:#c0392b;white-space:nowrap;">${fmtAmt(r.importoOrig,r.valutaOrig)}</div>
+         <input type="number" step="0.01" class="imp-inp imp-inp-num" placeholder="${pdfEsc(getNomeValuta(pdfContoUsato)||'EUR')} ?" title="Quanto ti è stato addebitato sul conto" onchange="pdfSetEuro(${i},this.value)">`
+      :`<input type="number" step="0.01" class="imp-inp imp-inp-num" value="${r.importo}" onchange="pdfSetTesto(${i},'importo',this.value)">${r.valutaOrig?`<br><span style="font-size:10px;color:var(--text3)">orig. ${fmtAmt(r.importoOrig,r.valutaOrig)}</span>`:''}`}</td>
+    <td>${nota}</td>`;
+}
+function pdfRowClass(i){const r=pdfRighe[i];return r.errore?'imp-row-err':r.dup.level==='dup'?'imp-row-dup':(!r.sicura||r.nuova||r.dup.level==='maybe'?'imp-row-maybe':'');}
+
+function renderPdfPreview(fname,nLines){
+  if(fname!==undefined){pdfFileName=fname;pdfNLines=nLines;}
+  const area=document.getElementById('anteprimaArea');if(!area)return;
+  // l'estratto di una banca registrato su un altro conto e' quasi sempre un errore
+  const conto=document.getElementById('pdfContoSel').value;
+  const disallineato=pdfBancaRilevata&&!impNorm(conto).includes(impNorm(pdfBancaRilevata));
+  const nMaybe=pdfRighe.filter(r=>r.dup.level==='maybe').length;
+  let html=`<div id="pdfSommario"></div>
+    ${disallineato?`<div class="import-msg err">L'estratto è stato riconosciuto come <strong>${pdfEsc(pdfBancaRilevata)}</strong> ma i movimenti verrebbero registrati sul conto <strong>${pdfEsc(conto)}</strong>. Se non è voluto, cambia il conto qui sopra e ricarica il PDF.</div>`:''}
+    ${pdfRighe.some(r=>r.valutaOrig&&r.errore)?`<div class="import-msg err">Alcune spese sono in valuta estera e l'estratto non dice quanto è stato addebitato sul conto. Scrivi l'importo nel campo sotto la cifra rossa (lo trovi nell'app della banca) e la riga si sblocca; oppure usa il pulsante di stima in fondo, che applica il cambio di oggi. L'importo originale resta scritto nella descrizione.</div>`:''}
+    ${nMaybe?`<div class="import-msg">${nMaybe} righe assomigliano a movimenti già nel registro (stesso importo, entro 3 giorni, stessa controparte) ma non sono identiche — di solito perché cambia la data o il conto. Non le escludo io: controlla la nota a destra e togli la spunta se sono doppioni.</div>`:''}
+    <div class="import-msg">Correggi qui quello che serve: le tendine sono le stesse del registro. Se una voce manca, scegli <strong>Nuova…</strong> in fondo alla tendina: entità e categorie vengono create subito in archivio, senza passare da Nomi o Categorie. Le entità marcate <strong>NUOVA</strong> sono quelle lette dal PDF e non ancora in archivio: assegna il tipo, sostituiscile con una esistente, oppure lasciale così e verranno create all'inserimento.</div>
+    <div class="import-table-wrap"><table class="import-table"><thead><tr><th></th><th>Data</th><th>Da</th><th>A</th><th>Descrizione</th><th>Categorie</th><th class="td-num">Importo</th><th>Note</th></tr></thead><tbody>`;
+  pdfRighe.forEach((r,i)=>{html+=`<tr id="pdfrow-${i}" class="${pdfRowClass(i)}">${pdfRowCells(i)}</tr>`;});
+  const nBloccate=pdfRighe.filter(r=>r.valutaOrig&&r.errore).length;
+  html+=`</tbody></table></div><div class="backup-actions" style="margin-top:12px;">
+    <button class="btn-backup save" onclick="importaPdfDiretto()">Inserisci nel registro</button>
+    ${nBloccate?`<button class="btn-backup restore" onclick="pdfStimaValute()">Stima le ${nBloccate} in valuta estera</button>`:''}
+    <button class="btn-backup convert" onclick="scaricaExcelDaPdf()">Scarica Excel</button>
+    <button class="btn-sm grey" onclick="cancelPdf()">✕ Annulla</button></div>`;
+  area.innerHTML=html;
+  aggiornaPdfSommario();
+  pdfSalvaBozza();
+}
+function aggiornaPdfSommario(){
+  const el=document.getElementById('pdfSommario');if(!el)return;
+  const conto=document.getElementById('pdfContoSel').value;
+  const sel=pdfRighe.filter(r=>r.sel);
+  const tE=sel.filter(r=>r.to===conto).reduce((s,r)=>s+r.importo,0),tU=sel.filter(r=>r.from===conto).reduce((s,r)=>s+r.importo,0);
+  const nDup=pdfRighe.filter(r=>r.dup.level==='dup').length,nDub=pdfRighe.filter(r=>!r.sicura||r.nuova).length,
+        nErr=pdfRighe.filter(r=>r.errore).length;
+  el.innerHTML=`<div class="import-summary"><strong>${pdfEsc(pdfFileName)}</strong> · ${pdfNLines} righe di testo · <span class="imp-ok">${pdfRighe.length} movimenti riconosciuti</span>
+    ${nDup?` · <span class="imp-dup">${nDup} già nel registro</span>`:''}${nDub?` · <span class="imp-maybe">${nDub} da confermare</span>`:''}${nErr?` · <span class="imp-err">${nErr} in valuta estera, non importabili</span>`:''}
+    <br><strong>${sel.length} selezionati</strong> · entrate ${fmtAmt(tE,'EUR')} · uscite ${fmtAmt(tU,'EUR')} — confronta con il saldo dell'estratto</div>`;
+  pdfSalvaBozza();
+}
+function pdfRefreshRow(i){
+  const tr=document.getElementById('pdfrow-'+i);if(!tr)return;
+  tr.className=pdfRowClass(i);tr.innerHTML=pdfRowCells(i);
+  pdfSalvaBozza();
+}
+function pdfToggleRow(i,v){pdfRighe[i].sel=v;aggiornaPdfSommario();}
+
+// ── Spese in valuta estera ────────────────────────────
+// L'estratto riporta solo l'importo originale. Qui si scrive quanto è stato
+// davvero addebitato sul conto: la riga si sblocca e l'importo originale
+// resta scritto nella descrizione, così il movimento resta verificabile.
+function pdfSetEuro(i,v,stima){
+  const r=pdfRighe[i];if(!r.valutaOrig)return;
+  const valConto=getNomeValuta(pdfContoUsato)||'EUR';
+  const n=Math.abs(parseFloat(String(v).replace(',','.'))||0);
+  if(n>0){
+    r.importo=n;r.valuta=valConto;r.errore='';
+    r.desc=`${r.descBase} (${fmtAmt(r.importoOrig,r.valutaOrig)}${stima?', stima':''})`;
+    r.dup=impDuplicate(r);r.sel=true;
+  }else{
+    r.importo=r.importoOrig;r.valuta=r.valutaOrig;r.desc=r.descBase;
+    r.errore=`importo in ${r.valutaOrig}: scrivi il controvalore in ${valConto}`;
+    r.sel=false;
+  }
+  pdfRefreshRow(i);aggiornaPdfSommario();
+}
+// Riempie i controvalori mancanti col cambio di OGGI: è una stima, non il
+// cambio applicato dalla banca il giorno dell'operazione.
+function pdfStimaValute(){
+  const valConto=getNomeValuta(pdfContoUsato)||'EUR';
+  if(valConto!=='EUR'){alert('La stima automatica funziona solo su conti in EUR: per gli altri scrivi il controvalore a mano.');return;}
+  if(!fxTutti){alert('Cambi non disponibili (serve la connessione). Scrivi i controvalori a mano.');return;}
+  const daFare=pdfRighe.map((r,i)=>[r,i]).filter(([r])=>r.valutaOrig&&r.errore);
+  const senzaCambio=[...new Set(daFare.filter(([r])=>!fxTutti[r.valutaOrig]).map(([r])=>r.valutaOrig))];
+  const fatti=daFare.filter(([r])=>fxTutti[r.valutaOrig]);
+  if(!fatti.length){alert('Nessuna riga da stimare'+(senzaCambio.length?`: cambio non disponibile per ${senzaCambio.join(', ')}`:'.'));return;}
+  if(!confirm(`Stimare ${fatti.length} righe al cambio di oggi?\n\nNon è il cambio applicato il giorno della spesa: controlla gli importi sull'app della banca e correggili dove serve.\nL'importo originale resta scritto nella descrizione.`))return;
+  fatti.forEach(([r,i])=>pdfSetEuro(i,(r.importoOrig/fxTutti[r.valutaOrig]).toFixed(2),true));
+  renderPdfPreview();
+  if(senzaCambio.length)alert(`Restano da compilare a mano: cambio non disponibile per ${senzaCambio.join(', ')}.`);
+}
+
+// Creazione al volo dall'anteprima: niente giro dalla pagina Nomi/Categorie
+async function pdfSetTipo(i,campo,v){
+  const r=pdfRighe[i];
+  if(v===NEW_OPT){
+    const t=(prompt('Nuovo tipo di entità (es. Insurance, Vendor, Tenant):')||'').trim();
+    if(!t){pdfRefreshRow(i);return;}
+    v=t;
+  }
+  const ent=impFindNome(r[campo]);
+  if(ent){ent.tipo=v;await saveToFirebase();syncTipoSel();}   // entità già in archivio: aggiorno lì
+  else r[campo==='from'?'tipoDa':'tipoA']=v;                  // ancora da creare: viaggia con la riga
+  renderPdfPreview();                                          // il tipo nuovo compare in tutte le righe
+}
+async function pdfSetEnt(i,campo,v){
+  const r=pdfRighe[i];let creata=false;
+  if(v===NEW_OPT){
+    const suggerito=r.raw&&!impFindNome(r.raw)?r.raw:'';
+    const nome=(prompt('Nome della nuova entità (verrà aggiunta subito all\'archivio Nomi):',suggerito)||'').trim();
+    if(!nome){pdfRefreshRow(i);return;}
+    const gia=impFindNome(nome);
+    if(!gia){
+      const cnt=document.getElementById('pdfContoSel').value;
+      nomi.push({name:nome,tipo:'',valuta:getNomeValuta(cnt)||'EUR'});
+      await saveToFirebase();
+      syncSelects();syncTipoSel();syncEntitySel();creata=true;
+    }
+    v=gia?gia.name:nome;
+  }
+  r[campo]=v;r.creata=creata;
+  r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
+  // controparte cambiata: rileggi lo storico e ricontrolla i duplicati
+  const conto=document.getElementById('pdfContoSel').value,altra=r.from===conto?r.to:r.from;
+  const cat=pdfCategorieStoriche(impFindNome(altra)?impFindNome(altra).name:null);
+  if(cat&&(r.c1==='-'||!r.c1)){r.c1=cat.c1;r.c2=cat.c2;r.c3=cat.c3;}
+  r.sicura=!!(cat&&cat.sicura);r.storico=cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico';
+  r.dup=impDuplicate(r);
+  if(creata)renderPdfPreview();                    // l'entità nuova deve comparire in tutte le tendine
+  else{pdfRefreshRow(i);aggiornaPdfSommario();}
+}
+async function pdfSetCat(i,liv,v){
+  const r=pdfRighe[i];
+  if(v===NEW_OPT){
+    if(liv===2&&(!r.c1||r.c1==='-')){alert('Scegli prima la Cat.1');pdfRefreshRow(i);return;}
+    if(liv===3&&(!r.c2||r.c2==='-')){alert('Scegli prima la Cat.2');pdfRefreshRow(i);return;}
+    const dove=liv===1?'Cat.1':liv===2?`Cat.2 dentro "${r.c1}"`:`Cat.3 dentro "${r.c1} › ${r.c2}"`;
+    const nome=(prompt(`Nuova ${dove} (verrà aggiunta subito all'archivio Categorie):`)||'').trim();
+    if(!nome){pdfRefreshRow(i);return;}
+    if(liv===1){if(!c1.includes(nome))c1.push(nome);}
+    else if(liv===2){const k=r.c1;if(!c2Map[k])c2Map[k]=[];if(!c2Map[k].includes(nome))c2Map[k].push(nome);}
+    else{const k=c3k(r.c1,r.c2);if(!c3Map[k])c3Map[k]=[];if(!c3Map[k].includes(nome))c3Map[k].push(nome);}
+    await saveToFirebase();rebuildDD();
+    v=nome;
+  }
+  if(liv===1){r.c1=v;r.c2='-';r.c3='-';}
+  else if(liv===2){r.c2=v;r.c3='-';}
+  else r.c3=v;
+  r.sicura=true;                                   // scelta a mano: non è più un'ipotesi
+  const cell=document.getElementById('pdfcat-'+i);if(cell)cell.innerHTML=pdfCatCell(i);
+  const tr=document.getElementById('pdfrow-'+i);if(tr)tr.className=pdfRowClass(i);
+}
+function pdfSetTesto(i,campo,v){
+  const r=pdfRighe[i];
+  if(campo==='importo'){r.importo=Math.abs(parseFloat(v)||0);r.dup=impDuplicate(r);aggiornaPdfSommario();}
+  else if(campo==='data'){r.data=v;r.dup=impDuplicate(r);pdfRefreshRow(i);aggiornaPdfSommario();}
+  else{r[campo]=v;pdfSalvaBozza();}
+}
+function cancelPdf(){pdfRighe=[];pdfFileName='';pdfContoUsato='';pdfBancaRilevata='';pdfScartaBozza();}
+
+// Cambiando il conto le righe già lette vanno spostate sul nuovo conto,
+// altrimenti resterebbero agganciate a quello di prima.
+function pdfCambiaConto(nuovo){
+  if(!pdfRighe.length||!pdfContoUsato||nuovo===pdfContoUsato)return;
+  pdfRighe.forEach(r=>{
+    if(r.from===pdfContoUsato)r.from=nuovo;
+    if(r.to===pdfContoUsato)r.to=nuovo;
+    r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
+    r.dup=impDuplicate(r);
+  });
+  pdfContoUsato=nuovo;
+  renderPdfPreview();
+}
+
+// Inserimento diretto: le righe corrette passano per lo stesso percorso dell'import Excel
+async function importaPdfDiretto(){
+  const sel=pdfRighe.filter(r=>r.sel&&!r.errore);
+  if(!sel.length){alert('Nessuna riga selezionata');return;}
+  const senzaCat=sel.filter(r=>!r.c1||r.c1==='-').length;
+  if(senzaCat&&!confirm(`${senzaCat} righe non hanno la Cat.1. Inserirle comunque senza categoria?`))return;
+  importPreview=sel.map(r=>({data:r.data,from:r.from,to:r.to,desc:r.desc,c1:r.c1||'-',c2:r.c2||'-',c3:r.c3||'-',
+    importo:r.importo,tipoDa:r.tipoDa,tipoA:r.tipoA,valuta:r.valuta||'EUR',errore:'',dup:r.dup,sel:true}));
+  await confirmImport('anteprimaArea');
+  if(!importPreview.length){pdfRighe=[];pdfFileName='';pdfScartaBozza();}   // andato a buon fine
+}
+
+async function scaricaExcelDaPdf(){
+  if(!pdfRighe.length)return;
+  const XLSX=await import(XLSX_CDN);
+  const head=['Importa','Data','Da','A','Descrizione','Cat.1','Cat.2','Cat.3','Importo','Valuta','Tipo Da','Tipo A','Note'];
+  const aoa=[head];
+  pdfRighe.forEach(r=>{
+    const note=[];
+    if(r.dup.level==='dup')note.push('GIA PRESENTE nel registro ('+fmtDate(r.dup.ref.data)+')');
+    else if(r.dup.level==='maybe')note.push('SIMILE a movimento del '+fmtDate(r.dup.ref.data));
+    if(r.errore)note.push(r.errore.toUpperCase());
+    if(r.nuova)note.push('CONTROPARTE NUOVA: compila Tipo Da/Tipo A');
+    if(!r.sicura&&!r.nuova)note.push('CATEGORIA DA CONFERMARE ('+r.storico+')');
+    note.push('PDF: '+(r.grezza||'').slice(0,90));
+    aoa.push([r.sel&&!r.errore?'SI':'NO',r.data,r.from,r.to,r.desc,r.c1,r.c2,r.c3,r.importo,r.valuta||'EUR',r.tipoDa||'',r.tipoA||'',note.join(' · ')]);
+  });
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols']=[{wch:9},{wch:12},{wch:18},{wch:24},{wch:30},{wch:14},{wch:14},{wch:14},{wch:11},{wch:7},{wch:11},{wch:11},{wch:60}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Movimenti');
+  // foglio di riferimento: entità e categorie in uso, per compilare a mano senza errori
+  const c2all=[...new Set(Object.values(c2Map).flat())].sort(),c3all=[...new Set(Object.values(c3Map).flat())].sort();
+  const ref=[['Entita esistenti','Cat.1','Cat.2','Cat.3']];
+  const ns=nomi.map(n=>n.name).sort(),max=Math.max(ns.length,c1.length,c2all.length,c3all.length);
+  for(let i=0;i<max;i++)ref.push([ns[i]||'',c1[i]||'',c2all[i]||'',c3all[i]||'']);
+  const wr=XLSX.utils.aoa_to_sheet(ref);wr['!cols']=[{wch:30},{wch:16},{wch:16},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,wr,'Riferimenti');
+  const conto=document.getElementById('pdfContoSel').value.replace(/[^\w]/g,''),per=(pdfRighe[0]||{}).data.slice(0,7);
+  XLSX.writeFile(wb,`IMPORT_${conto}_${per}.xlsx`);
+}
+
+// ── IMPORT MOVIMENTI DA EXCEL ─────────────────────────
+// L'estratto conto (PDF) non viene letto qui: a monte viene convertito in un
+// foglio Excel con le intestazioni attese. Questo è il contratto fra i due passi.
+// Colonne: Importa | Data | Da | A | Descrizione | Cat.1 | Cat.2 | Cat.3 | Importo | Valuta | Tipo Da | Tipo A | Note
+let importPreview=[];
+const XLSX_CDN='https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs';
+
+function impNorm(s){return String(s==null?'':s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[\s._]/g,'');}
+function impSame(a,b){return impNorm(a)===impNorm(b);}
+
+// Accetta: data Excel (Date o seriale), 'AAAA-MM-GG', 'GG/MM/AAAA', 'GG-MM-AAAA'
+function impDate(v){
+  if(v instanceof Date&&!isNaN(v))return `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
+  if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Date.UTC(1899,11,30+Math.floor(v)));return d.toISOString().slice(0,10);}
+  const s=String(v||'').trim();
+  let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return `${m[1]}-${m[2]}-${m[3]}`;
+  m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);if(m)return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  return '';
+}
+// Accetta 1234.56 / "1.234,56" / "1234,56" / "€ 1.234,56"
+function impAmount(v){
+  if(typeof v==='number')return Math.abs(v);
+  let s=String(v||'').replace(/[^\d.,-]/g,'');
+  if(s.includes(',')&&s.includes('.'))s=s.lastIndexOf(',')>s.lastIndexOf('.')?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'');
+  else if(s.includes(','))s=s.replace(',','.');
+  const n=parseFloat(s);return isNaN(n)?NaN:Math.abs(n);
+}
+function impDaysApart(a,b){return Math.abs((new Date(a)-new Date(b))/86400000);}
+
+// Confronta la riga con il registro: 'dup' = già presente, 'maybe' = da controllare
+function impDuplicate(r){
+  for(const e of rows){
+    if(Math.abs(e.importo-r.importo)>0.005)continue;
+    if(e.data===r.data&&impSame(e.from,r.from)&&impSame(e.to,r.to))return{level:'dup',ref:e};
+    if(impDaysApart(e.data,r.data)<=3&&(impSame(e.to,r.to)||impSame(e.from,r.from)))return{level:'maybe',ref:e};
+  }
+  return{level:'ok',ref:null};
+}
+function impFindNome(n){return nomi.find(x=>impSame(x.name,n));}
+
+// Trasforma le righe grezze del foglio in righe validate + esito duplicati
+function impBuild(matrix){
+  const hi={},head=(matrix[0]||[]).map(impNorm);
+  const want={importa:['importa'],data:['data'],from:['da','from'],to:['a','to','verso'],desc:['descrizione','desc','causale'],
+    c1:['cat1','categoria1'],c2:['cat2','categoria2'],c3:['cat3','categoria3'],importo:['importo','amount'],
+    valuta:['valuta','currency'],tipoDa:['tipoda'],tipoA:['tipoa'],note:['note']};
+  for(const k in want){const i=head.findIndex(h=>want[k].includes(h));if(i>=0)hi[k]=i;}
+  if(hi.data===undefined||hi.from===undefined||hi.to===undefined||hi.importo===undefined)
+    throw new Error('Intestazioni non riconosciute. Servono almeno: Data, Da, A, Importo.');
+  const out=[];
+  for(let i=1;i<matrix.length;i++){
+    const g=k=>hi[k]===undefined?'':matrix[i][hi[k]];
+    const flag=String(g('importa')||'SI').trim().toUpperCase();
+    const data=impDate(g('data')),from=String(g('from')||'').trim(),to=String(g('to')||'').trim(),importo=impAmount(g('importo'));
+    if(!data&&!from&&!to)continue;                       // riga vuota o riga totali
+    const r={data,from,to,desc:String(g('desc')||'').trim(),
+      c1:String(g('c1')||'').trim()||'-',c2:String(g('c2')||'').trim()||'-',c3:String(g('c3')||'').trim()||'-',
+      importo,tipoDa:String(g('tipoDa')||'').trim(),tipoA:String(g('tipoA')||'').trim(),
+      note:String(g('note')||'').trim(),riga:i+1,errore:'',dup:{level:'ok'},sel:false,
+      nuova:false,sicura:true,storico:'',raw:'',grezza:''};
+    r.descBase=r.desc;
+    if(!data)r.errore='data non valida';
+    else if(!from||!to)r.errore='Da/A mancante';
+    else if(impSame(from,to))r.errore='Da e A coincidono';
+    else if(isNaN(importo)||importo<=0)r.errore='importo non valido';
+    else{
+      const nf=impFindNome(from),nt=impFindNome(to);
+      const cf=nf?(nf.valuta||'EUR'):'EUR',ct=nt?(nt.valuta||'EUR'):'EUR';
+      const valFile=String(g('valuta')||'').trim().toUpperCase();
+      if(nf&&nt&&cf!==ct)r.errore='cambio valuta: da inserire a mano';
+      r.valuta=valFile||cf;
+      // valuta del file diversa da quella del conto: importo non confrontabile,
+      // si sblocca scrivendo il controvalore (stessa logica dell'anteprima PDF)
+      if(valFile&&valFile!==cf&&!r.errore){
+        r.valutaOrig=valFile;r.importoOrig=importo;r.descBase=r.desc;
+        r.errore=`importo in ${valFile}: scrivi il controvalore in ${cf}`;
+      }
+      r.dup=impDuplicate(r);
+    }
+    r.sel=!r.errore&&r.dup.level!=='dup'&&flag!=='NO';
+    r.escluso=flag==='NO';
+    out.push(r);
+  }
+  return out;
+}
+
+async function onImportFileSelected(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;
+  const area=document.getElementById('importArea');
+  area.innerHTML='<div class="import-msg">Lettura di '+f.name+'…</div>';
+  try{
+    let matrix;
+    if(/\.csv$/i.test(f.name)){
+      const txt=await f.text(),sep=(txt.split('\n')[0].match(/;/g)||[]).length>=(txt.split('\n')[0].match(/,/g)||[]).length?';':',';
+      matrix=txt.split(/\r?\n/).filter(l=>l.trim()).map(l=>l.split(sep).map(c=>c.replace(/^"|"$/g,'').trim()));
+    }else{
+      const XLSX=await import(XLSX_CDN);
+      const wb=XLSX.read(await f.arrayBuffer(),{cellDates:true});
+      const sheet=wb.Sheets['Movimenti']||wb.Sheets[wb.SheetNames[0]];
+      matrix=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true});
+    }
+    const righe=impBuild(matrix);
+    if(!righe.length)throw new Error('Nessuna riga trovata nel foglio.');
+    // conto di riferimento: l'entita' bancaria che compare piu' spesso nel file
+    const conteggio={};
+    righe.forEach(r=>{[r.from,r.to].forEach(n=>{const e=impFindNome(n);
+      if(e&&(e.tipo||'').toLowerCase().includes('bank'))conteggio[e.name]=(conteggio[e.name]||0)+1;});});
+    const conto=Object.entries(conteggio).sort((a,b)=>b[1]-a[1])[0];
+    pdfRighe=righe;pdfFileName=f.name;pdfNLines=matrix.length-1;
+    pdfBancaRilevata='';pdfContoUsato=conto?conto[0]:(document.getElementById('pdfContoSel').value||'');
+    // storico e affidabilita' della classificazione, come per il PDF
+    pdfRighe.forEach(r=>{
+      const altra=r.from===pdfContoUsato?r.to:r.from,ent=impFindNome(altra);
+      r.nuova=!impFindNome(r.from)||!impFindNome(r.to);
+      const cat=ent?pdfCategorieStoriche(ent.name):null;
+      r.storico=cat?`${cat.n}/${cat.tot} movimenti`:'nessuno storico';
+      r.sicura=!(r.c1==='-'||!r.c1);
+    });
+    area.innerHTML='';
+    renderPdfPreview(f.name,matrix.length-1);
+  }catch(e){
+    area.innerHTML=`<div class="import-msg err">${e.message||'file non leggibile'}</div>`;
+  }
+}
+
+function importNewEntities(){
+  const seen=new Map();
+  importPreview.filter(r=>r.sel&&!r.errore).forEach(r=>{
+    [[r.from,r.tipoDa],[r.to,r.tipoA]].forEach(([n,t])=>{
+      if(n&&!impFindNome(n)&&!seen.has(impNorm(n)))seen.set(impNorm(n),{name:n,tipo:t||''});
+    });
+  });
+  return[...seen.values()];
+}
+function importNewCats(){
+  const out=[];
+  importPreview.filter(r=>r.sel&&!r.errore).forEach(r=>{
+    if(r.c1!=='-'&&!c1.includes(r.c1))out.push('Cat.1 '+r.c1);
+    if(r.c2!=='-'&&r.c1!=='-'&&!(c2Map[r.c1]||[]).includes(r.c2))out.push(`Cat.2 ${r.c1} › ${r.c2}`);
+    if(r.c3!=='-'&&r.c2!=='-'&&!(c3Map[c3k(r.c1,r.c2)]||[]).includes(r.c3))out.push(`Cat.3 ${r.c1} › ${r.c2} › ${r.c3}`);
+  });
+  return[...new Set(out)];
+}
+
+// L'anteprima dell'Excel e' la stessa del PDF: vedi renderPdfPreview().
+
+async function confirmImport(areaId){
+  const sel=importPreview.filter(r=>r.sel&&!r.errore);
+  if(!sel.length){alert('Nessuna riga selezionata');return;}
+  const ents=importNewEntities(),cats=importNewCats();
+  if(!confirm(`Importare ${sel.length} movimenti?${ents.length?`\n\nEntità nuove: ${ents.map(e=>e.name).join(', ')}`:''}${cats.length?`\nCategorie nuove: ${cats.length}`:''}`))return;
+  // anagrafiche mancanti
+  ents.forEach(e=>{if(!impFindNome(e.name))nomi.push({name:e.name,tipo:e.tipo||'',valuta:'EUR'});});
+  sel.forEach(r=>{
+    if(r.c1!=='-'&&!c1.includes(r.c1))c1.push(r.c1);
+    if(r.c1!=='-'&&r.c2!=='-'){if(!c2Map[r.c1])c2Map[r.c1]=[];if(!c2Map[r.c1].includes(r.c2))c2Map[r.c1].push(r.c2);}
+    if(r.c2!=='-'&&r.c3!=='-'){const k=c3k(r.c1,r.c2);if(!c3Map[k])c3Map[k]=[];if(!c3Map[k].includes(r.c3))c3Map[k].push(r.c3);}
+  });
+  sel.forEach(r=>{
+    rows.push({data:r.data,from:impFindNome(r.from).name,to:impFindNome(r.to).name,desc:r.desc,
+      c1:r.c1,c2:r.c2,c3:r.c3,importo:r.importo,valuta:getNomeValuta(r.from)||'EUR',docs:[]});
+  });
+  rows.sort((a,b)=>a.data.localeCompare(b.data));
+  await saveToFirebase();
+  importPreview=[];
+  document.getElementById(areaId||'importArea').innerHTML=`<div class="import-msg ok">Inseriti ${sel.length} movimenti${ents.length?`, create ${ents.length} entità`:''}. Vai al Registro per vederli.</div>`;
+  syncSelects();syncTipoSel();syncEntitySel();rebuildDD();render();
+}
+
+
+Object.assign(window,{aggiornaPdfSommario,cancelPdf,confirmImport,impAmount,impBuild,impDate,impDaysApart,impDuplicate,impFindNome,impNorm,impSame,importNewCats,importNewEntities,importaPdfDiretto,onImportFileSelected,onPdfFileSelected,pdfCambiaConto,pdfCatCell,pdfCategorieStoriche,pdfChiaveBozza,pdfEntSel,pdfEsc,pdfFixCols,pdfLeggiBozza,pdfMatchEntita,pdfMostraBozza,pdfOpts,pdfParseICard,pdfParseRedotPay,pdfRefreshRow,pdfRiprendiBozza,pdfRowCells,pdfRowClass,pdfSalvaBozza,pdfScartaBozza,pdfSetCat,pdfSetEnt,pdfSetEuro,pdfSetTesto,pdfSetTipo,pdfStimaValute,pdfTipo,pdfToLines,pdfToggleRow,renderPdfPreview,scaricaExcelDaPdf,syncPdfConti});
 
 </script>
 </body>
