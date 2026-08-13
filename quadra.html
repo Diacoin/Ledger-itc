@@ -311,6 +311,7 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .rig-lib .desc{display:block;font-family:var(--mono);font-size:10.5px;color:var(--fg3);margin-top:4px}
 .rig-lib .togli{align-self:center;font-size:9.5px;padding:6px 9px;color:var(--fg3)}
 .rig-lib .togli:hover{border-color:var(--ko);color:var(--ko)}
+.rmeta .filtrato{color:var(--acc2)}
 </style>
 </head>
 <body>
@@ -1209,7 +1210,7 @@ function repEstratto(p,d){
   h+=`<tr class="tot-riga"><td colspan="4">Totale</td><td class="num pos">${fmtImp(tEnt)}</td>
     <td class="num neg">${fmtImp(tu)}</td><td class="num">${fmtImp(prog)}</td><td></td></tr>`;
   $('rMeta').innerHTML=`<b>${nome}</b> · ${tipoDi(nome)||'senza tipo'} · ${scelto.valuta||'EUR'} ·
-    ${mov.length} movimenti · saldo ${fmtImp(prog)}`;
+    ${mov.length} movimenti · saldo ${fmtImp(prog)}`+notaFiltro(p);
   return h+'</tbody>';
 }
 
@@ -1290,7 +1291,7 @@ function repFx(p,d){
       <td class="num dt">${tasso?tasso.toFixed(4):'—'}</td></tr>`;
   });
   $('rMeta').innerHTML=`<b>${mov.length}</b> operazioni in cambio valuta`+
-    (mov.length?'':' · nessuna nel periodo scelto');
+    (mov.length?'':' · nessuna nel periodo scelto')+notaFiltro(p);
   return h+'</tbody>';
 }
 
@@ -1700,12 +1701,17 @@ function testoPeriodo(){
   if(!d&&!a)return 'tutto lo storico';
   return (d?fmtData(d):'inizio')+' \u2192 '+(a?fmtData(a):'oggi');
 }
+function notaFiltro(p){
+  const c=[p.c1,p.c2,p.c3].filter(Boolean).join(' \u203a ');
+  // il saldo di una vista filtrata e' parziale: va detto, non lasciato intuire
+  return c?' \u00b7 <span class="filtrato">solo '+esc(c)+'</span>':'';
+}
 function aggiornaChips(){
   if(!$('rTipo')||!$('ch-tipo'))return;
   const t=$('rTipo').value;
   const vedi=(id,si)=>{const e=$(id);if(e)e.style.display=si?'':'none';};
   vedi('ch-sogg', t==='estratto');
-  vedi('ch-albero', ['categoria','mensile','periodo','saldo','tipo'].includes(t));
+  vedi('ch-albero', true);   // vale per ogni tipo di report
   vedi('ch-mese', t==='mensile');
   vedi('ch-giro', ['categoria','mensile','periodo'].includes(t));
   const scrivi=(id,txt,acceso)=>{const e=$(id);if(!e)return;
