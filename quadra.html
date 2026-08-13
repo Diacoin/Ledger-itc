@@ -206,10 +206,6 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .rep-nome{color:var(--fg);font-weight:600}
 .rep-tipo{color:var(--acc);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;border:1px solid var(--acc);border-radius:2px;padding:1px 6px;margin-left:7px}
-.rep-auto{color:var(--fg3);font-size:10.5px;letter-spacing:.06em;margin-left:8px}
-#rSalvati{min-width:210px;font-weight:600}
-#rSalvati:disabled{color:var(--fg3);font-weight:400}
-#btElimina{padding:7px 11px;line-height:1}
 .rmeta{font-family:var(--mono);font-size:11.5px;color:var(--fg2);margin-top:14px}
 .rmeta b{color:var(--fg)}
 .rmeta .att{color:var(--acc2);cursor:default}
@@ -255,6 +251,66 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .spento{color:var(--fg3);font-size:12.5px;padding:14px 12px}
 @media(max-width:900px){.colonne{grid-template-columns:1fr}}
 @media(max-width:820px){.contenuto{padding:16px 14px 60px}}
+
+/* ── report: barra a pastiglie e libreria dei salvati ── */
+#pg-report{position:relative}
+.barra-rep{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:18px 0 11px}
+.barra-rep .spinta{flex:1}
+.bt.lib{display:inline-flex;align-items:center;gap:7px;color:var(--fg)}
+.bt.lib b{color:var(--acc);font-weight:500}
+.bt.aperto,.chip.aperto{border-color:var(--acc);color:var(--acc)}
+.segna{color:var(--acc)}
+.nome-salvato:empty{display:none}
+.nome-salvato{display:inline-flex;align-items:center;gap:8px;padding:5px 11px;
+  border:1px solid var(--bd);border-radius:3px;background:var(--surf2)}
+.nome-salvato b{color:var(--fg);font-size:13.5px}
+.nome-salvato i{font-family:var(--mono);font-style:normal;font-size:9px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--fg3)}
+.nome-salvato i.mod{color:var(--acc2)}
+.stato-tab{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--fg3)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.chip{display:inline-flex;flex-direction:column;gap:2px;text-align:left;cursor:pointer;
+  background:var(--surf);border:1px solid var(--bd);border-radius:3px;padding:6px 12px}
+.chip:hover{border-color:var(--bd2)}
+.chip i{font-family:var(--mono);font-style:normal;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--fg3)}
+.chip b{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--fg2)}
+.chip.acceso{border-color:var(--acc)}
+.chip.acceso b{color:var(--acc)}
+.pop{display:none;position:absolute;z-index:60;min-width:296px;max-width:420px;
+  background:var(--surf2);border:1px solid var(--bd2);border-radius:4px;padding:15px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.pop.on{display:block}
+.magazzino{display:none}
+.campo label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--fg3);margin:0 0 5px}
+.campo label+label,.campo label.riga{margin-top:11px}
+.campo label.riga{text-transform:none;font-family:var(--sans);font-size:12.5px;
+  letter-spacing:0;color:var(--fg);display:flex;align-items:center}
+.campo input,.campo select{width:100%;background:var(--surf);border:1px solid var(--bd2);
+  color:var(--fg);font-size:12.5px;padding:7px 9px;border-radius:3px}
+.campo input[type=checkbox]{width:auto;margin-right:8px}
+.campo .nota{color:var(--fg3);font-size:11.5px;line-height:1.45;margin:10px 0 0}
+.campo .bt{margin-top:12px;width:100%}
+.velo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:70}
+.velo.on{display:block}
+.libreria{display:none;position:fixed;top:0;right:0;bottom:0;width:392px;max-width:92vw;
+  z-index:71;background:var(--surf);border-left:1px solid var(--bd2);padding:20px;overflow:auto}
+.libreria.on{display:block}
+.lib-testa{display:flex;align-items:center;justify-content:space-between}
+.lib-testa b{font-size:17px}
+.lib-nota{color:var(--fg3);font-size:12px;line-height:1.5;margin:7px 0 13px}
+#qCerca{width:100%;background:var(--surf2);border:1px solid var(--bd2);color:var(--fg);
+  font-size:12.5px;padding:8px 10px;border-radius:3px;margin-bottom:6px}
+.rig-lib{display:flex;align-items:stretch;gap:8px;border-top:1px solid var(--bd);padding:9px 0}
+.rig-lib.attivo{background:rgba(79,209,230,.06)}
+.rig-lib .apri{flex:1;min-width:0;text-align:left;background:none;border:0;cursor:pointer;
+  color:var(--fg);padding:3px 4px;font-family:var(--sans)}
+.rig-lib .apri b{font-size:13.5px;font-weight:600;margin-left:7px}
+.rig-lib .desc{display:block;font-family:var(--mono);font-size:10.5px;color:var(--fg3);margin-top:4px}
+.rig-lib .togli{align-self:center;font-size:9.5px;padding:6px 9px;color:var(--fg3)}
+.rig-lib .togli:hover{border-color:var(--ko);color:var(--ko)}
 </style>
 </head>
 <body>
@@ -424,37 +480,84 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
       <div class="costruzione">Blocco 3 &mdash; import degli estratti, backup e ripristino.</div></div>
     <div class="pagina" id="pg-report">
       <h2>Report</h2>
-      <div class="barra">
-        <select id="rSalvati" onchange="apriReport(this.value)" title="Report salvati"></select>
-        <button class="bt" id="btElimina" onclick="eliminaReport()" style="display:none"
-          title="Elimina il report aperto">&times;</button>
-        <span class="sep"></span>
-        <select id="rTipo" onchange="cambiaTipoReport()">
-          <option value="categoria">Per categoria</option>
-          <option value="mensile">Subtotali per mese</option>
-          <option value="periodo">Per periodo</option>
-          <option value="estratto">Estratto conto di un soggetto</option>
-          <option value="tipo">Per tipo di soggetto</option>
-          <option value="saldo">Saldo dei soggetti</option>
-          <option value="fx">Operazioni in cambio valuta</option>
-        </select>
-        <input type="search" id="rEnt" list="elencoSoggetti" placeholder="Soggetto" oninput="eseguiReport()">
-        <select id="rC1" onchange="rCat(1)"></select>
-        <select id="rC2" onchange="rCat(2)"></select>
-        <select id="rC3" onchange="seGiaEseguito()"></select>
-        <select id="rMese" onchange="seGiaEseguito()">
-          <option value="subtotali">Con subtotali per categoria</option>
-          <option value="totali">Solo totali del mese</option>
-        </select>
-        <input type="date" id="rDa" onchange="seGiaEseguito()" title="Dal">
-        <input type="date" id="rA" onchange="seGiaEseguito()" title="Al">
-        <label><input type="checkbox" id="rGiro" checked onchange="seGiaEseguito()"> Escludi trasferimenti</label>
-        <span class="sep"></span>
-        <input type="text" id="rNome" placeholder="Nome del report" style="max-width:190px">
+      <div class="barra-rep">
+        <button class="bt lib" onclick="apriLibreria()">
+          <span class="segna">&#9782;</span>Report salvati <b id="qConta"></b></button>
+        <span class="nome-salvato" id="qAperto"></span>
+        <span class="spinta"></span>
+        <span class="stato-tab" id="qStato"></span>
         <button class="bt primario" onclick="eseguiReport(true)">Esegui</button>
-        <button class="bt" onclick="salvaReport()">Salva</button>
+        <button class="bt" id="btSalva" onclick="apriCampo('salva',this)">Salva</button>
         <button class="bt" onclick="window.print()">Stampa</button>
       </div>
+      <div class="chips" id="qChips">
+        <button class="chip" id="ch-tipo" onclick="apriCampo('tipo',this)"><i>tipo</i><b>&mdash;</b></button>
+        <button class="chip" id="ch-sogg" onclick="apriCampo('sogg',this)"><i>soggetto contiene</i><b>&mdash;</b></button>
+        <button class="chip" id="ch-albero" onclick="apriCampo('albero',this)"><i>gruppo &rsaquo; categoria &rsaquo; voce</i><b>&mdash;</b></button>
+        <button class="chip" id="ch-periodo" onclick="apriCampo('periodo',this)"><i>periodo</i><b>&mdash;</b></button>
+        <button class="chip" id="ch-mese" onclick="apriCampo('mese',this)"><i>dettaglio</i><b>&mdash;</b></button>
+        <button class="chip" id="ch-giro" onclick="apriCampo('giro',this)"><i>giroconti</i><b>&mdash;</b></button>
+      </div>
+      <div class="pop" id="qPop"></div>
+      <div class="magazzino" id="qCampi">
+        <div class="campo" id="cp-tipo">
+          <label>Tipo di report</label>
+          <select id="rTipo" onchange="cambiaTipoReport()">
+            <option value="categoria">Per categoria</option>
+            <option value="mensile">Subtotali per mese</option>
+            <option value="periodo">Per periodo</option>
+            <option value="estratto">Estratto conto di un soggetto</option>
+            <option value="tipo">Per tipo di soggetto</option>
+            <option value="saldo">Saldo dei soggetti</option>
+            <option value="fx">Operazioni in cambio valuta</option>
+          </select>
+          <p class="nota">Decide come la tabella raggruppa i movimenti.</p>
+        </div>
+        <div class="campo" id="cp-sogg">
+          <label>Soggetto contiene &middot; ricerca testo</label>
+          <input type="search" id="rEnt" list="elencoSoggetti" placeholder="anche solo una parte del nome" oninput="seGiaEseguito()">
+          <p class="nota">Non e' il nome del report: e' il soggetto di cui vuoi l'estratto conto.</p>
+        </div>
+        <div class="campo" id="cp-albero">
+          <label>Gruppo &middot; livello 1</label>
+          <select id="rC1" onchange="rCat(1)"></select>
+          <label>&#8627; Categoria &middot; livello 2</label>
+          <select id="rC2" onchange="rCat(2)"></select>
+          <label>&#8627;&#8627; Voce &middot; livello 3</label>
+          <select id="rC3" onchange="seGiaEseguito()"></select>
+          <p class="nota">Ogni livello restringe quello sotto.</p>
+        </div>
+        <div class="campo" id="cp-periodo">
+          <label>Dal</label><input type="date" id="rDa" onchange="seGiaEseguito()">
+          <label>Al</label><input type="date" id="rA" onchange="seGiaEseguito()">
+          <p class="nota">Lasciandoli vuoti si guarda tutto lo storico.</p>
+        </div>
+        <div class="campo" id="cp-mese">
+          <label>Dettaglio dei mesi</label>
+          <select id="rMese" onchange="seGiaEseguito()">
+            <option value="subtotali">Con subtotali per categoria</option>
+            <option value="totali">Solo totali del mese</option>
+          </select>
+        </div>
+        <div class="campo" id="cp-giro">
+          <label>Trasferimenti fra conti tuoi</label>
+          <label class="riga"><input type="checkbox" id="rGiro" checked onchange="seGiaEseguito()"> Escludili dai totali</label>
+          <p class="nota">Spostare denaro da un tuo conto a un altro non e' una spesa ne' un incasso.</p>
+        </div>
+        <div class="campo" id="cp-salva">
+          <label>Nome del report &middot; scelto e salvato da te</label>
+          <input type="text" id="rNome" placeholder="es. Spese casa 2026">
+          <button class="bt primario" onclick="salvaReport()">Salva nella libreria</button>
+        </div>
+      </div>
+      <div class="velo" id="qVelo" onclick="chiudiLibreria()"></div>
+      <aside class="libreria" id="qLib">
+        <div class="lib-testa"><b>Report salvati</b>
+          <button class="bt" onclick="chiudiLibreria()">Chiudi</button></div>
+        <p class="lib-nota">Report che hai creato e nominato tu. Aprili per rivedere il risultato.</p>
+        <input type="search" id="qCerca" placeholder="Filtra per nome&hellip;" oninput="disegnaLibreria()">
+        <div id="qElenco"></div>
+      </aside>
       <div class="rmeta" id="rMeta"></div>
       <div class="tbl"><table id="rTab"></table></div>
     </div>
@@ -863,16 +966,7 @@ function paramReport(){
     mese:$('rMese').value, da:$('rDa').value, a:$('rA').value,
     noGiro:conGiro?$('rGiro').checked:false};
 }
-function campiPerTipo(){
-  const t=$('rTipo').value;
-  const mostra=(id,si)=>{const e=$(id);if(e)e.style.display=si?'':'none';};
-  mostra('rEnt', t==='estratto');
-  ['rC1','rC2','rC3'].forEach(id=>mostra(id, ['categoria','mensile','periodo','saldo','tipo'].includes(t)));
-  mostra('rMese', t==='mensile');
-  mostra('rGiro', ['categoria','mensile','periodo'].includes(t));
-  const l=$('rGiro').parentNode; if(l&&l.tagName==='LABEL')l.style.display=
-    ['categoria','mensile','periodo'].includes(t)?'':'none';
-}
+function campiPerTipo(){ aggiornaChips(); }
 window.cambiaTipoReport=()=>{ campiPerTipo(); eseguiReport(); };
 window.rCat=liv=>{
   if(liv===1){
@@ -927,7 +1021,7 @@ function meta(p,n,esclusi,extra){
   $('rMeta').innerHTML=titolo+` · <b>${n}</b> movimenti · ${periodo}`+
     (cat?' · '+esc(cat):'')+
     (esclusi?` · ${esclusi} trasferimenti esclusi`:'')+(extra?' · '+extra:'')+
-    ` <span class="rep-auto">si ricalcola a ogni modifica dei filtri</span>`+
+    ''+
     (st.length&&p.noGiro?`<br><span class="att">attenzione: ${st.length} soggetti senza tipo, i loro trasferimenti non sono riconoscibili</span>`:'');
 }
 function cellaDrill(v,cur,dir,f){
@@ -957,8 +1051,10 @@ window.seGiaEseguito=()=>{ if(reportEseguito)eseguiReport(); };
 function reportVuoto(){
   reportEseguito=false;
   $('rMeta').innerHTML='';
-  $('rTab').innerHTML='<div class="costruzione">Imposta i filtri qui sopra e premi <b>ESEGUI</b>, '+
-    'oppure scegli un report salvato dalla tendina.</div>';
+  $('rTab').innerHTML='<div class="costruzione">Componi i filtri qui sopra e premi <b>ESEGUI</b>, '+
+    'oppure apri un report gia salvato dalla libreria.</div>';
+  { const st=$('qStato'); if(st)st.textContent=''; }
+  aggiornaChips(); aggiornaNome();
 }
 window.eseguiReport=(forzato)=>{
   if(!reportEseguito&&!forzato)return;      // niente anteprima all'apertura
@@ -968,6 +1064,8 @@ window.eseguiReport=(forzato)=>{
   const fn={categoria:repCategoria,mensile:repMensile,periodo:repPeriodo,estratto:repEstratto,
     tipo:repTipo,saldo:repSaldo,fx:repFx}[p.tipo];
   $('rTab').innerHTML=fn?fn(p,d):'';
+  aggiornaChips(); aggiornaNome();
+  { const st=$('qStato'); if(st)st.textContent='tabella aggiornata \u00b7 '+oraBreve(); }
   if(p.tipo!=='estratto'&&p.tipo!=='fx')meta(p,d.length,esclusi,'');
 };
 
@@ -1202,25 +1300,8 @@ function repFx(p,d){
 const NOMI_REPORT={categoria:'Per categoria',mensile:'Subtotali per mese',periodo:'Per periodo',
   estratto:'Estratto conto',tipo:'Per tipo',saldo:'Saldo dei soggetti',fx:'Cambio valuta'};
 function disegnaSalvati(){
-  const el=$('rSalvati'); if(!el)return;
-  const n=savedReports.length;
-  if(!n){
-    el.innerHTML='<option value="">Nessun report salvato</option>';
-    el.disabled=true; $('btElimina').style.display='none'; return;
-  }
-  el.disabled=false;
-  const perTipo={};
-  savedReports.forEach((r,i)=>{ const t=r.type||'categoria'; (perTipo[t]=perTipo[t]||[]).push({r,i}); });
-  let h=`<option value="">Report salvati (${n})</option>`;
-  Object.keys(perTipo).sort((a,b)=>(NOMI_REPORT[a]||a).localeCompare(NOMI_REPORT[b]||b,'it')).forEach(t=>{
-    h+=`<optgroup label="${esc(NOMI_REPORT[t]||t)}">`+
-      perTipo[t].sort((a,b)=>a.r.name.localeCompare(b.r.name,'it'))
-        .map(({r,i})=>`<option value="${i}"${reportAttivo===i?' selected':''}>${esc(r.name)}</option>`).join('')+
-      '</optgroup>';
-  });
-  el.innerHTML=h;
-  el.value=reportAttivo===null?'':String(reportAttivo);
-  $('btElimina').style.display=reportAttivo===null?'none':'';
+  const c=$('qConta'); if(c)c.textContent='('+savedReports.length+')';
+  disegnaLibreria(); aggiornaNome();
 }
 window.salvaReport=async()=>{
   const nome=$('rNome').value.trim();
@@ -1229,6 +1310,7 @@ window.salvaReport=async()=>{
   const i=savedReports.findIndex(r=>r.name.toLowerCase()===nome.toLowerCase());
   if(i>=0){ if(!confirm(`Esiste gia un report "${nome}": sostituirlo?`))return; savedReports[i]={name:nome,type:p.tipo,params:p}; reportAttivo=i; }
   else { savedReports.push({name:nome,type:p.tipo,params:p}); reportAttivo=savedReports.length-1; }
+  paramsSalvati=JSON.stringify(p); chiudiCampo();
   disegnaSalvati(); avviso('Report salvato','ok');
   try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
 };
@@ -1253,15 +1335,9 @@ window.apriReport=i=>{
   $('rMese').value=p.mese||p.mode||'subtotali';
   $('rDa').value=p.da||p.from||''; $('rA').value=p.a||p.to||'';
   $('rGiro').checked=p.noGiro!==false;
-  campiPerTipo(); disegnaSalvati(); eseguiReport(true);
-};
-window.eliminaReport=async()=>{
-  const i=reportAttivo;
-  if(i===null||!savedReports[i])return;
-  if(!confirm(`Eliminare il report "${savedReports[i].name}"?`))return;
-  savedReports.splice(i,1); reportAttivo=null; $('rNome').value='';
-  disegnaSalvati(); avviso('Report eliminato','ok');
-  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+  campiPerTipo(); eseguiReport(true);
+  paramsSalvati=JSON.stringify(paramReport());
+  disegnaSalvati();
 };
 
 /* ══════════════ anagrafiche: soggetti ══════════════ */
@@ -1575,6 +1651,140 @@ function intro(){
 }
 window.saltaIntro=()=>$('intro').classList.add('out');
 window.rivediIntro=()=>{ $('swMenu').classList.remove('on'); intro(); };
+/* ══════════════ barra a pastiglie ══════════════
+   La barra si legge come una frase: ogni pastiglia dichiara etichetta e valore,
+   cosi' nessun campo puo' essere scambiato per un altro. Il campo vero non e'
+   duplicato: vive nel magazzino e viene spostato dentro la tendina solo mentre
+   lo si usa, percio' id e gestori dei report restano quelli di sempre. */
+const CAMPI_CHIP={tipo:'cp-tipo',sogg:'cp-sogg',albero:'cp-albero',periodo:'cp-periodo',
+  mese:'cp-mese',giro:'cp-giro',salva:'cp-salva'};
+let campoAperto=null;
+window.apriCampo=(chiave,bottone)=>{
+  const gia=campoAperto===chiave;
+  chiudiCampo();
+  if(gia)return;
+  const pop=$('qPop'), campo=$(CAMPI_CHIP[chiave]), pag=$('pg-report');
+  if(!pop||!campo||!pag)return;
+  pop.appendChild(campo); pop.classList.add('on');
+  const b=bottone.getBoundingClientRect(), p=pag.getBoundingClientRect();
+  const max=Math.max(0,pag.clientWidth-pop.offsetWidth-4);
+  pop.style.left=Math.max(0,Math.min(b.left-p.left,max))+'px';
+  pop.style.top=(b.bottom-p.top+6)+'px';
+  campoAperto=chiave; bottone.classList.add('aperto');
+  const primo=campo.querySelector('input,select');
+  if(primo)setTimeout(()=>{try{primo.focus();}catch(e){}},30);
+};
+function chiudiCampo(){
+  if(!campoAperto)return;
+  $('qCampi').appendChild($(CAMPI_CHIP[campoAperto]));
+  $('qPop').classList.remove('on');
+  document.querySelectorAll('.aperto').forEach(b=>b.classList.remove('aperto'));
+  campoAperto=null;
+}
+window.chiudiCampo=chiudiCampo;
+document.addEventListener('click',e=>{
+  if(!campoAperto)return;
+  if(e.target.closest('#qPop')||e.target.closest('.chip')||e.target.closest('#btSalva'))return;
+  chiudiCampo();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  if(campoAperto)chiudiCampo(); else chiudiLibreria();
+});
+function testoAlbero(){
+  const v=[$('rC1').value,$('rC2').value,$('rC3').value].filter(Boolean);
+  return v.length?v.join(' \u203a '):'tutti';
+}
+function testoPeriodo(){
+  const d=$('rDa').value, a=$('rA').value;
+  if(!d&&!a)return 'tutto lo storico';
+  return (d?fmtData(d):'inizio')+' \u2192 '+(a?fmtData(a):'oggi');
+}
+function aggiornaChips(){
+  if(!$('rTipo')||!$('ch-tipo'))return;
+  const t=$('rTipo').value;
+  const vedi=(id,si)=>{const e=$(id);if(e)e.style.display=si?'':'none';};
+  vedi('ch-sogg', t==='estratto');
+  vedi('ch-albero', ['categoria','mensile','periodo','saldo','tipo'].includes(t));
+  vedi('ch-mese', t==='mensile');
+  vedi('ch-giro', ['categoria','mensile','periodo'].includes(t));
+  const scrivi=(id,txt,acceso)=>{const e=$(id);if(!e)return;
+    e.querySelector('b').textContent=txt; e.classList.toggle('acceso',!!acceso);};
+  scrivi('ch-tipo',NOMI_REPORT[t]||t,true);
+  scrivi('ch-sogg',$('rEnt').value.trim()||'tutti',!!$('rEnt').value.trim());
+  scrivi('ch-albero',testoAlbero(),!!$('rC1').value);
+  scrivi('ch-periodo',testoPeriodo(),!!($('rDa').value||$('rA').value));
+  scrivi('ch-mese',$('rMese').value==='totali'?'solo totali':'con subtotali',false);
+  scrivi('ch-giro',$('rGiro').checked?'esclusi':'inclusi',!$('rGiro').checked);
+}
+/* il nome salvato sta sempre col segnalibro e la sua etichetta, mai in un filtro */
+let paramsSalvati=null;
+function aggiornaNome(){
+  const el=$('qAperto'); if(!el)return;
+  const r=(reportAttivo!==null)?savedReports[reportAttivo]:null;
+  if(!r){el.innerHTML='';return;}
+  let mod=false;
+  try{ mod=paramsSalvati!==null&&JSON.stringify(paramReport())!==paramsSalvati; }catch(e){}
+  el.innerHTML='<span class="segna">&#9782;</span><b>'+esc(r.name)+'</b>'+
+    (mod?'<i class="mod">modificato</i>':'<i>nome salvato</i>');
+}
+function oraBreve(){
+  const d=new Date();
+  return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+}
+
+/* ══════════════ libreria dei report salvati ══════════════ */
+window.apriLibreria=()=>{
+  chiudiCampo();
+  const c=$('qCerca'); if(c)c.value='';
+  disegnaLibreria();
+  $('qLib').classList.add('on'); $('qVelo').classList.add('on');
+  if(c)setTimeout(()=>{try{c.focus();}catch(e){}},40);
+};
+window.chiudiLibreria=()=>{
+  const l=$('qLib'); if(l)l.classList.remove('on');
+  const v=$('qVelo'); if(v)v.classList.remove('on');
+};
+/* i report salvati anni fa usano nomi di campo diversi: qui si riportano
+   tutti alla forma di oggi, la stessa che legge righeReport() */
+function paramNormali(r){
+  const p=r.params||{}, t=r.type||'categoria';
+  const conGiro=['categoria','mensile','periodo'].includes(t);
+  return {tipo:t, ent:p.ent||p.entity||'', c1:p.c1||p.c1v||'', c2:p.c2||p.c2v||'',
+    c3:p.c3||p.c3v||'', mese:p.mese||p.mode||'subtotali',
+    da:p.da||p.from||'', a:p.a||p.to||'', noGiro:conGiro?(p.noGiro!==false):false};
+}
+window.disegnaLibreria=()=>{
+  const box=$('qElenco'); if(!box)return;
+  const q=$('qCerca')?$('qCerca').value:'';
+  let h='';
+  savedReports.map((r,i)=>({r,i}))
+    .filter(({r})=>contiene(r.name,q))
+    .sort((a,b)=>a.r.name.localeCompare(b.r.name,'it'))
+    .forEach(({r,i})=>{
+      const p=paramNormali(r);
+      let n=0; try{ n=righeReport(p).d.length; }catch(e){}
+      const cat=[p.c1,p.c2,p.c3].filter(Boolean).join(' \u203a ');
+      h+='<div class="rig-lib'+(reportAttivo===i?' attivo':'')+'">'+
+        '<button class="apri" onclick="apriReport('+i+');chiudiLibreria()">'+
+          '<span class="segna">&#9782;</span><b>'+esc(r.name)+'</b>'+
+          '<span class="desc">'+esc(NOMI_REPORT[r.type]||r.type||'')+
+          (cat?' \u00b7 '+esc(cat):'')+' \u00b7 '+n+' mov.</span></button>'+
+        '<button class="bt togli" onclick="eliminaSalvato('+i+')">Elimina</button></div>';
+    });
+  box.innerHTML=h||'<p class="lib-nota">Nessun report con questo nome.</p>';
+};
+window.eliminaSalvato=async i=>{
+  const r=savedReports[i]; if(!r)return;
+  if(!confirm('Eliminare il report "'+r.name+'"? Non si puo\' annullare.'))return;
+  savedReports.splice(i,1);
+  // gli indici scalano: la libreria lavora per posizione
+  if(reportAttivo===i){reportAttivo=null;paramsSalvati=null;$('rNome').value='';}
+  else if(reportAttivo!==null&&reportAttivo>i)reportAttivo--;
+  disegnaSalvati(); avviso('Report eliminato','ok');
+  try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+
 </script>
 </body>
 </html>
