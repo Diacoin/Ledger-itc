@@ -441,16 +441,17 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
         <input type="search" id="rEnt" list="elencoSoggetti" placeholder="Soggetto" oninput="eseguiReport()">
         <select id="rC1" onchange="rCat(1)"></select>
         <select id="rC2" onchange="rCat(2)"></select>
-        <select id="rC3" onchange="eseguiReport()"></select>
-        <select id="rMese" onchange="eseguiReport()">
+        <select id="rC3" onchange="seGiaEseguito()"></select>
+        <select id="rMese" onchange="seGiaEseguito()">
           <option value="subtotali">Con subtotali per categoria</option>
           <option value="totali">Solo totali del mese</option>
         </select>
-        <input type="date" id="rDa" onchange="eseguiReport()" title="Dal">
-        <input type="date" id="rA" onchange="eseguiReport()" title="Al">
-        <label><input type="checkbox" id="rGiro" checked onchange="eseguiReport()"> Escludi trasferimenti</label>
+        <input type="date" id="rDa" onchange="seGiaEseguito()" title="Dal">
+        <input type="date" id="rA" onchange="seGiaEseguito()" title="Al">
+        <label><input type="checkbox" id="rGiro" checked onchange="seGiaEseguito()"> Escludi trasferimenti</label>
         <span class="sep"></span>
         <input type="text" id="rNome" placeholder="Nome del report" style="max-width:190px">
+        <button class="bt primario" onclick="eseguiReport(true)">Esegui</button>
         <button class="bt" onclick="salvaReport()">Salva</button>
         <button class="bt" onclick="window.print()">Stampa</button>
       </div>
@@ -951,7 +952,17 @@ window.drill=o=>{
   $('filtriAvanzati').classList.add('on'); $('btPiu').textContent='Meno filtri';
   vai('registro'); disegna();
 };
-window.eseguiReport=()=>{
+let reportEseguito=false;
+window.seGiaEseguito=()=>{ if(reportEseguito)eseguiReport(); };
+function reportVuoto(){
+  reportEseguito=false;
+  $('rMeta').innerHTML='';
+  $('rTab').innerHTML='<div class="costruzione">Imposta i filtri qui sopra e premi <b>ESEGUI</b>, '+
+    'oppure scegli un report salvato dalla tendina.</div>';
+}
+window.eseguiReport=(forzato)=>{
+  if(!reportEseguito&&!forzato)return;      // niente anteprima all'apertura
+  reportEseguito=true;
   if(!$('rTipo'))return;
   const p=paramReport(), {d,esclusi}=righeReport(p);
   const fn={categoria:repCategoria,mensile:repMensile,periodo:repPeriodo,estratto:repEstratto,
@@ -1222,7 +1233,7 @@ window.salvaReport=async()=>{
   try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
 };
 window.apriReport=i=>{
-  if(i===''||i===null||i===undefined)return;
+  if(i===''||i===null||i===undefined){ reportVuoto(); disegnaSalvati(); return; }
   i=+i; const r=savedReports[i]; if(!r)return;
   const p=r.params||{};
   reportAttivo=i;
@@ -1242,7 +1253,7 @@ window.apriReport=i=>{
   $('rMese').value=p.mese||p.mode||'subtotali';
   $('rDa').value=p.da||p.from||''; $('rA').value=p.a||p.to||'';
   $('rGiro').checked=p.noGiro!==false;
-  campiPerTipo(); disegnaSalvati(); eseguiReport();
+  campiPerTipo(); disegnaSalvati(); eseguiReport(true);
 };
 window.eliminaReport=async()=>{
   const i=reportAttivo;
@@ -1500,7 +1511,7 @@ window.vai=id=>{
   const el=$('pg-'+id); if(el)el.classList.add('on');
   document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===id));
   if(id==='anagrafiche'){ disegnaSoggetti(); disegnaCategorie(); }
-  if(id==='report'){ preparaReport(); disegnaSalvati(); eseguiReport(); }
+  if(id==='report'){ preparaReport(); disegnaSalvati(); reportVuoto(); }
   window.scrollTo(0,0);
 };
 window.apriMenu=()=>$('swMenu').classList.toggle('on');
