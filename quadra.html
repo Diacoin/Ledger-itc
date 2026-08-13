@@ -312,6 +312,36 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
 .rig-lib .togli{align-self:center;font-size:9.5px;padding:6px 9px;color:var(--fg3)}
 .rig-lib .togli:hover{border-color:var(--ko);color:var(--ko)}
 .rmeta .filtrato{color:var(--acc2)}
+
+/* ── utilita' ── */
+.griglia-ut{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  gap:16px;margin-top:20px;align-items:start}
+.riquadro{background:var(--surf);border:1px solid var(--bd);border-radius:4px;padding:18px 20px}
+.riquadro h3{font-size:15px;font-weight:600;margin:0 0 8px;color:var(--fg)}
+.riquadro p{color:var(--fg2);font-size:13px;line-height:1.55;margin:0 0 12px}
+.riquadro p.avvertenza{color:var(--fg2);border-left:2px solid var(--acc2);padding-left:11px}
+.riquadro p.avvertenza b{color:var(--acc2)}
+.conta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.conta span{font-family:var(--mono);font-size:11px;background:var(--surf2);
+  border:1px solid var(--bd);border-radius:3px;padding:5px 9px;color:var(--fg2)}
+.conta b{color:var(--fg);font-weight:600}
+.scheda-file{border:1px solid var(--bd2);border-radius:3px;padding:13px 15px;margin-top:14px;
+  background:var(--surf2);font-size:12.5px;line-height:1.6;color:var(--fg2)}
+.scheda-file b{color:var(--fg)}
+.scheda-file.ko{border-color:var(--ko);color:var(--ko)}
+.scheda-file.ok{border-color:var(--ok)}
+.confronto{width:100%;border-collapse:collapse;margin:11px 0 4px;font-family:var(--mono);font-size:12px}
+.confronto th{text-align:right;font-weight:500;color:var(--fg3);font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;padding:0 0 5px}
+.confronto th:first-child{text-align:left}
+.confronto td{padding:3px 0;border-top:1px solid var(--bd)}
+.confronto td:first-child{color:var(--fg2);font-family:var(--sans);font-size:12.5px}
+.confronto td.num{text-align:right;color:var(--fg);width:78px}
+.confronto td.num.via{color:var(--fg3);text-decoration:line-through}
+.confronto td.num.entra{color:var(--acc)}
+.azioni-ut{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.bt.rischio{border-color:var(--acc2);color:var(--acc2)}
+.bt.rischio:hover{background:var(--acc2);color:#1a1206}
 </style>
 </head>
 <body>
@@ -478,7 +508,30 @@ tr.edit.nuova td{border-top:2px solid var(--acc)}
       </div>
     </div>
     <div class="pagina" id="pg-utilita"><h2>Utilit&agrave;</h2>
-      <div class="costruzione">Blocco 3 &mdash; import degli estratti, backup e ripristino.</div></div>
+      <p class="sotto">Copie di sicurezza, ripristino e importazione degli estratti conto.</p>
+      <div class="griglia-ut">
+        <section class="riquadro">
+          <h3>Copia di sicurezza</h3>
+          <p>Scarica un file con tutto quello che c'&egrave; nel registro: movimenti, soggetti,
+             categorie e report salvati. Il file resta sul tuo computer, non viene inviato a nessuno.</p>
+          <div class="conta" id="utConta"></div>
+          <button class="bt primario" onclick="scaricaBackup()">Scarica il backup</button>
+        </section>
+        <section class="riquadro">
+          <h3>Ripristino da un backup</h3>
+          <p>Rimette l'archivio come era nel file che scegli.</p>
+          <p class="avvertenza">Il ripristino <b>sostituisce tutto</b>: movimenti, soggetti,
+             categorie e report salvati. Prima di procedere viene scaricata da sola una copia
+             della situazione attuale, e ti viene mostrato cosa entra e cosa esce.</p>
+          <button class="bt" onclick="scegliRipristino()">Scegli il file JSON</button>
+          <input type="file" id="fileRipristino" accept=".json,application/json"
+                 style="display:none" onchange="leggiRipristino(this)">
+          <div id="utRipristino"></div>
+        </section>
+      </div>
+      <div class="costruzione">Conversione degli estratti conto PDF, import da Excel e archivio
+        dei documenti: in arrivo nei prossimi blocchi.</div>
+    </div>
     <div class="pagina" id="pg-report">
       <h2>Report</h2>
       <div class="barra-rep">
@@ -1589,6 +1642,7 @@ window.vai=id=>{
   document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===id));
   if(id==='anagrafiche'){ disegnaSoggetti(); disegnaCategorie(); }
   if(id==='report'){ preparaReport(); disegnaSalvati(); reportVuoto(); }
+  if(id==='utilita')aggiornaUtilita();
   window.scrollTo(0,0);
 };
 window.apriMenu=()=>$('swMenu').classList.toggle('on');
@@ -1789,6 +1843,86 @@ window.eliminaSalvato=async i=>{
   else if(reportAttivo!==null&&reportAttivo>i)reportAttivo--;
   disegnaSalvati(); avviso('Report eliminato','ok');
   try{ await salva(); }catch(e){ avviso('Salvataggio non riuscito','ko'); }
+};
+
+/* ══════════════ utilita': copia di sicurezza e ripristino ══════════════
+   Il ripristino e' l'unica operazione che cancella tutto quanto: si dichiara
+   sempre cosa entra e cosa esce, e la copia della situazione attuale parte da
+   sola prima di sovrascrivere. */
+function insieme(){ return {version:'quadra-1',date:new Date().toISOString(),
+  rows,nomi,c1,c2Map,c3Map,savedReports,refCurr}; }
+function scarica(testo,nome){
+  const b=new Blob([testo],{type:'application/json'});
+  const u=URL.createObjectURL(b), a=document.createElement('a');
+  a.href=u; a.download=nome; document.body.appendChild(a); a.click();
+  a.remove(); URL.revokeObjectURL(u);
+}
+function nomeBackup(){
+  const d=new Date(), p=n=>('0'+n).slice(-2);
+  return 'caveau_backup_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'.json';
+}
+window.scaricaBackup=()=>{
+  scarica(JSON.stringify(insieme(),null,2), nomeBackup());
+  avviso('Backup scaricato','ok');
+};
+window.aggiornaUtilita=()=>{
+  const c=$('utConta'); if(!c)return;
+  const date=rows.map(r=>r.data).filter(Boolean).sort();
+  const peso=Math.round(JSON.stringify(insieme()).length/1024);
+  c.innerHTML='<span><b>'+rows.length+'</b> movimenti</span>'+
+    '<span><b>'+nomi.length+'</b> soggetti</span>'+
+    '<span><b>'+c1.length+'</b> gruppi</span>'+
+    '<span><b>'+savedReports.length+'</b> report salvati</span>'+
+    (date.length?'<span>fino al <b>'+fmtData(date[date.length-1])+'</b></span>':'')+
+    '<span>circa <b>'+peso+' kB</b></span>';
+};
+
+let daRipristinare=null;
+window.scegliRipristino=()=>{ const i=$('fileRipristino'); if(i)i.click(); };
+window.leggiRipristino=async input=>{
+  const f=input.files&&input.files[0]; input.value='';
+  const area=$('utRipristino'); if(!area)return;
+  daRipristinare=null;
+  if(!f)return;
+  try{
+    const d=JSON.parse(await f.text());
+    if(!d||!Array.isArray(d.rows))throw new Error('Non e un backup del registro: manca l\'elenco dei movimenti.');
+    daRipristinare=d;
+    const riga=(voce,ora,poi)=>'<tr><td>'+voce+'</td><td class="num via">'+ora+
+      '</td><td class="num entra">'+poi+'</td></tr>';
+    area.innerHTML='<div class="scheda-file"><b>'+esc(f.name)+'</b>'+
+      (d.date?' &middot; backup del '+fmtData(String(d.date).slice(0,10)):'')+
+      '<table class="confronto"><thead><tr><th></th><th>ora</th><th>dopo</th></tr></thead><tbody>'+
+      riga('Movimenti',rows.length,d.rows.length)+
+      riga('Soggetti',nomi.length,(d.nomi||[]).length)+
+      riga('Gruppi',c1.length,(d.c1||[]).length)+
+      riga('Report salvati',savedReports.length,(d.savedReports||[]).length)+
+      '</tbody></table>'+
+      'Quello che c\'e ora viene scaricato in un file prima di essere sostituito.'+
+      '<div class="azioni-ut">'+
+      '<button class="bt rischio" onclick="confermaRipristino()">Sostituisci tutti i dati</button>'+
+      '<button class="bt" onclick="annullaRipristino()">Annulla</button></div></div>';
+  }catch(e){
+    area.innerHTML='<div class="scheda-file ko">'+esc(e.message||'file non leggibile')+'</div>';
+  }
+};
+window.annullaRipristino=()=>{ daRipristinare=null; const a=$('utRipristino'); if(a)a.innerHTML=''; };
+window.confermaRipristino=async()=>{
+  if(!daRipristinare)return;
+  const prima=rows.length, dopo=daRipristinare.rows.length;
+  if(!confirm('Sostituire i '+prima+' movimenti di adesso con i '+dopo+' del file?\n\n'+
+    'Prima parte il download della copia attuale. L\'operazione non si annulla.'))return;
+  scarica(JSON.stringify(insieme(),null,2), 'caveau_prima-del-ripristino_'+nomeBackup().slice(14));
+  carica(daRipristinare);
+  daRipristinare=null;
+  try{ await salva(); }
+  catch(e){ $('utRipristino').innerHTML='<div class="scheda-file ko">Dati ripristinati qui, '+
+      'ma il salvataggio in rete non e riuscito: non ricaricare la pagina e riprova.</div>'; return; }
+  preparaFiltri(); disegna(); preparaReport(); disegnaSalvati(); reportVuoto();
+  aggiornaUtilita();
+  $('utRipristino').innerHTML='<div class="scheda-file ok">Ripristinati <b>'+rows.length+
+    '</b> movimenti. La copia dei dati precedenti e nella cartella dei download.</div>';
+  avviso('Ripristino completato','ok');
 };
 
 </script>
